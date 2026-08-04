@@ -1,169 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Punya Speed Test</title>
-  <style>
-    :root { --yellow: #FFD700; --black: #0a0a0a; --dark: #1a1a1a; --glow: 0 0 20px #FFD700; }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-    body { background: linear-gradient(135deg, var(--black) 0%, #111 100%); color: white; text-align: center; padding: 20px; min-height: 100vh; }
-    header { padding: 30px 0; animation: fadeIn 1s; }
-    header h1 { color: var(--yellow); font-size: 38px; font-weight: 900; letter-spacing: 3px; text-shadow: var(--glow); }
-    header p { color: #aaa; margin-top: 8px; font-size: 15px; }
-    
-    .container { max-width: 700px; margin: 20px auto; background: rgba(26,26,26,0.8); backdrop-filter: blur(10px); padding: 30px 20px; border-radius: 20px; border: 2px solid var(--yellow); box-shadow: var(--glow); animation: slideUp 0.8s; }
-    
-    .info-box { background: #222; padding: 18px; border-radius: 12px; margin-bottom: 25px; text-align: left; font-size: 15px; line-height: 2; border-left: 4px solid var(--yellow); }
-    .info-box b { color: var(--yellow); width: 110px; display: inline-block; }
-    
-    .speed-box { display: flex; justify-content: center; flex-wrap: wrap; margin: 25px 0; gap: 20px; }
-    .card { background: #222; padding: 25px 20px; border-radius: 15px; width: 200px; border-bottom: 4px solid var(--yellow); transition: 0.4s; position: relative; overflow: hidden; }
-    .card:hover { transform: translateY(-5px); box-shadow: var(--glow); }
-    .card .label { color: #aaa; font-size: 14px; letter-spacing: 1px; }
-    .card .value { color: var(--yellow); font-size: 32px; font-weight: bold; margin: 12px 0; min-height: 40px; }
-    
-    /* BEAUTIFUL ANIMATION */
-    .loading-ring { border: 4px solid #333; border-top: 4px solid var(--yellow); border-radius: 50%; width: 35px; height: 35px; animation: spin 1s linear infinite; margin: 0 auto; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    
-    .btn-group { margin-top: 25px; }
-    button { background: var(--yellow); color: var(--black); border: none; padding: 15px 30px; font-size: 17px; font-weight: bold; border-radius: 50px; cursor: pointer; margin: 8px; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,215,0,0.3); }
-    button:hover { background: #ffea00; transform: scale(1.08); animation: pulse 0.5s; }
-    button:disabled { background: #555; color: #999; cursor: not-allowed; transform: scale(1); }
-    .note { font-size: 11px; color: #777; margin-top: 15px; }
-    footer { margin-top: 40px; color: #555; font-size: 12px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INTERNET SPEED TEST BY SP</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header><h1>PUNYA SPEED TEST</h1><p>Professional Internet Speed Checker</p></header>
-  
-  <div class="container">
-    <div class="info-box">
-      <b>📍 Location:</b> <span id="location">Getting...</span> <br>
-      <b>📶 Connection:</b> <span id="operator">Checking...</span> <br>
-      <b>🌐 Server:</b> <span id="server">Cloudflare</span> <br>
-      <b>📱 Device:</b> <span id="device">Checking...</span>
-      <div class="note">* SIM name website me nahi milta. Connection type browser se guess hota hai</div>
-    </div>
 
-    <div class="speed-box">
-      <div class="card"><div class="label">PING</div><div class="value" id="ping">- ms</div></div>
-      <div class="card"><div class="label">DOWNLOAD</div><div class="value" id="download">- Mbps</div></div>
-      <div class="card"><div class="label">UPLOAD</div><div class="value" id="upload">- Mbps</div></div>
-    </div>
+<!-- Animated Globe Background -->
+<div class="globe-container">
+  <div class="globe"></div>
+  <div class="connections"></div>
+</div>
 
-    <div class="btn-group">
-      <button id="btnTest" onclick="startTest()">START TEST</button>
-      <button id="btnShare" onclick="shareResult()" style="display:none;">📤 SHARE RESULT</button>
-      <button id="btnAgain" onclick="resetTest()" style="display:none;">🔄 TEST AGAIN</button>
-    </div>
+<div class="container">
+  <h1>🚀 INTERNET SPEED TEST BY SP</h1>
+  <p>Check Your Real Internet Speed</p>
+
+  <div class="card">
+    📍 <b>Location:</b> <span id="location">Getting location...</span> <br><br>
+    🌐 <b>Network:</b> <span id="network">Detecting...</span> <br><br>
+    📶 <b>Ping:</b> <span id="ping">0 ms</span> <br><br>
+    ⬇️ <b>Download:</b> <span id="download">0 Mbps</span> <br><br>
+    ⬆️ <b>Upload:</b> <span id="upload">0 Mbps</span>
   </div>
-  <footer>© 2026 Punya Speed Test | Powered by Cloudflare</footer>
 
-  <script>
-    let lastResult = {};
+  <button onclick="startTest()">START TEST</button>
 
-    // BETTER LOCATION + CONNECTION
-    async function getInfo() {
-      document.getElementById('device').innerText = navigator.userAgent.includes("Mobile") ? "Mobile" : "Desktop";
+  <footer>
+    <hr>
+    <p><b>CREATED AND DEVELOPED BY<br>PUNYA BINAY SWAIN</b></p>
+  </footer>
+</div>
 
-      // 1. Connection - 4G/5G + Speed
-      if(navigator.connection) {
-        let net = navigator.connection;
-        let type = net.effectiveType ? net.effectiveType.toUpperCase() : "UNKNOWN";
-        let downlink = net.downlink ? ` ~ ${net.downlink} Mbps` : '';
-        document.getElementById('operator').innerText = type + downlink;
-      } else {
-        document.getElementById('operator').innerText = 'WiFi / Mobile Data';
-      }
-
-      // 2. Accurate Location - IP + GPS
-      try {
-        let ipRes = await fetch('https://ipapi.co/json/');
-        let ipData = await ipRes.json();
-        document.getElementById('location').innerText = ipData.city + ', ' + ipData.region; // District, State
-      } catch(e) {}
-      
-      if(navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
-          fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&zoom=12`)
-          .then(res => res.json()).then(data => {
-            let district = data.address.county || data.address.city || data.address.district || ipData.city;
-            document.getElementById('location').innerText = district + ', ' + data.address.state;
-          });
-        });
-      }
-    }
-    window.onload = getInfo;
-
-    // SPEED TEST WITH ANIMATION
-    async function startTest() {
-      const btnTest = document.getElementById('btnTest');
-      btnTest.disabled = true; 
-      btnTest.innerHTML = '<div class="loading-ring"></div>';
-      document.getElementById('btnShare').style.display = 'none';
-      document.getElementById('btnAgain').style.display = 'none';
-      ['ping','download','upload'].forEach(id => document.getElementById(id).innerHTML = '<div class="loading-ring"></div>');
-
-      try {
-        // PING
-        let start = performance.now();
-        await fetch('https://www.google.com/favicon.ico?cache=' + Math.random(), {mode: 'no-cors'});
-        let ping = performance.now() - start;
-        document.getElementById('ping').innerText = ping.toFixed(0) + ' ms';
-
-        // DOWNLOAD - 10MB
-        start = performance.now();
-        let downloadSize = 0;
-        const res = await fetch('https://speed.cloudflare.com/__down?bytes=10000000&cache=' + Math.random());
-        const reader = res.body.getReader();
-        while(true) {
-          const {done, value} = await reader.read();
-          if(done) break;
-          downloadSize += value.length;
-        }
-        let time = (performance.now() - start) / 1000;
-        let downloadSpeed = (downloadSize * 8) / (time * 1000000);
-        document.getElementById('download').innerText = downloadSpeed.toFixed(2) + ' Mbps';
-
-        // UPLOAD - 5MB
-        start = performance.now();
-        let data = new Blob([new ArrayBuffer(5000000)]);
-        await fetch('https://speed.cloudflare.com/__up', {method: 'POST', body: data, mode: 'no-cors'});
-        time = (performance.now() - start) / 1000;
-        let uploadSpeed = (5000000 * 8) / (time * 1000000);
-        document.getElementById('upload').innerText = uploadSpeed.toFixed(2) + ' Mbps';
-
-        lastResult = {
-          ping: ping.toFixed(0), down: downloadSpeed.toFixed(2), up: uploadSpeed.toFixed(2),
-          loc: document.getElementById('location').innerText, op: document.getElementById('operator').innerText
-        };
-
-      } catch(e) { alert("Test me error. Internet check karo bhai"); }
-
-      btnTest.disabled = false; btnTest.innerText = 'START TEST';
-      document.getElementById('btnShare').style.display = 'inline-block';
-      document.getElementById('btnAgain').style.display = 'inline-block';
-    }
-
-    function shareResult() {
-      if(!lastResult.down) return alert('Pehle test karo');
-      let text = `⚡ PUNYA SPEED TEST ⚡\n\n📍 Location: ${lastResult.loc}\n📶 Connection: ${lastResult.op}\n🌐 Server: Cloudflare\n\n🏓 Ping: ${lastResult.ping} ms\n⬇️ Download: ${lastResult.down} Mbps\n⬆️ Upload: ${lastResult.up} Mbps\nTested on: https://punyabinay4-alt.github.io/punyaspeedtest1/`;
-      if(navigator.share) navigator.share({ title: 'Punya Speed Test', text: text });
-      else { navigator.clipboard.writeText(text); alert('Result copy ho gaya!'); }
-    }
-
-    function resetTest() {
-      document.getElementById('ping').innerText = '- ms';
-      document.getElementById('download').innerText = '- Mbps';
-      document.getElementById('upload').innerText = '- Mbps';
-      document.getElementById('btnShare').style.display = 'none';
-      document.getElementById('btnAgain').style.display = 'none';
-    }
-  </script>
+<script src="script.js"></script>
 </body>
 </html>
