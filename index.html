@@ -2,95 +2,82 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SPEED TEST X PRO BY SP</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--neon:#00e5ff;--neon2:#7c3aed;--bg:#050a14}
+:root{--neon:#00f0ff;--neon2:#a855f7;--bg:#030712}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins', sans-serif}
-body{background:var(--bg);color:var(--neon);display:flex;justify-content:center;align-items:center;min-height:100vh;padding:15px}
+body{background:var(--bg);color:var(--neon);padding:12px}
 
-/* CLEAN DARK BG */
-#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(ellipse at center, #0a1428 0%, #050a14 100%)}
+/* BG EFFECT */
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(circle at 50% 20%, rgba(168,85,247,0.15) 0%, transparent 50%)}
 
-.container { width:100%; max-width:1300px; height:90vh; background:rgba(10,20,40,0.8); border:1px solid rgba(0,229,255,0.2); border-radius:20px; padding:20px; box-shadow:0 0 50px rgba(0,229,255,0.2); display:flex; flex-direction:column; overflow:hidden; }
+.container { width:100%; max-width:1300px; margin:0 auto; }
 .header { text-align:center; margin-bottom:15px; }
-h1 { font-family:'Orbitron'; font-size:32px; color:var(--neon); text-shadow:0 0 15px var(--neon); letter-spacing:3px; }
-.by { font-family:'Orbitron'; font-size:13px; color:#88ddff; letter-spacing:4px; }
+h1 { font-family:'Orbitron'; font-size:26px; color:var(--neon); text-shadow:0 0 15px var(--neon); }
+.by { font-family:'Orbitron'; font-size:11px; color:#aaffff; letter-spacing:3px; }
 
-/* MAIN 2 COLUMN - NO SCROLL */
-.main-content { display:grid; grid-template-columns: 1fr 1fr; gap:20px; flex-grow:1; overflow:hidden; }
+/* MOBILE FIRST: SPEED UP, DEVICE DOWN */
+.wrapper { display:flex; flex-direction:column; gap:15px; }
 
-.card { background:rgba(0,229,255,0.05); border:1px solid rgba(0,229,255,0.15); border-radius:15px; padding:20px; display:flex; flex-direction:column; }
+/* DESKTOP: SIDE BY SIDE */
+@media(min-width: 980px){
+.wrapper{ flex-direction:row }
+.card{width:50%}
+}
+
+.card {
+  background:rgba(15,23,42,0.7); backdrop-filter:blur(20px);
+  border:1px solid rgba(0,240,255,0.2); border-radius:18px; padding:18px;
+  box-shadow:0 0 30px rgba(0,240,255,0.1);
+}
 
 .btn {
   background:linear-gradient(90deg, var(--neon2), var(--neon));
-  color:#000; border:none; padding:14px; font-size:14px; font-weight:900;
+  color:#000; border:none; padding:15px; font-size:14px; font-weight:900;
   border-radius:12px; cursor:pointer; margin-bottom:15px; width:100%;
-  transition:0.3s; font-family:'Orbitron';
+  font-family:'Orbitron'; box-shadow:0 0 20px rgba(0,240,255,0.3);
 }
-.btn:hover { transform:translateY(-2px); box-shadow:0 0 25px var(--neon); }
 
-.section-title { color:#00e5ff; font-size:11px; font-weight:900; margin-bottom:12px; letter-spacing:2px; }
+.section-title { color:#00f0ff; font-size:12px; font-weight:900; margin-bottom:12px; letter-spacing:2px; }
 
-/* LEFT INFO - COMPACT */
-.info-list { flex-grow:1; }
-.row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(0,229,255,0.1); }
-.label { display:flex; align-items:center; gap:8px; font-weight:600; color:#88ddff; font-size:12px; }
-.label span{font-size:16px} /* SMALL ICON */
-.value { font-weight:700; color:#fff; font-size:13px; text-align:right; word-break:break-word; max-width:55%; }
-
-/* RIGHT SPEED - COMPACT */
-.speed-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; flex-grow:1; align-content:center; }
+/* SPEED CARDS - TOP ON MOBILE */
+.speed-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
 .speed-box {
-  background:rgba(0,229,255,0.08); border:1px solid rgba(0,229,255,0.2);
-  border-radius:12px; padding:15px 10px; text-align:center;
+  background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.2);
+  border-radius:14px; padding:15px 8px; text-align:center;
 }
-.speed-label { font-size:10px; color:#88ddff; font-weight:800; margin-bottom:8px; letter-spacing:1px; }
-.speed-value { font-size:32px; font-weight:900; color:#fff; font-family:'Orbitron'; text-shadow:0 0 15px var(--neon); }
-.speed-unit { font-size:10px; color:#66ccff; margin-top:4px; }
-.meter { height:6px; background:rgba(0,229,255,0.1); border-radius:20px; overflow:hidden; margin-top:8px; }
+.speed-label { font-size:10px; color:#aaffff; font-weight:800; margin-bottom:6px; }
+.speed-value { font-size:30px; font-weight:900; color:#fff; font-family:'Orbitron'; }
+.speed-unit { font-size:10px; color:#66ddff; }
+.meter { height:6px; background:rgba(0,240,255,0.1); border-radius:20px; overflow:hidden; margin-top:6px; }
 .meter-bar { height:100%; width:0%; background:linear-gradient(90deg, var(--neon2), var(--neon)); transition:width 0.5s; }
 
-.spin { display:inline-block; width:14px; height:14px; border:2px solid rgba(0,229,255,0.3); border-top:2px solid var(--neon); border-radius:50%; animation: spin 0.6s linear infinite; margin-left:4px; }
+/* DEVICE INFO - BOTTOM ON MOBILE */
+.row { display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid rgba(0,240,255,0.1); gap:12px; }
+.label { display:flex; align-items:center; gap:8px; font-weight:700; color:#aaffff; font-size:12px; flex-shrink:0; }
+.value { font-weight:800; color:#fff; font-size:13px; text-align:right; word-break:break-word; }
+
+.spin { display:inline-block; width:14px; height:14px; border:2px solid rgba(0,240,255,0.3); border-top:2px solid var(--neon); border-radius:50%; animation: spin 0.6s linear infinite; margin-left:4px; }
 @keyframes spin { to { transform: rotate(360deg); }}
 .hidden { display:none!important; }
 
-footer { text-align:center; margin-top:12px; font-size:11px; color:#66ccff; font-weight:700; }
-.badge { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; padding:3px 8px; border-radius:15px; font-size:9px; font-weight:900; margin-left:6px; }
-.btn-group { display:flex; gap:10px; margin-top:10px; }
+footer { text-align:center; margin-top:15px; font-size:11px; color:#66ddff; font-weight:700; }
+.badge { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; padding:3px 9px; border-radius:15px; font-size:9px; font-weight:900; }
+.btn-group { display:flex; gap:10px; margin-top:12px; }
 .btn-half { width:calc(50% - 5px); }
 </style>
 </head>
 <body>
-<div id="bg"></div>
 <div class="container">
   <div class="header">
     <h1>⚡ SPEED TEST X PRO</h1>
     <div class="by">BY SP</div>
   </div>
 
-  <div class="main-content" id="resultCard">
-    <!-- LEFT: DEVICE INFO -->
-    <div class="card">
-      <button class="btn" onclick="getLocation()">📍 GET PRECISE DEVICE LOCATION</button>
-      <div class="section-title">DEVICE INFORMATION</div>
-      <div class="info-list">
-        <div class="row"><div class="label"><span>📱</span> DEVICE NAME</div> <div class="value" id="deviceInfo">DETECTING...</div></div>
-        <div class="row"><div class="label"><span>📍</span> LOCATION</div> <div class="value" id="gpsLocation">CLICK BUTTON</div></div>
-        <div class="row"><div class="label"><span>🏷️</span> IP ADDRESS</div> <div class="value" id="ipAddress">--</div></div>
-        <div class="row"><div class="label"><span>📡</span> NETWORK SOURCE</div> <div class="value" id="towerLocation">--</div></div>
-        <div class="row"><div class="label"><span>📶</span> NETWORK TYPE</div> <div class="value"><span id="network">DETECTING...</span><span class="badge" id="badge">--</span></div></div>
-        <div class="row"><div class="label"><span>📊</span> SIGNAL</div> <div class="value" id="signalStrength">--</div></div>
-        <div class="row"><div class="label"><span>🖥️</span> SERVER</div> <div class="value">CLOUDFLARE INDIA</div></div>
-      </div>
-      <div class="btn-group">
-        <button class="btn btn-half hidden" id="btn4" onclick="downloadResult()">DOWNLOAD</button>
-        <button class="btn btn-half hidden" id="btn5" onclick="location.reload()">REFRESH</button>
-      </div>
-    </div>
-
-    <!-- RIGHT: SPEED -->
+  <div class="wrapper" id="resultCard">
+    <!-- 1. SPEED RESULTS - UP ON MOBILE -->
     <div class="card">
       <div class="section-title">SPEED RESULTS</div>
       <div class="speed-grid">
@@ -116,6 +103,23 @@ footer { text-align:center; margin-top:12px; font-size:11px; color:#66ccff; font
       <button class="btn" id="btn1" onclick="start()">START TEST</button>
       <button class="btn hidden" id="btn2" onclick="start()">TEST AGAIN</button>
     </div>
+
+    <!-- 2. DEVICE INFO - DOWN ON MOBILE -->
+    <div class="card">
+      <button class="btn" onclick="getLocation()">📍 GET PRECISE DEVICE LOCATION</button>
+      <div class="section-title">DEVICE INFORMATION</div>
+      <div class="row"><div class="label">📱 DEVICE NAME</div> <div class="value" id="deviceInfo">DETECTING...</div></div>
+      <div class="row"><div class="label">📍 LOCATION</div> <div class="value" id="gpsLocation">CLICK BUTTON</div></div>
+      <div class="row"><div class="label">🏷️ IP ADDRESS</div> <div class="value" id="ipAddress">--</div></div>
+      <div class="row"><div class="label">📡 NETWORK SOURCE</div> <div class="value" id="towerLocation">--</div></div>
+      <div class="row"><div class="label">📶 NETWORK TYPE</div> <div class="value"><span id="network">DETECTING...</span> <span class="badge" id="badge">--</span></div></div>
+      <div class="row"><div class="label">📊 SIGNAL</div> <div class="value" id="signalStrength">--</div></div>
+      <div class="row"><div class="label">🖥️ SERVER</div> <div class="value">CLOUDFLARE INDIA</div></div>
+      <div class="btn-group">
+        <button class="btn btn-half hidden" id="btn4" onclick="downloadResult()">DOWNLOAD</button>
+        <button class="btn btn-half hidden" id="btn5" onclick="location.reload()">REFRESH</button>
+      </div>
+    </div>
   </div>
 
   <footer>
@@ -125,44 +129,38 @@ footer { text-align:center; margin-top:12px; font-size:11px; color:#66ccff; font
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-// 100% ACCURATE DEVICE DETECTION
+// ULTRA ACCURATE DEVICE DETECTION
 function getDeviceInfo() {
   const ua = navigator.userAgent;
   let device = "Unknown Device";
 
   // SAMSUNG
-  if(/SM-/i.test(ua)){
-    let model = ua.match(/SM-[A-Z0-9]+/)?.[0] || "";
+  if(/Samsung|SM-/i.test(ua)){
+    let model = ua.match(/SM-[A-Z0-9]+/)?.[0] || "Galaxy";
     device = `Samsung ${model}`;
   }
   // ONEPLUS
-  else if(/ONEPLUS/i.test(ua)){
+  else if(/OnePlus/i.test(ua)){
     let model = ua.match(/ONEPLUS\s?[A-Z0-9]+/i)?.[0] || "OnePlus";
     device = model;
   }
-  // XIAOMI/REDMI/POCO
+  // XIAOMI
   else if(/Redmi|Mi |POCO/i.test(ua)){
     let model = ua.match(/(Redmi|Mi |POCO)[^;]+/)?.[0] || "Xiaomi";
     device = model.trim();
   }
   // OPPO/REALME/VIVO
-  else if(/OPPO|Realme|Vivo/i.test(ua)){
-    let brand = ua.match(/(OPPO|Realme|Vivo)/i)?.[0] || "";
-    let model = ua.match(/Build\/([^;]+)/)?.[1] || "";
-    device = `${brand} ${model}`.trim();
-  }
-  // iPHONE
-  else if(/iPhone/i.test(ua)){
-    device = "Apple iPhone";
-  }
-  // iPAD
+  else if(/Oppo/i.test(ua)){ device = "Oppo Phone"; }
+  else if(/Realme/i.test(ua)){ device = "Realme Phone"; }
+  else if(/Vivo/i.test(ua)){ device = "Vivo Phone"; }
+  // APPLE
+  else if(/iPhone/i.test(ua)){ device = "Apple iPhone"; }
   else if(/iPad/i.test(ua)){ device = "Apple iPad"; }
-  // MAC
-  else if(/Macintosh/i.test(ua)){ device = "Apple Mac"; }
-  // WINDOWS
+  else if(/Mac/i.test(ua)){ device = "Apple Mac"; }
+  // WINDOWS PC
   else if(/Windows NT 10/i.test(ua)){ device = "Windows 11/10 PC"; }
   else if(/Windows/i.test(ua)){ device = "Windows PC"; }
-  // ANDROID GENERIC
+  // GENERIC ANDROID
   else if(/Android/i.test(ua)){
     let brand = ua.split(';')[1]?.trim() || "Android";
     device = brand;
@@ -236,9 +234,8 @@ async function start(){
   document.getElementById("btn5").classList.remove("hidden");
 }
 
-// FIXED DOWNLOAD
 function downloadResult(){
-  html2canvas(document.getElementById("resultCard"), {backgroundColor:'#050a14', scale:2}).then(c => {
+  html2canvas(document.getElementById("resultCard"), {backgroundColor:'#030712', scale:2}).then(c => {
     let a = document.createElement('a');
     a.download = 'SpeedTestXPro_BySP.jpg'; a.href = c.toDataURL('image/jpeg', 0.9); a.click();
   });
