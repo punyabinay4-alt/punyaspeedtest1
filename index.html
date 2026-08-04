@@ -9,48 +9,105 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
     body { background: var(--black); color: white; text-align: center; padding: 20px; }
     header { padding: 20px 0; }
-    header h1 { color: var(--yellow); font-size: 40px; font-weight: 900; letter-spacing: 2px; }
-    header p { color: #aaa; margin-top: 5px; }
-    .container { max-width: 600px; margin: 30px auto; background: var(--dark); padding: 40px 20px; border-radius: 15px; border: 2px solid var(--yellow); }
-    .speed-box { display: flex; justify-content: space-around; flex-wrap: wrap; margin: 30px 0; }
-    .card { background: #222; padding: 20px; border-radius: 10px; width: 170px; margin: 10px; border-bottom: 4px solid var(--yellow); }
+    header h1 { color: var(--yellow); font-size: 32px; font-weight: 900; letter-spacing: 2px; }
+    header p { color: #aaa; margin-top: 5px; font-size: 14px; }
+    .container { max-width: 650px; margin: 20px auto; background: var(--dark); padding: 25px 20px; border-radius: 15px; border: 2px solid var(--yellow); }
+    
+    .info-box { background: #222; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left; font-size: 14px; line-height: 1.8; }
+    .info-box b { color: var(--yellow); width: 100px; display: inline-block; }
+    
+    .speed-box { display: flex; justify-content: space-around; flex-wrap: wrap; margin: 20px 0; }
+    .card { background: #222; padding: 20px; border-radius: 10px; width: 180px; margin: 10px; border-bottom: 4px solid var(--yellow); transition: 0.3s; }
     .card .label { color: #aaa; font-size: 14px; }
-    .card .value { color: var(--yellow); font-size: 32px; font-weight: bold; margin: 10px 0; }
-    button { background: var(--yellow); color: var(--black); border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+    .card .value { color: var(--yellow); font-size: 28px; font-weight: bold; margin: 10px 0; min-height: 35px; }
+    
+    /* LOADING ANIMATION */
+    .loading { animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    .btn-group { margin-top: 20px; }
+    button { background: var(--yellow); color: var(--black); border: none; padding: 14px 25px; font-size: 16px; font-weight: bold; border-radius: 50px; cursor: pointer; margin: 5px; transition: 0.3s; }
     button:hover { background: #ffea00; transform: scale(1.05); }
-    button:disabled { background: #555; cursor: not-allowed; transform: scale(1); }
-    footer { margin-top: 40px; color: #555; font-size: 12px; }
+    button:disabled { background: #555; color: #999; cursor: not-allowed; transform: scale(1); }
+    footer { margin-top: 30px; color: #555; font-size: 12px; }
   </style>
 </head>
 <body>
   <header><h1>NAM PUNYA SPEED TEST</h1><p>Professional Internet Speed Checker</p></header>
+  
   <div class="container">
+    <div class="info-box">
+      <b>📍 Location:</b> <span id="location">Detecting...</span> <br>
+      <b>📶 Operator:</b> <span id="operator">Detecting...</span> <br>
+      <b>📱 Device:</b> <span id="device">Detecting...</span>
+    </div>
+
     <div class="speed-box">
       <div class="card"><div class="label">PING</div><div class="value" id="ping">- ms</div></div>
       <div class="card"><div class="label">DOWNLOAD</div><div class="value" id="download">- Mbps</div></div>
       <div class="card"><div class="label">UPLOAD</div><div class="value" id="upload">- Mbps</div></div>
     </div>
-    <button id="btn" onclick="startTest()">START TEST</button>
+
+    <div class="btn-group">
+      <button id="btnTest" onclick="startTest()">START TEST</button>
+      <button id="btnShare" onclick="shareResult()" style="display:none;">📤 SHARE RESULT</button>
+      <button id="btnAgain" onclick="resetTest()" style="display:none;">🔄 TEST AGAIN</button>
+    </div>
   </div>
   <footer>© 2026 Nam Punya Speed Test</footer>
 
   <script>
-    async function startTest() {
-      const btn = document.getElementById('btn');
-      btn.disabled = true;
-      btn.innerText = 'TESTING...';
-      
-      document.getElementById('ping').innerText = '...';
-      document.getElementById('download').innerText = '...';
-      document.getElementById('upload').innerText = '...';
+    let lastResult = {};
 
-      // 1. PING TEST
+    // 1. INFO DETECT ON LOAD
+    window.onload = function() {
+      // Location
+      if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
+          .then(res => res.json()).then(data => {
+            let city = data.address.city || data.address.town || data.address.village;
+            document.getElementById('location').innerText = city + ', ' + data.address.state;
+          }).catch(()=> document.getElementById('location').innerText = 'Not Allowed');
+        }, ()=> document.getElementById('location').innerText = 'Not Allowed');
+      }
+
+      // Operator + 4G/5G
+      if(navigator.connection) {
+        let net = navigator.connection;
+        let type = net.effectiveType.toUpperCase(); // 4G, 5G
+        let operator = "Unknown";
+        if(navigator.userAgent.includes("Jio")) operator = "Jio";
+        else if(navigator.userAgent.includes("Airtel")) operator = "Airtel";
+        else if(navigator.userAgent.includes("Vi")) operator = "Vi";
+        document.getElementById('operator').innerText = operator + ' + type;
+      } else {
+        document.getElementById('operator').innerText = 'Not Available';
+      }
+      
+      // Device
+      document.getElementById('device').innerText = navigator.userAgent.includes("Mobile") ? "Mobile" : "Desktop";
+    }
+
+    // 2. SPEED TEST WITH ANIMATION
+    async function startTest() {
+      const btnTest = document.getElementById('btnTest');
+      btnTest.disabled = true; 
+      btnTest.innerHTML = '<span class="loading">⏳</span> TESTING...';
+      
+      document.getElementById('btnShare').style.display = 'none';
+      document.getElementById('btnAgain').style.display = 'none';
+      document.getElementById('ping').innerHTML = '<span class="loading">⏳</span>';
+      document.getElementById('download').innerHTML = '<span class="loading">⏳</span>';
+      document.getElementById('upload').innerHTML = '<span class="loading">⏳</span>';
+
+      // PING
       let start = performance.now();
       await fetch('https://www.google.com/favicon.ico?cache=' + Math.random(), {mode: 'no-cors'});
       let ping = performance.now() - start;
       document.getElementById('ping').innerText = ping.toFixed(0) + ' ms';
 
-      // 2. DOWNLOAD TEST - 10MB file
+      // DOWNLOAD
       start = performance.now();
       let downloadSize = 0;
       const res = await fetch('https://speed.cloudflare.com/__down?bytes=10000000&cache=' + Math.random());
@@ -64,7 +121,7 @@
       let downloadSpeed = (downloadSize * 8) / (time * 1000000);
       document.getElementById('download').innerText = downloadSpeed.toFixed(2) + ' Mbps';
 
-      // 3. UPLOAD TEST - 5MB data
+      // UPLOAD
       start = performance.now();
       let data = new Blob([new ArrayBuffer(5000000)]);
       await fetch('https://speed.cloudflare.com/__up', {method: 'POST', body: data, mode: 'no-cors'});
@@ -72,8 +129,30 @@
       let uploadSpeed = (5000000 * 8) / (time * 1000000);
       document.getElementById('upload').innerText = uploadSpeed.toFixed(2) + ' Mbps';
 
-      btn.disabled = false;
-      btn.innerText = 'START TEST';
+      lastResult = {
+        ping: ping.toFixed(0), down: downloadSpeed.toFixed(2), up: uploadSpeed.toFixed(2),
+        loc: document.getElementById('location').innerText, op: document.getElementById('operator').innerText
+      };
+
+      btnTest.disabled = false; btnTest.innerText = 'START TEST';
+      document.getElementById('btnShare').style.display = 'inline-block';
+      document.getElementById('btnAgain').style.display = 'inline-block';
+    }
+
+    // 3. SHARE BUTTON
+    function shareResult() {
+      let text = `⚡ NAM PUNYA SPEED TEST ⚡\n\n📍 Location: ${lastResult.loc}\n📶 Operator: ${lastResult.op}\n\n🏓 Ping: ${lastResult.ping} ms\n⬇️ Download: ${lastResult.down} Mbps\n⬆️ Upload: ${lastResult.up} Mbps\nTested on: https://punyabinay4-alt.github.io/punyaspeedtest1/`;
+      if(navigator.share) navigator.share({ title: 'Nam Punya Speed Test', text: text });
+      else { navigator.clipboard.writeText(text); alert('Result copy ho gaya! WhatsApp pe paste karo'); }
+    }
+
+    // 4. TEST AGAIN BUTTON
+    function resetTest() {
+      document.getElementById('ping').innerText = '- ms';
+      document.getElementById('download').innerText = '- Mbps';
+      document.getElementById('upload').innerText = '- Mbps';
+      document.getElementById('btnShare').style.display = 'none';
+      document.getElementById('btnAgain').style.display = 'none';
     }
   </script>
 </body>
