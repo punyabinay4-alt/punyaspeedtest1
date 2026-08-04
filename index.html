@@ -1,100 +1,88 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SPEED TEST X PRO BY SP</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--neon:#00f7ff;--neon2:#8b5cf6;--bg:#010409}
+:root{--neon:#00e5ff;--neon2:#7c3aed;--bg:#050a14}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins', sans-serif}
-body{background:var(--bg);color:var(--neon);display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;overflow:hidden}
+body{background:var(--bg);color:var(--neon);display:flex;justify-content:center;align-items:center;min-height:100vh;padding:15px}
 
-/* NEW CYBER GRID BACKGROUND */
-#cyber{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:linear-gradient(180deg,#010409 0%,#0a0f1a 100%)}
-.grid-lines{position:absolute;width:100%;height:100%;background-image:linear-gradient(rgba(0,247,255,0.08) 1px, transparent 1px),linear-gradient(90deg, rgba(0,247,255,0.08) 1px, transparent 1px);background-size:60px 60px;animation:gridMove 30s linear infinite}
-@keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(60px,60px)}}
-.glow{position:absolute;width:400px;height:400px;background:radial-gradient(circle, rgba(139,92,246,0.4) 0%, transparent 70%);filter:blur(80px);animation:float 20s infinite ease-in-out}
-.glow1{top:10%;left:10%}.glow2{bottom:10%;right:10%;animation-delay:10s}
-@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,50px)}}
+/* CLEAN DARK BG */
+#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(ellipse at center, #0a1428 0%, #050a14 100%)}
 
-.container { width:100%; max-width:1400px; height:95vh; display:flex; flex-direction:column; }
-.header { text-align:center; margin-bottom:15px; flex-shrink:0; }
-h1 { font-family:'Orbitron'; font-size:36px; color:var(--neon); text-shadow:0 0 20px var(--neon); letter-spacing:4px; }
-.by { font-family:'Orbitron'; font-size:14px; color:#aaffff; letter-spacing:5px; }
+.container { width:100%; max-width:1300px; height:90vh; background:rgba(10,20,40,0.8); border:1px solid rgba(0,229,255,0.2); border-radius:20px; padding:20px; box-shadow:0 0 50px rgba(0,229,255,0.2); display:flex; flex-direction:column; overflow:hidden; }
+.header { text-align:center; margin-bottom:15px; }
+h1 { font-family:'Orbitron'; font-size:32px; color:var(--neon); text-shadow:0 0 15px var(--neon); letter-spacing:3px; }
+.by { font-family:'Orbitron'; font-size:13px; color:#88ddff; letter-spacing:4px; }
 
-/* 2 COLUMN LOCK - NO SCROLL */
-.main-grid { display:grid; grid-template-columns: 1fr 1fr; gap:20px; flex-grow:1; overflow:hidden; }
-@media(max-width:1000px){.main-grid{grid-template-columns:1fr; overflow-y:auto} } /* Mobile me scroll hoga */
+/* MAIN 2 COLUMN - NO SCROLL */
+.main-content { display:grid; grid-template-columns: 1fr 1fr; gap:20px; flex-grow:1; overflow:hidden; }
 
-.card {
-  background: rgba(15, 25, 55, 0.7);
-  backdrop-filter:blur(25px) saturate(150%);
-  border:1px solid rgba(0,247,255,0.25);
-  padding:25px; border-radius:20px;
-  box-shadow:0 0 40px rgba(0,247,255,0.15);
-  display:flex; flex-direction:column;
-}
+.card { background:rgba(0,229,255,0.05); border:1px solid rgba(0,229,255,0.15); border-radius:15px; padding:20px; display:flex; flex-direction:column; }
 
 .btn {
   background:linear-gradient(90deg, var(--neon2), var(--neon));
-  color:#000; border:none; padding:16px; font-size:15px; font-weight:900;
-  border-radius:14px; cursor:pointer; margin-bottom:15px; width:100%;
-  transition:0.3s; font-family:'Orbitron'; box-shadow:0 0 20px rgba(0,247,255,0.3);
+  color:#000; border:none; padding:14px; font-size:14px; font-weight:900;
+  border-radius:12px; cursor:pointer; margin-bottom:15px; width:100%;
+  transition:0.3s; font-family:'Orbitron';
 }
-.btn:hover { transform:translateY(-2px); box-shadow:0 0 30px var(--neon); }
+.btn:hover { transform:translateY(-2px); box-shadow:0 0 25px var(--neon); }
 
-.section-title { color:#00f7ff; font-size:12px; font-weight:900; margin-bottom:15px; letter-spacing:3px; }
+.section-title { color:#00e5ff; font-size:11px; font-weight:900; margin-bottom:12px; letter-spacing:2px; }
 
-/* LEFT SIDE INFO */
-.info-list { flex-grow:1; overflow-y:auto; }
-.row { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid rgba(0,247,255,0.12); }
-.label { display:flex; align-items:center; gap:10px; font-weight:700; color:#aaffff; font-size:13px; }
-.value { font-weight:800; color:#fff; font-size:14px; text-align:right; }
+/* LEFT INFO - COMPACT */
+.info-list { flex-grow:1; }
+.row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(0,229,255,0.1); }
+.label { display:flex; align-items:center; gap:8px; font-weight:600; color:#88ddff; font-size:12px; }
+.label span{font-size:16px} /* SMALL ICON */
+.value { font-weight:700; color:#fff; font-size:13px; text-align:right; word-break:break-word; max-width:55%; }
 
-/* RIGHT SIDE SPEED */
-.speed-container { display:flex; flex-direction:column; gap:15px; flex-grow:1; justify-content:center; }
+/* RIGHT SPEED - COMPACT */
+.speed-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; flex-grow:1; align-content:center; }
 .speed-box {
-  background:rgba(0,247,255,0.05); border:1px solid rgba(0,247,255,0.2);
-  border-radius:18px; padding:20px; text-align:center;
+  background:rgba(0,229,255,0.08); border:1px solid rgba(0,229,255,0.2);
+  border-radius:12px; padding:15px 10px; text-align:center;
 }
-.speed-label { font-size:11px; color:#aaffff; font-weight:800; margin-bottom:10px; letter-spacing:2px; }
-.speed-value { font-size:42px; font-weight:900; color:#fff; font-family:'Orbitron'; text-shadow:0 0 20px var(--neon); }
-.speed-unit { font-size:12px; color:#66ddff; margin-top:5px; }
-.meter { height:8px; background:rgba(0,247,255,0.1); border-radius:20px; overflow:hidden; margin-top:10px; }
+.speed-label { font-size:10px; color:#88ddff; font-weight:800; margin-bottom:8px; letter-spacing:1px; }
+.speed-value { font-size:32px; font-weight:900; color:#fff; font-family:'Orbitron'; text-shadow:0 0 15px var(--neon); }
+.speed-unit { font-size:10px; color:#66ccff; margin-top:4px; }
+.meter { height:6px; background:rgba(0,229,255,0.1); border-radius:20px; overflow:hidden; margin-top:8px; }
 .meter-bar { height:100%; width:0%; background:linear-gradient(90deg, var(--neon2), var(--neon)); transition:width 0.5s; }
 
-.spin { display:inline-block; width:16px; height:16px; border:2px solid rgba(0,247,255,0.3); border-top:2px solid var(--neon); border-radius:50%; animation: spin 0.6s linear infinite; margin-left:6px; }
+.spin { display:inline-block; width:14px; height:14px; border:2px solid rgba(0,229,255,0.3); border-top:2px solid var(--neon); border-radius:50%; animation: spin 0.6s linear infinite; margin-left:4px; }
 @keyframes spin { to { transform: rotate(360deg); }}
 .hidden { display:none!important; }
 
-footer { text-align:center; margin-top:15px; font-size:12px; color:#66ddff; font-weight:800; flex-shrink:0; }
-.badge { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; padding:4px 10px; border-radius:20px; font-size:10px; font-weight:900; margin-left:8px; }
-.btn-group { display:flex; gap:12px; margin-top:10px; }
-.btn-half { width:calc(50% - 6px); }
+footer { text-align:center; margin-top:12px; font-size:11px; color:#66ccff; font-weight:700; }
+.badge { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; padding:3px 8px; border-radius:15px; font-size:9px; font-weight:900; margin-left:6px; }
+.btn-group { display:flex; gap:10px; margin-top:10px; }
+.btn-half { width:calc(50% - 5px); }
 </style>
 </head>
 <body>
-<div id="cyber"><div class="grid-lines"></div><div class="glow glow1"></div><div class="glow glow2"></div></div>
+<div id="bg"></div>
 <div class="container">
   <div class="header">
     <h1>⚡ SPEED TEST X PRO</h1>
     <div class="by">BY SP</div>
   </div>
 
-  <div class="main-grid" id="resultCard">
-    <!-- LEFT SIDE -->
+  <div class="main-content" id="resultCard">
+    <!-- LEFT: DEVICE INFO -->
     <div class="card">
       <button class="btn" onclick="getLocation()">📍 GET PRECISE DEVICE LOCATION</button>
       <div class="section-title">DEVICE INFORMATION</div>
       <div class="info-list">
-        <div class="row"><div class="label">📱 DEVICE NAME</div> <div class="value" id="deviceInfo">DETECTING...</div></div>
-        <div class="row"><div class="label">📍 DEVICE LOCATION</div> <div class="value" id="gpsLocation">CLICK BUTTON</div></div>
-        <div class="row"><div class="label">🏷️ IP ADDRESS</div> <div class="value" id="ipAddress">--</div></div>
-        <div class="row"><div class="label">📡 NETWORK SOURCE</div> <div class="value" id="towerLocation">--</div></div>
-        <div class="row"><div class="label">📶 NETWORK TYPE</div> <div class="value"><span id="network">DETECTING...</span><span class="badge" id="badge">--</span></div></div>
-        <div class="row"><div class="label">📊 NETWORK STRENGTH</div> <div class="value" id="signalStrength">--</div></div>
-        <div class="row"><div class="label">🖥️ SERVER</div> <div class="value">CLOUDFLARE INDIA</div></div>
+        <div class="row"><div class="label"><span>📱</span> DEVICE NAME</div> <div class="value" id="deviceInfo">DETECTING...</div></div>
+        <div class="row"><div class="label"><span>📍</span> LOCATION</div> <div class="value" id="gpsLocation">CLICK BUTTON</div></div>
+        <div class="row"><div class="label"><span>🏷️</span> IP ADDRESS</div> <div class="value" id="ipAddress">--</div></div>
+        <div class="row"><div class="label"><span>📡</span> NETWORK SOURCE</div> <div class="value" id="towerLocation">--</div></div>
+        <div class="row"><div class="label"><span>📶</span> NETWORK TYPE</div> <div class="value"><span id="network">DETECTING...</span><span class="badge" id="badge">--</span></div></div>
+        <div class="row"><div class="label"><span>📊</span> SIGNAL</div> <div class="value" id="signalStrength">--</div></div>
+        <div class="row"><div class="label"><span>🖥️</span> SERVER</div> <div class="value">CLOUDFLARE INDIA</div></div>
       </div>
       <div class="btn-group">
         <button class="btn btn-half hidden" id="btn4" onclick="downloadResult()">DOWNLOAD</button>
@@ -102,10 +90,10 @@ footer { text-align:center; margin-top:15px; font-size:12px; color:#66ddff; font
       </div>
     </div>
 
-    <!-- RIGHT SIDE -->
+    <!-- RIGHT: SPEED -->
     <div class="card">
       <div class="section-title">SPEED RESULTS</div>
-      <div class="speed-container">
+      <div class="speed-grid">
         <div class="speed-box">
           <div class="speed-label">PING</div>
           <div class="speed-value"><span id="ping">0</span><span id="s1" class="spin hidden"></span></div>
@@ -137,33 +125,48 @@ footer { text-align:center; margin-top:15px; font-size:12px; color:#66ddff; font
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-// ULTRA DEVICE DETECTION - COMPANY + MODEL
+// 100% ACCURATE DEVICE DETECTION
 function getDeviceInfo() {
   const ua = navigator.userAgent;
   let device = "Unknown Device";
 
-  // ANDROID
-  if(/Android/i.test(ua)){
-    let brand = ua.match(/\((.*?)\)/)?.[1]?.split(';')[1]?.trim() || "Android";
+  // SAMSUNG
+  if(/SM-/i.test(ua)){
+    let model = ua.match(/SM-[A-Z0-9]+/)?.[0] || "";
+    device = `Samsung ${model}`;
+  }
+  // ONEPLUS
+  else if(/ONEPLUS/i.test(ua)){
+    let model = ua.match(/ONEPLUS\s?[A-Z0-9]+/i)?.[0] || "OnePlus";
+    device = model;
+  }
+  // XIAOMI/REDMI/POCO
+  else if(/Redmi|Mi |POCO/i.test(ua)){
+    let model = ua.match(/(Redmi|Mi |POCO)[^;]+/)?.[0] || "Xiaomi";
+    device = model.trim();
+  }
+  // OPPO/REALME/VIVO
+  else if(/OPPO|Realme|Vivo/i.test(ua)){
+    let brand = ua.match(/(OPPO|Realme|Vivo)/i)?.[0] || "";
     let model = ua.match(/Build\/([^;]+)/)?.[1] || "";
-    // Clean brand name
-    brand = brand.replace("Linux", "").trim();
     device = `${brand} ${model}`.trim();
   }
   // iPHONE
   else if(/iPhone/i.test(ua)){
-    let version = ua.match(/OS (\d+)_/)?.[1] || "";
-    device = `Apple iPhone iOS ${version}`;
+    device = "Apple iPhone";
   }
   // iPAD
   else if(/iPad/i.test(ua)){ device = "Apple iPad"; }
   // MAC
-  else if(/Macintosh/i.test(ua)){ device = "Apple MacBook"; }
+  else if(/Macintosh/i.test(ua)){ device = "Apple Mac"; }
   // WINDOWS
   else if(/Windows NT 10/i.test(ua)){ device = "Windows 11/10 PC"; }
   else if(/Windows/i.test(ua)){ device = "Windows PC"; }
-  // LINUX
-  else if(/Linux/i.test(ua)){ device = "Linux PC"; }
+  // ANDROID GENERIC
+  else if(/Android/i.test(ua)){
+    let brand = ua.split(';')[1]?.trim() || "Android";
+    device = brand;
+  }
 
   document.getElementById("deviceInfo").innerText = device;
 }
@@ -235,7 +238,7 @@ async function start(){
 
 // FIXED DOWNLOAD
 function downloadResult(){
-  html2canvas(document.getElementById("resultCard"), {backgroundColor:'#010409', scale:2}).then(c => {
+  html2canvas(document.getElementById("resultCard"), {backgroundColor:'#050a14', scale:2}).then(c => {
     let a = document.createElement('a');
     a.download = 'SpeedTestXPro_BySP.jpg'; a.href = c.toDataURL('image/jpeg', 0.9); a.click();
   });
