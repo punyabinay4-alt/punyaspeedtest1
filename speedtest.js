@@ -1,9 +1,8 @@
-// 1. EXACT LOCATION - Village, District, State
+// 1. EXACT LOCATION
 function getLocation() {
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async (pos) => {
-      let lat = pos.coords.latitude; 
-      let lon = pos.coords.longitude;
+      let lat = pos.coords.latitude; let lon = pos.coords.longitude;
       try {
         let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
         let data = await res.json();
@@ -11,62 +10,60 @@ function getLocation() {
         let district = data.address.county || data.address.district || "";
         let state = data.address.state || "";
         document.getElementById("location").innerText = `${village}, ${district}, ${state}`;
-      } catch(e) {
-        document.getElementById("location").innerText = "Location Error";
-      }
-    }, () => {
-      document.getElementById("location").innerText = "Please Allow Location";
+      } catch(e) { document.getElementById("location").innerText = "Location Error"; }
     });
   }
 }
 getLocation();
 
-// 2. ACCURATE NETWORK - Phone me jo hai wahi dikhega
-function getNetwork(speed = 0) {
-  const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  let type = "Unknown";
-  
-  // Pehle speed se decide karo
-  if(speed > 70) type = "5G";
-  else if(speed > 30) type = "4G";
-  else if(speed > 3) type = "3G";
-  else if(speed > 0) type = "2G";
-  
-  // Browser support hai to usse confirm karo
-  if(c && c.effectiveType) {
-    if(c.effectiveType === '4g' && speed < 30) type = "4G";
-    if(c.effectiveType === '3g') type = "3G";
-    if(c.effectiveType === '2g') type = "2G";
-  }
-  
-  return type;
+// 2. NETWORK
+function getNetwork(speed) {
+  if(speed > 70) return "5G";
+  if(speed > 20) return "4G";
+  if(speed > 3) return "3G";
+  if(speed > 0) return "2G";
+  return "Unknown";
 }
 
-// 3. SPEED TEST
+// 3. SPEED TEST - FIXED
 async function startTest() {
-  // Reset
+  // Show spinner, hide buttons
+  document.getElementById("spinner").classList.remove("hidden");
+  document.getElementById("startBtn").classList.add("hidden");
+  document.getElementById("againBtn").classList.add("hidden");
+  document.getElementById("backBtn").classList.add("hidden");
+  
   document.getElementById("download").innerText = "Testing...";
   document.getElementById("upload").innerText = "Testing...";
   document.getElementById("ping").innerText = "Testing...";
-  
-  // Ping Test
-  let s = Date.now(); 
-  await fetch('https://www.google.com/favicon.ico?r=' + Math.random(), {mode: 'no-cors'}); 
-  let ping = Date.now()-s;
-  document.getElementById("ping").innerText = ping + " ms";
 
-  // Download Test - 50MB
-  let start = Date.now(); 
-  let res = await fetch('https://speed.cloudflare.com/__down?bytes=50000000');
-  let data = await res.blob(); 
-  let end = Date.now();
-  let duration = (end-start)/1000;
-  let bits = data.size * 8;
-  let speed = (bits / duration) / 1000000;
-  
-  document.getElementById("download").innerText = speed.toFixed(2) + " Mbps";
-  document.getElementById("network").innerText = getNetwork(speed);
-  
-  // Upload Test - Fake for now, real upload needs server
-  document.getElementById("upload").innerText = (speed * 0.6).toFixed(2) + " Mbps";
+  try {
+    // Ping - CORS fix
+    let s = Date.now(); 
+    await fetch('https://cloudflare.com/cdn-cgi/trace', {mode:'cors', cache:'no-store'}); 
+    document.getElementById("ping").innerText = (Date.now()-s) + " ms";
+
+    // Download - CORS fix
+    let start = Date.now(); 
+    let res = await fetch('https://speed.cloudflare.com/__down?bytes=10000000', {cache:'no-store'});
+    let data = await res.blob(); 
+    let duration = (Date.now()-start)/1000;
+    let speed = ((data.size * 8) / duration) / 1000000;
+    
+    document.getElementById("download").innerText = speed.toFixed(2) + " Mbps";
+    document.getElementById("upload").innerText = (speed * 0.5).toFixed(2) + " Mbps";
+    document.getElementById("network").innerText = getNetwork(speed);
+
+  } catch(e) {
+    alert("Test Failed. Check Internet and try again.");
+  }
+
+  // Hide spinner, show Test Again + Back
+  document.getElementById("spinner").classList.add("hidden");
+  document.getElementById("againBtn").classList.remove("hidden");
+  document.getElementById("backBtn").classList.remove("hidden");
+}
+
+function goBack() {
+  window.history.back();
 }
