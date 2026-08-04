@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Nam Punya Speed Test - Check Internet Speed</title>
+  <title>Nam Punya Speed Test</title>
   <style>
     :root { --yellow: #FFD700; --black: #111; --dark: #1a1a1a; }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
@@ -31,20 +31,27 @@
     </div>
     <button onclick="startTest()">START TEST</button>
   </div>
-  <footer>© 2026 Nam Punya Speed Test. Powered by LibreSpeed</footer>
-  <script src="https://cdn.jsdelivr.net/gh/librespeed/speedtest@5.2.5/speedtest.js"></script>
+  <footer>© 2026 Nam Punya Speed Test. Powered by Ookla</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/fast-speedtest-api@3.0.4/dist/index.min.js"></script>
   <script>
-    let s = new Speedtest();
+    let speedtest = new Speedtest();
     function startTest() {
       document.getElementById('ping').innerText = '...';
       document.getElementById('download').innerText = '...';
       document.getElementById('upload').innerText = '...';
-      s.onupdate = function(data) {
-        document.getElementById('ping').innerText = data.pingStatus + ' ms';
-        document.getElementById('download').innerText = (data.dlStatus).toFixed(2) + ' Mbps';
-        document.getElementById('upload').innerText = (data.ulStatus).toFixed(2) + ' Mbps';
-      };
-      s.start();
+      
+      speedtest.getSpeed().then(s => {
+        document.getElementById('download').innerText = s.toFixed(2) + ' Mbps';
+        return speedtest.getUploadSpeed();
+      }).then(u => {
+        document.getElementById('upload').innerText = u.toFixed(2) + ' Mbps';
+        return speedtest.getPing();
+      }).then(p => {
+        document.getElementById('ping').innerText = p.toFixed(0) + ' ms';
+      }).catch(e => {
+        alert('Error: ' + e);
+      });
     }
   </script>
 </body>
