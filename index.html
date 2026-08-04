@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPEEDTEST X PRO BY SP</title>
+<title>SPEED TEST X PRO BY SP</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{--neon:#00f5ff;--neon2:#0088ff;--bg:#000814}
@@ -13,7 +13,8 @@ body{background:var(--bg);color:var(--neon);text-align:center;overflow-x:hidden;
 #grid{position:fixed;top:0;left:0;width:200%;height:200%;background-image:linear-gradient(rgba(0,245,255,0.1) 1px, transparent 1px),linear-gradient(90deg, rgba(0,245,255,0.1) 1px, transparent 1px);background-size:50px 50px;animation:gridMove 20s linear infinite;z-index:-1}
 @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(-50px,-50px)}}
 .container { max-width:550px; margin:0 auto; padding:15px; padding-top:30px; }
-.logo { font-family:'Orbitron', sans-serif; font-size:30px; color:var(--neon); text-shadow:0 0 15px var(--neon), 0 0 30px var(--neon); margin-bottom:5px; }
+.logo { font-family:'Orbitron', sans-serif; font-size:28px; color:var(--neon); text-shadow:0 0 15px var(--neon), 0 0 30px var(--neon); margin-bottom:3px; }
+.creator { font-size:11px; color:#66ddff; margin-bottom:20px; letter-spacing:1px; }
 .subtitle { color:#66ddff; font-size:12px; margin-bottom:25px; letter-spacing:2px; }
 .card { background: rgba(0,20,40,0.8); backdrop-filter:blur(25px); border:2px solid var(--neon); padding:25px; border-radius:25px; margin:20px 0; text-align:left; box-shadow:0 0 40px rgba(0,245,255,0.4); }
 .row { display:flex; align-items:center; justify-content:space-between; padding:12px 0; }
@@ -28,17 +29,19 @@ hr { margin:12px 0; border:none; border-top:1px solid rgba(0,245,255,0.3); }
 .hidden { display:none !important; }
 .btn { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; border:none; padding:16px; font-size:15px; font-weight:800; border-radius:14px; cursor:pointer; margin:8px 0; width:100%; transition:0.3s; box-shadow:0 0 20px rgba(0,245,255,0.5); display:flex; align-items:center; justify-content:center; gap:8px; }
 .btn:hover { transform:scale(1.03); box-shadow:0 0 30px var(--neon); }
+.btn:disabled { opacity:0.5; cursor:not-allowed; }
 .location-btn { background:linear-gradient(90deg, #ff7700, #ffaa00); }
 .badge { background:rgba(0,245,255,0.2); padding:2px 8px; border-radius:15px; font-size:10px; border:1px solid var(--neon); }
-footer { margin-top:25px; font-size:11px; color:#66ddff; font-weight:700; }
+.error { color:#ff4444; font-size:12px; margin-top:5px; }
+footer { margin-top:25px; font-size:12px; color:#66ddff; font-weight:700; line-height:1.6; }
 </style>
 </head>
 <body>
 <div id="bg"></div><div id="grid"></div>
 
 <div class="container">
-  <div class="logo">⚡ SPEEDTEST X PRO</div>
-  <p class="subtitle">BY SP • IP + GPS • CLOUDFLARE</p>
+  <div class="logo">⚡ SPEED TEST X PRO BY SP</div>
+  <p class="subtitle">ACCURATE • GENUINE • CLOUDFLARE POWERED</p>
 
   <div class="card" id="resultCard">
     <button class="btn location-btn" onclick="getLocation()">
@@ -47,7 +50,6 @@ footer { margin-top:25px; font-size:11px; color:#66ddff; font-weight:700; }
     </button>
     <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> GPS Location</div> <div class="value" id="gpsLocation">Tap Button</div></div>
     <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg> IP Address</div> <div class="value" id="ipAddress">Loading...</div></div>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> IP Location</div> <div class="value" id="ipLocation">--</div></div>
     <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M1 9l3 3 4-4 6 6 4-4 4 4V9H1zm0 4h22v8H1z"/></svg> Network</div> <div class="value"><span id="network">--</span> <span class="badge" id="badge">--</span></div></div>
     <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h4l-1 3h10l-1-3h4c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg> Server</div> <div class="value" id="server">Cloudflare India</div></div>
     <hr>
@@ -57,6 +59,7 @@ footer { margin-top:25px; font-size:11px; color:#66ddff; font-weight:700; }
     <div class="meter"><div id="p2" class="meter-bar"></div></div>
     <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M5 9h4V3h6v6h4l-7 7-7-7zM5 18v2h14v-2H5z"/></svg> Upload</div> <div class="value"><span id="up">0 Mbps</span> <span id="s3" class="spin hidden"></span></div></div>
     <div class="meter"><div id="p3" class="meter-bar"></div></div>
+    <div id="errorMsg" class="error hidden"></div>
   </div>
 
   <button class="btn" id="btn1" onclick="start()">START TEST</button>
@@ -64,46 +67,36 @@ footer { margin-top:25px; font-size:11px; color:#66ddff; font-weight:700; }
   <button class="btn hidden" id="btn4" onclick="downloadResult()">DOWNLOAD REPORT</button>
   <button class="btn hidden" id="btn5" onclick="location.reload()">REFRESH</button>
 
-  <footer>© 2026 SP SPEEDTEST X PRO • IP + GPS TECHNOLOGY</footer>
+  <footer>© 2026<br>CREATED AND DEVELOPED BY PUNYA BINAY SWAIN<br>GENUINE SPEEDTEST PLATFORM</footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 let userIP = "";
 
-// 1. IP + GPS LOCATION
 async function getLocation(){
   document.getElementById("gpsLocation").innerText = "Getting GPS...";
-  
-  // First get IP
   try{
     let ipData = await fetch('https://ipapi.co/json/').then(r=>r.json());
     userIP = ipData.ip;
     document.getElementById("ipAddress").innerText = userIP;
-    document.getElementById("ipLocation").innerText = ipData.city+", "+ipData.region;
   }catch{ document.getElementById("ipAddress").innerText = "Error"; }
   
-  // Then get GPS
   if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(async function(p){
       let gps = await fetch("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+p.coords.latitude+"&longitude="+p.coords.longitude).then(r=>r.json());
-      let area = gps.locality || gps.city || "Unknown";
-      let state = gps.principalSubdivision || "India";
-      document.getElementById("gpsLocation").innerText = area+", "+state;
-    },()=>{
-      document.getElementById("gpsLocation").innerText = "Permission Denied - Using IP";
-    }, {enableHighAccuracy: true, timeout: 8000})
+      document.getElementById("gpsLocation").innerText = (gps.locality||gps.city)+", "+gps.principalSubdivision;
+    },()=>{ document.getElementById("gpsLocation").innerText = "Permission Denied"; })
   }
 }
 
-// 2. NETWORK
 function detectNetwork(){
   const c = navigator.connection;
   let net = "Unknown", badge = "--";
   if(c){
     if(c.type === 'wifi') {net = "WiFi"; badge = "WiFi";}
     else if(c.effectiveType === '4g' || c.downlink > 8) {net = "4G LTE"; badge = "4G";}
-    else if(c.effectiveType === '5g' || c.downlink > 50) {net = "5G"; badge = "5G";}
+    else if(c.effectiveType === '5g') {net = "5G"; badge = "5G";}
     else if(c.effectiveType === '3g') {net = "3G"; badge = "3G";}
     else if(c.effectiveType === '2g') {net = "2G"; badge = "2G";}
   }
@@ -111,50 +104,54 @@ function detectNetwork(){
   document.getElementById("badge").innerText = badge;
 }
 
-// 3. FAST TEST
 async function start(){
-  document.getElementById("btn1").classList.add("hidden");
+  document.getElementById("btn1").disabled = true;
+  document.getElementById("errorMsg").classList.add("hidden");
   showSpinner(true);
   detectNetwork();
   resetMeter();
   
-  let t1 = Date.now();
-  await fetch('https://cloudflare.com/cdn-cgi/trace?r='+Math.random(), {cache:'no-store', mode:'no-cors'});
-  let ping = Date.now() - t1;
-  document.getElementById("ping").innerText = ping+" ms";
-  document.getElementById("p1").style.width = Math.min(100, 150/ping*100)+"%";
-  showSpinner(false,1);
+  try {
+    let t1 = Date.now();
+    await fetch('https://1.1.1.1/cdn-cgi/trace?r='+Math.random(), {cache:'no-store'});
+    let ping = Date.now() - t1;
+    document.getElementById("ping").innerText = ping+" ms";
+    document.getElementById("p1").style.width = Math.min(100, 200/ping*100)+"%";
+    showSpinner(false,1);
 
-  let totalBytes = 0;
-  let startTime = Date.now();
-  await Promise.all([dl(startTime), dl(startTime)]);
-  let duration = (Date.now() - startTime)/1000;
-  let down = ((totalBytes*8)/duration)/1000000;
-  
-  document.getElementById("down").innerText = down.toFixed(2)+" Mbps";
-  document.getElementById("p2").style.width = Math.min(100, down/200*100)+"%";
-  showSpinner(false,2);
+    let totalBytes = 0;
+    let startTime = Date.now();
+    let [res1, res2] = await Promise.all([
+      fetch('https://speed.cloudflare.com/__down?bytes=1000000&r=1', {cache:'no-store'}),
+      fetch('https://speed.cloudflare.com/__down?bytes=1000000&r=2', {cache:'no-store'})
+    ]);
+    let [b1, b2] = await Promise.all([res1.blob(), res2.blob()]);
+    totalBytes = b1.size + b2.size;
+    let duration = (Date.now() - startTime)/1000;
+    let down = ((totalBytes*8)/duration)/1000000;
+    
+    document.getElementById("down").innerText = down.toFixed(2)+" Mbps";
+    document.getElementById("p2").style.width = Math.min(100, down/200*100)+"%";
+    showSpinner(false,2);
 
-  let upData = new Blob([new Uint8Array(500*1024)]);
-  startTime = Date.now();
-  await fetch('https://speed.cloudflare.com/__up', {method:'POST', body:upData, cache:'no-store'});
-  let up = ((upData.size*8)/((Date.now() - startTime)/1000))/1000000;
-  
-  document.getElementById("up").innerText = up.toFixed(2)+" Mbps";
-  document.getElementById("p3").style.width = Math.min(100, up/100*100)+"%";
-  showSpinner(false,3);
+    let upData = new Blob([new Uint8Array(500*1024)]);
+    startTime = Date.now();
+    await fetch('https://speed.cloudflare.com/__up', {method:'POST', body:upData, cache:'no-store'});
+    let up = ((upData.size*8)/((Date.now() - startTime)/1000))/1000000;
+    
+    document.getElementById("up").innerText = up.toFixed(2)+" Mbps";
+    document.getElementById("p3").style.width = Math.min(100, up/100*100)+"%";
+    showSpinner(false,3);
 
+  } catch(e) {
+    document.getElementById("errorMsg").innerText = "Test Failed. Refresh and try again.";
+    document.getElementById("errorMsg").classList.remove("hidden");
+  }
+
+  document.getElementById("btn1").disabled = false;
   document.getElementById("btn2").classList.remove("hidden");
   document.getElementById("btn4").classList.remove("hidden");
   document.getElementById("btn5").classList.remove("hidden");
-  
-  async function dl(start){
-    while(Date.now() - start < 2000){
-      let res = await fetch('https://speed.cloudflare.com/__down?bytes=500000&r='+Math.random(), {cache:'no-store'});
-      let blob = await res.blob();
-      totalBytes += blob.size;
-    }
-  }
 }
 
 function showSpinner(s,n){if(n)document.getElementById("s"+n).classList.toggle("hidden",!s)}
@@ -162,10 +159,10 @@ function resetMeter(){["p1","p2","p3"].forEach(id=>document.getElementById(id).s
 function downloadResult(){
   html2canvas(document.getElementById("resultCard"), {backgroundColor:'#001428', scale:2}).then(c => {
     let a = document.createElement('a');
-    a.download = 'SpeedtestXPro_SP.jpg'; a.href = c.toDataURL('image/jpeg', 0.95); a.click();
+    a.download = 'SpeedTestXPro_BySP.jpg'; a.href = c.toDataURL('image/jpeg', 0.95); a.click();
   });
 }
-window.onload = getLocation; // Load pe IP auto aa jaye
+window.onload = getLocation;
 </script>
 </body>
 </html>
