@@ -13,26 +13,23 @@ body{background:var(--bg);color:var(--neon);text-align:center;overflow-x:hidden;
 #grid{position:fixed;top:0;left:0;width:200%;height:200%;background-image:linear-gradient(rgba(0,245,255,0.1) 1px, transparent 1px),linear-gradient(90deg, rgba(0,245,255,0.1) 1px, transparent 1px);background-size:50px 50px;animation:gridMove 20s linear infinite;z-index:-1}
 @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(-50px,-50px)}}
 .container { max-width:550px; margin:0 auto; padding:15px; padding-top:30px; }
-.logo { font-family:'Orbitron', sans-serif; font-size:28px; color:var(--neon); text-shadow:0 0 15px var(--neon), 0 0 30px var(--neon); margin-bottom:3px; }
-.creator { font-size:11px; color:#66ddff; margin-bottom:20px; letter-spacing:1px; }
-.subtitle { color:#66ddff; font-size:12px; margin-bottom:25px; letter-spacing:2px; }
-.card { background: rgba(0,20,40,0.8); backdrop-filter:blur(25px); border:2px solid var(--neon); padding:25px; border-radius:25px; margin:20px 0; text-align:left; box-shadow:0 0 40px rgba(0,245,255,0.4); }
-.row { display:flex; align-items:center; justify-content:space-between; padding:12px 0; }
+.logo { font-family:'Orbitron', sans-serif; font-size:26px; color:var(--neon); text-shadow:0 0 20px var(--neon); margin-bottom:3px; }
+.creator { font-size:11px; color:#66ddff; margin-bottom:20px; }
+.card { background: rgba(0,20,40,0.85); backdrop-filter:blur(30px); border:2px solid var(--neon); padding:25px; border-radius:25px; margin:20px 0; text-align:left; box-shadow:0 0 50px rgba(0,245,255,0.5); }
+.row { display:flex; align-items:center; justify-content:space-between; padding:13px 0; }
 .label { display:flex; align-items:center; gap:10px; font-weight:600; color:#88ddff; font-size:14px; }
-.value { font-weight:800; color:#fff; font-size:15px; text-align:right; }
-svg.icon { width:20px; height:20px; fill:var(--neon); filter:drop-shadow(0 0 5px var(--neon)); }
+.value { font-weight:800; color:#fff; font-size:15px; }
+svg.icon { width:20px; height:20px; fill:var(--neon); filter:drop-shadow(0 0 8px var(--neon)); }
 hr { margin:12px 0; border:none; border-top:1px solid rgba(0,245,255,0.3); }
-.meter { height:8px; background:rgba(0,245,255,0.1); border-radius:10px; overflow:hidden; margin-top:5px; }
-.meter-bar { height:100%; width:0%; background:linear-gradient(90deg, var(--neon2), var(--neon)); box-shadow:0 0 10px var(--neon); transition:width 0.2s; }
+.meter { height:10px; background:rgba(0,245,255,0.1); border-radius:10px; overflow:hidden; margin-top:5px; }
+.meter-bar { height:100%; width:0%; background:linear-gradient(90deg, var(--neon2), var(--neon)); box-shadow:0 0 15px var(--neon); transition:width 0.3s; }
 .spin { width:20px; height:20px; border:3px solid rgba(0,245,255,0.3); border-top:3px solid var(--neon); border-radius:50%; animation: spin 0.6s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin { to { transform: rotate(360deg); }
 .hidden { display:none !important; }
-.btn { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; border:none; padding:16px; font-size:15px; font-weight:800; border-radius:14px; cursor:pointer; margin:8px 0; width:100%; transition:0.3s; box-shadow:0 0 20px rgba(0,245,255,0.5); display:flex; align-items:center; justify-content:center; gap:8px; }
-.btn:hover { transform:scale(1.03); box-shadow:0 0 30px var(--neon); }
-.btn:disabled { opacity:0.5; cursor:not-allowed; }
+.btn { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; border:none; padding:17px; font-size:15px; font-weight:800; border-radius:14px; cursor:pointer; margin:8px 0; width:100%; transition:0.3s; box-shadow:0 0 25px rgba(0,245,255,0.6); }
+.btn:hover { transform:scale(1.03); }
 .location-btn { background:linear-gradient(90deg, #ff7700, #ffaa00); }
-.badge { background:rgba(0,245,255,0.2); padding:2px 8px; border-radius:15px; font-size:10px; border:1px solid var(--neon); }
-.error { color:#ff4444; font-size:12px; margin-top:5px; }
+.badge { background:rgba(0,245,255,0.2); padding:3px 10px; border-radius:15px; font-size:10px; border:1px solid var(--neon); }
 footer { margin-top:25px; font-size:12px; color:#66ddff; font-weight:700; line-height:1.6; }
 </style>
 </head>
@@ -41,25 +38,21 @@ footer { margin-top:25px; font-size:12px; color:#66ddff; font-weight:700; line-h
 
 <div class="container">
   <div class="logo">⚡ SPEED TEST X PRO BY SP</div>
-  <p class="subtitle">ACCURATE • GENUINE • CLOUDFLARE POWERED</p>
+  <div class="creator">CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</div>
 
   <div class="card" id="resultCard">
-    <button class="btn location-btn" onclick="getLocation()">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-      GET PRECISE LOCATION
-    </button>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> GPS Location</div> <div class="value" id="gpsLocation">Tap Button</div></div>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg> IP Address</div> <div class="value" id="ipAddress">Loading...</div></div>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M1 9l3 3 4-4 6 6 4-4 4 4V9H1zm0 4h22v8H1z"/></svg> Network</div> <div class="value"><span id="network">--</span> <span class="badge" id="badge">--</span></div></div>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h4l-1 3h10l-1-3h4c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg> Server</div> <div class="value" id="server">Cloudflare India</div></div>
+    <button class="btn location-btn" onclick="getLocation()">📍 GET PRECISE LOCATION</button>
+    <div class="row"><div class="label">📍 GPS Location</div> <div class="value" id="gpsLocation">Tap Button</div></div>
+    <div class="row"><div class="label">🏷️ IP Address</div> <div class="value" id="ipAddress">Loading...</div></div>
+    <div class="row"><div class="label">📶 Network</div> <div class="value"><span id="network">--</span> <span class="badge" id="badge">--</span></div></div>
+    <div class="row"><div class="label">🖥️ Server</div> <div class="value" id="server">Cloudflare India</div></div>
     <hr>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg> Ping</div> <div class="value"><span id="ping">0 ms</span> <span id="s1" class="spin hidden"></span></div></div>
+    <div class="row"><div class="label">📈 Ping</div> <div class="value"><span id="ping">0 ms</span> <span id="s1" class="spin hidden"></span></div></div>
     <div class="meter"><div id="p1" class="meter-bar"></div></div>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Download</div> <div class="value"><span id="down">0 Mbps</span> <span id="s2" class="spin hidden"></span></div></div>
+    <div class="row"><div class="label">⬇️ Download</div> <div class="value"><span id="down">0 Mbps</span> <span id="s2" class="spin hidden"></span></div></div>
     <div class="meter"><div id="p2" class="meter-bar"></div></div>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M5 9h4V3h6v6h4l-7 7-7-7zM5 18v2h14v-2H5z"/></svg> Upload</div> <div class="value"><span id="up">0 Mbps</span> <span id="s3" class="spin hidden"></span></div></div>
+    <div class="row"><div class="label">⬆️ Upload</div> <div class="value"><span id="up">0 Mbps</span> <span id="s3" class="spin hidden"></span></div></div>
     <div class="meter"><div id="p3" class="meter-bar"></div></div>
-    <div id="errorMsg" class="error hidden"></div>
   </div>
 
   <button class="btn" id="btn1" onclick="start()">START TEST</button>
@@ -72,16 +65,12 @@ footer { margin-top:25px; font-size:12px; color:#66ddff; font-weight:700; line-h
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-let userIP = "";
-
 async function getLocation(){
   document.getElementById("gpsLocation").innerText = "Getting GPS...";
   try{
     let ipData = await fetch('https://ipapi.co/json/').then(r=>r.json());
-    userIP = ipData.ip;
-    document.getElementById("ipAddress").innerText = userIP;
-  }catch{ document.getElementById("ipAddress").innerText = "Error"; }
-  
+    document.getElementById("ipAddress").innerText = ipData.ip;
+  }catch{}
   if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(async function(p){
       let gps = await fetch("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+p.coords.latitude+"&longitude="+p.coords.longitude).then(r=>r.json());
@@ -98,7 +87,6 @@ function detectNetwork(){
     else if(c.effectiveType === '4g' || c.downlink > 8) {net = "4G LTE"; badge = "4G";}
     else if(c.effectiveType === '5g') {net = "5G"; badge = "5G";}
     else if(c.effectiveType === '3g') {net = "3G"; badge = "3G";}
-    else if(c.effectiveType === '2g') {net = "2G"; badge = "2G";}
   }
   document.getElementById("network").innerText = net;
   document.getElementById("badge").innerText = badge;
@@ -106,47 +94,40 @@ function detectNetwork(){
 
 async function start(){
   document.getElementById("btn1").disabled = true;
-  document.getElementById("errorMsg").classList.add("hidden");
-  showSpinner(true);
-  detectNetwork();
-  resetMeter();
+  showSpinner(true); detectNetwork(); resetMeter();
   
   try {
+    // FAST PING TO GOOGLE DNS INDIA
     let t1 = Date.now();
-    await fetch('https://1.1.1.1/cdn-cgi/trace?r='+Math.random(), {cache:'no-store'});
+    await fetch('https://8.8.8.8/generate_204?r='+Math.random(), {mode:'no-cors'});
     let ping = Date.now() - t1;
     document.getElementById("ping").innerText = ping+" ms";
     document.getElementById("p1").style.width = Math.min(100, 200/ping*100)+"%";
     showSpinner(false,1);
 
-    let totalBytes = 0;
-    let startTime = Date.now();
+    // DOWNLOAD
+    let totalBytes = 0; let startTime = Date.now();
     let [res1, res2] = await Promise.all([
-      fetch('https://speed.cloudflare.com/__down?bytes=1000000&r=1', {cache:'no-store'}),
-      fetch('https://speed.cloudflare.com/__down?bytes=1000000&r=2', {cache:'no-store'})
+      fetch('https://speed.cloudflare.com/__down?bytes=1000000&r=1'),
+      fetch('https://speed.cloudflare.com/__down?bytes=1000000&r=2')
     ]);
     let [b1, b2] = await Promise.all([res1.blob(), res2.blob()]);
     totalBytes = b1.size + b2.size;
-    let duration = (Date.now() - startTime)/1000;
-    let down = ((totalBytes*8)/duration)/1000000;
-    
+    let down = ((totalBytes*8)/((Date.now() - startTime)/1000))/1000000;
     document.getElementById("down").innerText = down.toFixed(2)+" Mbps";
-    document.getElementById("p2").style.width = Math.min(100, down/200*100)+"%";
+    document.getElementById("p2").style.width = Math.min(100, down/100*100)+"%";
     showSpinner(false,2);
 
+    // UPLOAD
     let upData = new Blob([new Uint8Array(500*1024)]);
     startTime = Date.now();
-    await fetch('https://speed.cloudflare.com/__up', {method:'POST', body:upData, cache:'no-store'});
+    await fetch('https://speed.cloudflare.com/__up', {method:'POST', body:upData});
     let up = ((upData.size*8)/((Date.now() - startTime)/1000))/1000000;
-    
     document.getElementById("up").innerText = up.toFixed(2)+" Mbps";
-    document.getElementById("p3").style.width = Math.min(100, up/100*100)+"%";
+    document.getElementById("p3").style.width = Math.min(100, up/50*100)+"%";
     showSpinner(false,3);
 
-  } catch(e) {
-    document.getElementById("errorMsg").innerText = "Test Failed. Refresh and try again.";
-    document.getElementById("errorMsg").classList.remove("hidden");
-  }
+  } catch(e) {}
 
   document.getElementById("btn1").disabled = false;
   document.getElementById("btn2").classList.remove("hidden");
