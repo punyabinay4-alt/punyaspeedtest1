@@ -8,33 +8,39 @@
 </head>
 <body>
 
-<!-- Earth Globe Background -->
-<div class="earth-container">
-  <div class="earth"></div>
+<!-- Neon Background -->
+<div class="bg-animation">
+  <div class="grid"></div>
+  <div class="glow glow1"></div>
+  <div class="glow glow2"></div>
 </div>
 
 <div class="container">
   <h1>🚀 INTERNET SPEED TEST BY SP</h1>
   <p>Check Your Real Internet Speed</p>
 
-  <!-- Spinner Clock -->
-  <div id="spinner" class="hidden">
-    <div class="clock"></div>
-    <p>Testing...</p>
-  </div>
-
-  <div class="card" id="resultCard">
-    📍 <b>Location:</b> <span id="location">Getting location...</span> <br><br>
+  <div class="card">
+    📍 <b>Location:</b> <span id="location">Allow Location</span> <br><br>
     🌐 <b>Network:</b> <span id="network">Detecting...</span> <br><br>
-    📶 <b>Ping:</b> <span id="ping">0 ms</span> <br><br>
-    ⬇️ <b>Download:</b> <span id="download">0 Mbps</span> <br><br>
-    ⬆️ <b>Upload:</b> <span id="upload">0 Mbps</span>
+    🖥️ <b>Server:</b> <span id="server">Auto Select</span> <br><br>
+
+    <hr style="margin:10px 0; border-color:rgba(255,255,255,0.1);">
+
+    <div class="test-row">
+      📶 <b>Ping:</b> <span id="ping">0 ms</span> <span id="ping-spin" class="mini-spin hidden"></span>
+    </div><br>
+    <div class="test-row">
+      ⬇️ <b>Download:</b> <span id="download">0 Mbps</span> <span id="down-spin" class="mini-spin hidden"></span>
+    </div><br>
+    <div class="test-row">
+      ⬆️ <b>Upload:</b> <span id="upload">0 Mbps</span> <span id="up-spin" class="mini-spin hidden"></span>
+    </div>
   </div>
 
   <div class="btn-group">
     <button id="startBtn" onclick="startTest()">START TEST</button>
     <button id="againBtn" class="hidden" onclick="startTest()">TEST AGAIN</button>
-    <button id="backBtn" class="hidden" onclick="goBack()">BACK</button>
+    <button id="backBtn" class="hidden" onclick="location.reload()">BACK</button>
   </div>
 
   <footer>
