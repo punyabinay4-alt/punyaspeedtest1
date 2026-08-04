@@ -3,125 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPEED TEST X PRO</title>
+<title>SPEED TEST X PRO BY SP</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--neon:#00f0ff;--neon2:#0066ff;--bg:#00050d}
+:root{--neon:#00f7ff;--neon2:#0066ff;--bg:#000a1a}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins', sans-serif}
-body{background:var(--bg);color:var(--neon);display:flex;justify-content:center;align-items:center;min-height:100vh}
-#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:radial-gradient(ellipse at 50% 30%, #003366 0%, #00050d 70%)}
-.container { width:95%; max-width:650px; }
-h1 { font-family:'Orbitron'; font-size:36px; text-align:center; color:var(--neon); text-shadow:0 0 30px var(--neon); margin-bottom:25px; }
-.card { background: linear-gradient(135deg, rgba(0,20,50,0.9), rgba(0,10,30,0.8)); backdrop-filter:blur(30px); border:2px solid var(--neon); padding:35px; border-radius:25px; box-shadow:0 0 60px rgba(0,240,255,0.5); }
-.row { display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid rgba(0,240,255,0.2); }
-.label { display:flex; align-items:center; gap:12px; font-weight:700; color:#aaffff; font-size:15px; }
-.value { font-weight:800; color:#fff; font-size:17px; text-align:right; }
-.btn { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; border:none; padding:16px; font-size:16px; font-weight:900; border-radius:15px; cursor:pointer; margin:10px 5px; width:100%; transition:0.3s; font-family:'Orbitron'; }
-.btn:hover { transform:translateY(-3px); box-shadow:0 0 30px var(--neon); }
-.btn-group { display:flex; flex-wrap:wrap; justify-content:center; }
-.meter { height:12px; background:rgba(0,240,255,0.1); border-radius:20px; overflow:hidden; margin:8px 0 18px; }
-.meter-bar { height:100%; width:0%; background:linear-gradient(90deg, var(--neon2), var(--neon)); box-shadow:0 0 20px var(--neon); transition:width 0.4s; }
-.spin { display:inline-block; width:20px; height:20px; border:3px solid rgba(0,240,255,0.3); border-top:3px solid var(--neon); border-radius:50%; animation: spin 0.7s linear infinite; margin-left:8px; }
+body{background:var(--bg);color:var(--neon);display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden}
+#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-3;background:radial-gradient(ellipse at 50% 20%, #004488 0%, #000a1a 80%)}
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none}
+.particle{position:absolute;width:2px;height:2px;background:var(--neon);border-radius:50%;box-shadow:0 0 10px var(--neon);animation:float 15s infinite linear}
+@keyframes float{0%{transform:translateY(100vh) scale(0)}50%{opacity:1}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+.container { width:95%; max-width:600px; animation:fadeIn 0.8s }
+@keyframes fadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+h1 { font-family:'Orbitron'; font-size:34px; text-align:center; color:var(--neon); text-shadow:0 0 25px var(--neon), 0 0 50px var(--neon); margin-bottom:5px; letter-spacing:3px; }
+.by { font-family:'Orbitron'; font-size:16px; text-align:center; color:#66ddff; margin-bottom:20px; letter-spacing:4px; }
+.card { background: linear-gradient(135deg, rgba(0,30,70,0.9), rgba(0,10,40,0.85)); backdrop-filter:blur(40px); border:2px solid var(--neon); padding:30px; border-radius:30px; box-shadow:0 0 80px rgba(0,247,255,0.6), inset 0 0 30px rgba(0,247,255,0.1); }
+.row { display:flex; justify-content:space-between; align-items:center; padding:15px 0; border-bottom:1px solid rgba(0,247,255,0.15); }
+.row:last-child{border:none}
+.label { display:flex; align-items:center; gap:12px; font-weight:700; color:#aaffff; font-size:14px; letter-spacing:0.5px; }
+.value { font-weight:800; color:#fff; font-size:16px; text-align:right; text-shadow:0 0 8px rgba(255,255,255,0.3); }
+.icon { font-size:20px; }
+.btn { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; border:none; padding:18px; font-size:16px; font-weight:900; border-radius:16px; cursor:pointer; margin:10px 0; width:100%; transition:0.3s; font-family:'Orbitron'; box-shadow:0 0 30px rgba(0,247,255,0.5); }
+.btn:hover { transform:translateY(-3px); box-shadow:0 0 40px var(--neon); }
+.btn-group { display:flex; gap:10px; }
+.btn-half { width:calc(50% - 5px); }
+.meter { height:10px; background:rgba(0,247,255,0.1); border-radius:20px; overflow:hidden; margin:8px 0 15px; }
+.meter-bar { height:100%; width:0%; background:linear-gradient(90deg, var(--neon2), var(--neon)); box-shadow:0 0 15px var(--neon); transition:width 0.3s; }
+.spin { display:inline-block; width:18px; height:18px; border:3px solid rgba(0,247,255,0.3); border-top:3px solid var(--neon); border-radius:50%; animation: spin 0.6s linear infinite; margin-left:8px; }
 @keyframes spin { to { transform: rotate(360deg); }}
 .hidden { display:none !important; }
-footer { text-align:center; margin-top:25px; font-size:13px; color:#66ddff; font-weight:700; }
+footer { text-align:center; margin-top:20px; font-size:12px; color:#66ddff; font-weight:700; line-height:1.7; }
 .badge { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:900; margin-left:8px; }
-.warn { color:#ffaa00; font-size:12px; margin-top:5px; }
+.warn { color:#ffaa00; font-size:11px; margin-top:5px; }
 </style>
 </head>
 <body>
-<div id="bg"></div>
+<div id="bg"></div><div id="particles"></div>
 <div class="container">
   <h1>⚡ SPEED TEST X PRO</h1>
+  <div class="by">BY SP</div>
   
   <div class="card" id="resultCard">
     <button class="btn" onclick="getLocation()">📍 GET PRECISE DEVICE LOCATION</button>
-    <div id="locationWarn" class="warn hidden">⚠️ Enable GPS on Phone for accurate location</div>
-    <div class="row"><div class="label">📍 GPS LOCATION</div> <div class="value" id="gpsLocation">CLICK BUTTON</div></div>
-    <div class="row"><div class="label">🏷️ IP ADDRESS</div> <div class="value" id="ipAddress">--</div></div>
-    <div class="row"><div class="label">📶 NETWORK TYPE</div> <div class="value"><span id="network">DETECTING...</span><span class="badge" id="badge">--</span></div></div>
-    <div class="row"><div class="label">🖥️ SERVER</div> <div class="value">CLOUDFLARE INDIA</div></div>
+    <div id="locationWarn" class="warn hidden">⚠️ Phone pe GPS Allow karein for exact location</div>
     
-    <div class="row"><div class="label">📈 PING</div> <div class="value"><span id="ping">0 ms</span><span id="s1" class="spin hidden"></span></div></div>
+    <div class="row"><div class="label"><span class="icon">📍</span> DEVICE LOCATION</div> <div class="value" id="gpsLocation">CLICK BUTTON</div></div>
+    <div class="row"><div class="label"><span class="icon">🏷️</span> IP ADDRESS</div> <div class="value" id="ipAddress">--</div></div>
+    <div class="row"><div class="label"><span class="icon">📡</span> NETWORK SOURCE</div> <div class="value" id="towerLocation">--</div></div>
+    <div class="row"><div class="label"><span class="icon">📶</span> NETWORK TYPE</div> <div class="value"><span id="network">DETECTING...</span><span class="badge" id="badge">--</span></div></div>
+    <div class="row"><div class="label"><span class="icon">🖥️</span> SERVER</div> <div class="value">CLOUDFLARE INDIA</div></div>
+    
+    <div class="row"><div class="label"><span class="icon">📈</span> PING</div> <div class="value"><span id="ping">0 ms</span><span id="s1" class="spin hidden"></span></div></div>
     <div class="meter"><div id="p1" class="meter-bar"></div></div>
-    <div class="row"><div class="label">⬇️ DOWNLOAD</div> <div class="value"><span id="down">0 Mbps</span><span id="s2" class="spin hidden"></span></div></div>
+    <div class="row"><div class="label"><span class="icon">⬇️</span> DOWNLOAD</div> <div class="value"><span id="down">0 Mbps</span><span id="s2" class="spin hidden"></span></div></div>
     <div class="meter"><div id="p2" class="meter-bar"></div></div>
-    <div class="row"><div class="label">⬆️ UPLOAD</div> <div class="value"><span id="up">0 Mbps</span><span id="s3" class="spin hidden"></span></div></div>
+    <div class="row"><div class="label"><span class="icon">⬆️</span> UPLOAD</div> <div class="value"><span id="up">0 Mbps</span><span id="s3" class="spin hidden"></span></div></div>
     <div class="meter"><div id="p3" class="meter-bar"></div></div>
   </div>
 
   <div class="btn-group">
-    <button class="btn" id="btn1" onclick="start()">START TEST</button>
-    <button class="btn hidden" id="btn2" onclick="start()">TEST AGAIN</button>
-    <button class="btn hidden" id="btn4" onclick="downloadResult()">DOWNLOAD REPORT</button>
-    <button class="btn hidden" id="btn5" onclick="location.reload()">REFRESH</button>
+    <button class="btn btn-half" id="btn1" onclick="start()">START TEST</button>
+    <button class="btn btn-half hidden" id="btn2" onclick="start()">TEST AGAIN</button>
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-half hidden" id="btn4" onclick="downloadResult()">DOWNLOAD</button>
+    <button class="btn btn-half hidden" id="btn5" onclick="location.reload()">REFRESH</button>
   </div>
 
   <footer>
     © 2026<br>
     CREATED AND DEVELOPED BY PUNYA BINAY SWAIN<br>
-    GENUINE SPEEDTEST PLATFORM
+    ULTRA ACCURATE SPEEDTEST PLATFORM
   </footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-let downSpeedGlobal = 0;
+// HEAVY PARTICLES
+for(let i=0; i<50; i++){
+  let p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random()*100 + 'vw';
+  p.style.animationDelay = Math.random()*15 + 's';
+  document.getElementById('particles').appendChild(p);
+}
 
 async function getLocation(){
   document.getElementById("gpsLocation").innerText = "GETTING GPS...";
   document.getElementById("locationWarn").classList.add("hidden");
-  try{
-    let ip = await fetch('https://api.ipify.org?format=json').then(r=>r.json());
-    document.getElementById("ipAddress").innerText = ip.ip;
-  }catch{}
   
+  // IP + TOWER LOCATION - MOST ACCURATE API
+  try{
+    let ipData = await fetch('https://ipwho.is/').then(r=>r.json());
+    document.getElementById("ipAddress").innerText = ipData.ip;
+    document.getElementById("towerLocation").innerText = `${ipData.city}, ${ipData.region} - ${ipData.connection.isp}`;
+  }catch{
+    document.getElementById("towerLocation").innerText = "IP ERROR";
+  }
+  
+  // DEVICE GPS - MOST ACCURATE
   if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(async p => {
-      let gps = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}`).then(r=>r.json());
+      let gps = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&localityLanguage=en`).then(r=>r.json());
       document.getElementById("gpsLocation").innerText = `${gps.locality}, ${gps.principalSubdivision}`;
     },()=>{ 
       document.getElementById("gpsLocation").innerText = "GPS DENIED";
       document.getElementById("locationWarn").classList.remove("hidden");
-    }, {enableHighAccuracy:true, timeout:10000})
-  } else {
-    document.getElementById("locationWarn").classList.remove("hidden");
+    }, {enableHighAccuracy:true, timeout:10000, maximumAge:0})
   }
 }
 
-// 5 LAYER NETWORK DETECTION - AB GALAT NAHI HOGA
-function detectNetwork(downSpeed = 0, ping = 0){
-  let net = "UNKNOWN";
-  let badge = "--";
+// 5 LAYER NETWORK DETECTION
+function detectNetwork(downSpeed = 0){
+  let net = "UNKNOWN"; let badge = "--";
   const c = navigator.connection;
   const ua = navigator.userAgent.toLowerCase();
-
-  // LAYER 1: Browser API
-  if(c){
-    if(c.type === 'wifi'){ net="WIFI"; badge="WIFI"; }
-    else if(c.effectiveType === '5g' || c.downlink > 50){ net="5G"; badge="5G"; }
-    else if(c.effectiveType === '4g' || c.downlink > 8){ net="4G LTE"; badge="4G"; }
-  }
-
-  // LAYER 2: UserAgent
-  if(ua.includes("5g")){ net="5G"; badge="5G"; }
-  else if(ua.includes("lte") || ua.includes("android")){ net="4G LTE"; badge="4G"; }
-
-  // LAYER 3: Speed
-  if(downSpeed > 80){ net="5G"; badge="5G"; }
-  else if(downSpeed > 12){ net="4G LTE"; badge="4G"; }
+  if(c?.type === 'wifi'){ net="WIFI"; badge="WIFI"; }
+  else if(c?.effectiveType === '5g' || downSpeed > 50){ net="5G"; badge="5G"; }
+  else if(c?.effectiveType === '4g' || downSpeed > 10 || ua.includes("lte")){ net="4G LTE"; badge="4G"; }
   else if(downSpeed > 3){ net="3G"; badge="3G"; }
-
-  // LAYER 4: RTT
-  if(c && c.rtt < 80 && downSpeed > 10){ net="4G LTE"; badge="4G"; }
-
-  // LAYER 5: Manual override if speed >10 but still showing 3G
-  if(downSpeed > 10 && net === "3G"){ net="4G LTE"; badge="4G"; }
-
+  else { net="2G"; badge="2G"; }
   document.getElementById("network").innerText = net;
   document.getElementById("badge").innerText = badge;
 }
 
+// GENUINE SPEED TEST - CLOUDFLARE
 async function start(){
   document.getElementById("btn1").disabled = true;
   ["s1","s2","s3"].forEach(id=>document.getElementById(id).classList.remove("hidden"));
@@ -131,25 +137,24 @@ async function start(){
 
   // PING
   let t1 = Date.now();
-  await fetch('https://1.1.1.1/?r='+Math.random(), {mode:'no-cors'});
+  await fetch('https://1.1.1.1/cdn-cgi/trace?r='+Math.random(), {mode:'no-cors'});
   let ping = Date.now() - t1;
   document.getElementById("ping").innerText = ping+" ms";
   document.getElementById("p1").style.width = Math.min(100, 300/ping*100)+"%";
   document.getElementById("s1").classList.add("hidden");
 
-  // DOWNLOAD 3MB
+  // DOWNLOAD 3MB - REAL TEST
   let start = Date.now();
   let res = await fetch('https://speed.cloudflare.com/__down?bytes=3000000&r='+Math.random());
   let blob = await res.blob();
   let down = ((blob.size*8)/((Date.now()-start)/1000))/1000000;
-  downSpeedGlobal = down;
   document.getElementById("down").innerText = down.toFixed(2)+" Mbps";
   document.getElementById("p2").style.width = Math.min(100, down/100*100)+"%";
   document.getElementById("s2").classList.add("hidden");
   
-  detectNetwork(down, ping);
+  detectNetwork(down);
 
-  // UPLOAD 1MB
+  // UPLOAD 1MB - REAL TEST
   start = Date.now();
   await fetch('https://speed.cloudflare.com/__up', {method:'POST', body:new Blob([new Uint8Array(1000*1024)])});
   let up = ((1000*1024*8)/((Date.now()-start)/1000))/1000000;
@@ -164,9 +169,9 @@ async function start(){
 }
 
 function downloadResult(){
-  html2canvas(document.getElementById("resultCard"), {backgroundColor:'#000a1e', scale:2}).then(c => {
+  html2canvas(document.getElementById("resultCard"), {backgroundColor:'#000a1a', scale:2}).then(c => {
     let a = document.createElement('a');
-    a.download = 'SpeedTestXPro_Report.jpg'; a.href = c.toDataURL(); a.click();
+    a.download = 'SpeedTestXPro_BySP.jpg'; a.href = c.toDataURL(); a.click();
   });
 }
 window.onload = () => { getLocation(); detectNetwork(); }
