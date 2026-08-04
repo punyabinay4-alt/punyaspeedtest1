@@ -8,43 +8,39 @@
 <style>
 :root{--neon:#00f0ff;--neon2:#0066ff;--bg:#00050d}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins', sans-serif}
-body{background:var(--bg);color:var(--neon);display:flex;justify-content:center;align-items:center;min-height:100vh;overflow-x:hidden}
-#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-3;background:radial-gradient(ellipse at 50% 30%, #003366 0%, #00050d 70%)}
-#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%2300f0ff" opacity="0.3"/></svg>') repeat;animation:float 20s linear infinite}
-@keyframes float{0%{transform:translateY(0)}100%{transform:translateY(-100px)}}
-.container { width:95%; max-width:650px; animation:fadeIn 1s }
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-h1 { font-family:'Orbitron'; font-size:36px; text-align:center; color:var(--neon); text-shadow:0 0 30px var(--neon), 0 0 60px var(--neon); margin-bottom:25px; letter-spacing:2px; }
-.card { background: linear-gradient(135deg, rgba(0,20,50,0.9), rgba(0,10,30,0.8)); backdrop-filter:blur(30px); border:2px solid var(--neon); padding:35px; border-radius:25px; box-shadow:0 0 60px rgba(0,240,255,0.5), inset 0 0 20px rgba(0,240,255,0.1); }
+body{background:var(--bg);color:var(--neon);display:flex;justify-content:center;align-items:center;min-height:100vh}
+#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:radial-gradient(ellipse at 50% 30%, #003366 0%, #00050d 70%)}
+.container { width:95%; max-width:650px; }
+h1 { font-family:'Orbitron'; font-size:36px; text-align:center; color:var(--neon); text-shadow:0 0 30px var(--neon); margin-bottom:25px; }
+.card { background: linear-gradient(135deg, rgba(0,20,50,0.9), rgba(0,10,30,0.8)); backdrop-filter:blur(30px); border:2px solid var(--neon); padding:35px; border-radius:25px; box-shadow:0 0 60px rgba(0,240,255,0.5); }
 .row { display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid rgba(0,240,255,0.2); }
-.row:last-child{border:none}
-.label { display:flex; align-items:center; gap:12px; font-weight:700; color:#aaffff; font-size:15px; letter-spacing:0.5px; }
-.value { font-weight:800; color:#fff; font-size:17px; text-align:right; text-shadow:0 0 10px rgba(255,255,255,0.3); }
-.icon { width:24px; height:24px; fill:var(--neon); filter:drop-shadow(0 0 8px var(--neon)); }
-.btn { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; border:none; padding:16px; font-size:16px; font-weight:900; border-radius:15px; cursor:pointer; margin:10px 5px; width:calc(50% - 12px); transition:0.3s; box-shadow:0 5px 20px rgba(0,240,255,0.4); font-family:'Orbitron'; }
-.btn:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 0 30px var(--neon); }
-.btn-full { width:100%; }
+.label { display:flex; align-items:center; gap:12px; font-weight:700; color:#aaffff; font-size:15px; }
+.value { font-weight:800; color:#fff; font-size:17px; text-align:right; }
+.btn { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; border:none; padding:16px; font-size:16px; font-weight:900; border-radius:15px; cursor:pointer; margin:10px 5px; width:100%; transition:0.3s; font-family:'Orbitron'; }
+.btn:hover { transform:translateY(-3px); box-shadow:0 0 30px var(--neon); }
 .btn-group { display:flex; flex-wrap:wrap; justify-content:center; }
-.meter { height:12px; background:rgba(0,240,255,0.1); border-radius:20px; overflow:hidden; margin:8px 0 18px; border:1px solid rgba(0,240,255,0.3); }
-.meter-bar { height:100%; width:0%; background:linear-gradient(90deg, var(--neon2), var(--neon)); box-shadow:0 0 20px var(--neon); transition:width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.meter { height:12px; background:rgba(0,240,255,0.1); border-radius:20px; overflow:hidden; margin:8px 0 18px; }
+.meter-bar { height:100%; width:0%; background:linear-gradient(90deg, var(--neon2), var(--neon)); box-shadow:0 0 20px var(--neon); transition:width 0.4s; }
 .spin { display:inline-block; width:20px; height:20px; border:3px solid rgba(0,240,255,0.3); border-top:3px solid var(--neon); border-radius:50%; animation: spin 0.7s linear infinite; margin-left:8px; }
 @keyframes spin { to { transform: rotate(360deg); }}
 .hidden { display:none !important; }
-footer { text-align:center; margin-top:25px; font-size:13px; color:#66ddff; font-weight:700; line-height:1.8; text-shadow:0 0 10px rgba(0,240,255,0.3); }
-.badge { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:900; margin-left:8px; box-shadow:0 0 10px var(--neon); }
+footer { text-align:center; margin-top:25px; font-size:13px; color:#66ddff; font-weight:700; }
+.badge { background:linear-gradient(90deg, var(--neon2), var(--neon)); color:#000; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:900; margin-left:8px; }
+.warn { color:#ffaa00; font-size:12px; margin-top:5px; }
 </style>
 </head>
 <body>
-<div id="bg"></div><div id="particles"></div>
+<div id="bg"></div>
 <div class="container">
   <h1>⚡ SPEED TEST X PRO</h1>
   
   <div class="card" id="resultCard">
-    <button class="btn btn-full" onclick="getLocation()">📍 GET PRECISE DEVICE LOCATION</button>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> GPS LOCATION</div> <div class="value" id="gpsLocation">CLICK BUTTON</div></div>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg> IP ADDRESS</div> <div class="value" id="ipAddress">--</div></div>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M1 9l3 3 4-4 6 6 4-4 4 4V9H1zm0 4h22v8H1z"/></svg> NETWORK TYPE</div> <div class="value"><span id="network">DETECTING...</span><span class="badge" id="badge">--</span></div></div>
-    <div class="row"><div class="label"><svg class="icon" viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h4l-1 3h10l-1-3h4c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg> SERVER</div> <div class="value">CLOUDFLARE INDIA</div></div>
+    <button class="btn" onclick="getLocation()">📍 GET PRECISE DEVICE LOCATION</button>
+    <div id="locationWarn" class="warn hidden">⚠️ Enable GPS on Phone for accurate location</div>
+    <div class="row"><div class="label">📍 GPS LOCATION</div> <div class="value" id="gpsLocation">CLICK BUTTON</div></div>
+    <div class="row"><div class="label">🏷️ IP ADDRESS</div> <div class="value" id="ipAddress">--</div></div>
+    <div class="row"><div class="label">📶 NETWORK TYPE</div> <div class="value"><span id="network">DETECTING...</span><span class="badge" id="badge">--</span></div></div>
+    <div class="row"><div class="label">🖥️ SERVER</div> <div class="value">CLOUDFLARE INDIA</div></div>
     
     <div class="row"><div class="label">📈 PING</div> <div class="value"><span id="ping">0 ms</span><span id="s1" class="spin hidden"></span></div></div>
     <div class="meter"><div id="p1" class="meter-bar"></div></div>
@@ -57,7 +53,7 @@ footer { text-align:center; margin-top:25px; font-size:13px; color:#66ddff; font
   <div class="btn-group">
     <button class="btn" id="btn1" onclick="start()">START TEST</button>
     <button class="btn hidden" id="btn2" onclick="start()">TEST AGAIN</button>
-    <button class="btn hidden" id="btn4" onclick="downloadResult()">DOWNLOAD</button>
+    <button class="btn hidden" id="btn4" onclick="downloadResult()">DOWNLOAD REPORT</button>
     <button class="btn hidden" id="btn5" onclick="location.reload()">REFRESH</button>
   </div>
 
@@ -70,8 +66,11 @@ footer { text-align:center; margin-top:25px; font-size:13px; color:#66ddff; font
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
+let downSpeedGlobal = 0;
+
 async function getLocation(){
   document.getElementById("gpsLocation").innerText = "GETTING GPS...";
+  document.getElementById("locationWarn").classList.add("hidden");
   try{
     let ip = await fetch('https://api.ipify.org?format=json').then(r=>r.json());
     document.getElementById("ipAddress").innerText = ip.ip;
@@ -81,11 +80,16 @@ async function getLocation(){
     navigator.geolocation.getCurrentPosition(async p => {
       let gps = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}`).then(r=>r.json());
       document.getElementById("gpsLocation").innerText = `${gps.locality}, ${gps.principalSubdivision}`;
-    },()=>{ document.getElementById("gpsLocation").innerText = "PERMISSION DENIED"; })
+    },()=>{ 
+      document.getElementById("gpsLocation").innerText = "GPS DENIED";
+      document.getElementById("locationWarn").classList.remove("hidden");
+    }, {enableHighAccuracy:true, timeout:10000})
+  } else {
+    document.getElementById("locationWarn").classList.remove("hidden");
   }
 }
 
-// 4 LAYER NETWORK DETECTION - IMPOSSIBLE TO BE WRONG
+// 5 LAYER NETWORK DETECTION - AB GALAT NAHI HOGA
 function detectNetwork(downSpeed = 0, ping = 0){
   let net = "UNKNOWN";
   let badge = "--";
@@ -97,22 +101,22 @@ function detectNetwork(downSpeed = 0, ping = 0){
     if(c.type === 'wifi'){ net="WIFI"; badge="WIFI"; }
     else if(c.effectiveType === '5g' || c.downlink > 50){ net="5G"; badge="5G"; }
     else if(c.effectiveType === '4g' || c.downlink > 8){ net="4G LTE"; badge="4G"; }
-    else if(c.effectiveType === '3g'){ net="3G"; badge="3G"; }
   }
 
   // LAYER 2: UserAgent
   if(ua.includes("5g")){ net="5G"; badge="5G"; }
-  else if(ua.includes("lte")){ net="4G LTE"; badge="4G"; }
+  else if(ua.includes("lte") || ua.includes("android")){ net="4G LTE"; badge="4G"; }
 
-  // LAYER 3: Speed + Ping Combo
-  if(downSpeed > 0){
-    if(downSpeed > 80 && ping < 50){ net="5G"; badge="5G"; }
-    else if(downSpeed > 12 && ping < 150){ net="4G LTE"; badge="4G"; }
-    else if(downSpeed > 3){ net="3G"; badge="3G"; }
-  }
+  // LAYER 3: Speed
+  if(downSpeed > 80){ net="5G"; badge="5G"; }
+  else if(downSpeed > 12){ net="4G LTE"; badge="4G"; }
+  else if(downSpeed > 3){ net="3G"; badge="3G"; }
 
-  // LAYER 4: RTT Check
-  if(c && c.rtt < 100 && downSpeed > 10){ net="4G LTE"; badge="4G"; }
+  // LAYER 4: RTT
+  if(c && c.rtt < 80 && downSpeed > 10){ net="4G LTE"; badge="4G"; }
+
+  // LAYER 5: Manual override if speed >10 but still showing 3G
+  if(downSpeed > 10 && net === "3G"){ net="4G LTE"; badge="4G"; }
 
   document.getElementById("network").innerText = net;
   document.getElementById("badge").innerText = badge;
@@ -138,8 +142,9 @@ async function start(){
   let res = await fetch('https://speed.cloudflare.com/__down?bytes=3000000&r='+Math.random());
   let blob = await res.blob();
   let down = ((blob.size*8)/((Date.now()-start)/1000))/1000000;
+  downSpeedGlobal = down;
   document.getElementById("down").innerText = down.toFixed(2)+" Mbps";
-  document.getElementById("p2").style.width = Math.min(100, down/200*100)+"%";
+  document.getElementById("p2").style.width = Math.min(100, down/100*100)+"%";
   document.getElementById("s2").classList.add("hidden");
   
   detectNetwork(down, ping);
@@ -149,7 +154,7 @@ async function start(){
   await fetch('https://speed.cloudflare.com/__up', {method:'POST', body:new Blob([new Uint8Array(1000*1024)])});
   let up = ((1000*1024*8)/((Date.now()-start)/1000))/1000000;
   document.getElementById("up").innerText = up.toFixed(2)+" Mbps";
-  document.getElementById("p3").style.width = Math.min(100, up/100*100)+"%";
+  document.getElementById("p3").style.width = Math.min(100, up/50*100)+"%";
   document.getElementById("s3").classList.add("hidden");
 
   document.getElementById("btn1").disabled = false;
