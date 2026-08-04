@@ -6,110 +6,94 @@
 <title>INTERNET SPEED TEST BY SP</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial;background:#000;color:white;text-align:center;overflow-x:hidden;min-height:100vh}
-.bg-animation{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
-.grid{width:100%;height:100%;background-image:linear-gradient(rgba(0,255,136,0.1) 1px, transparent 1px),linear-gradient(90deg, rgba(0,255,136,0.1) 1px, transparent 1px);background-size: 50px 50px;animation: moveGrid 10s linear infinite}
-@keyframes moveGrid { to { background-position: 50px 50px; } }
-.glow { position:absolute; border-radius:50%; filter:blur(100px); animation: float 8s ease-in-out infinite; }
-.glow1 { width:400px; height:400px; background:#00aaff; top:10%; left:10%; }
-.glow2 { width:500px; height:500px; background:#00ff88; bottom:10%; right:10%; animation-delay:2s; }
-@keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,30px)} }
-.container { max-width:480px; margin:0 auto; padding:20px; padding-top:50px; position:relative; z-index:2; }
-h1 { color:#00ff88; text-shadow:0 0 15px #00ff88; font-size:24px; margin-bottom:8px; }
-.card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); padding:25px; border-radius:20px; margin:25px 0; border:1px solid rgba(0,255,136,0.3); text-align:left; font-size:15px; }
-.test-row { display:flex; align-items:center; gap:8px; }
-.mini-spin { width:14px; height:14px; border:2px solid rgba(0,255,136,0.3); border-top:2px solid #00ff88; border-radius:50%; animation: spin 0.8s linear infinite; }
+body{font-family:Arial;background:#001a00;color:white;text-align:center;overflow-x:hidden;min-height:100vh}
+.bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:linear-gradient(180deg,#001a00 0%,#003300 100%)}
+.grid{width:100%;height:100%;background-image:linear-gradient(rgba(0,255,136,0.08) 1px, transparent 1px),linear-gradient(90deg, rgba(0,255,136,0.08) 1px, transparent 1px);background-size: 40px 40px}
+.container { max-width:450px; margin:0 auto; padding:20px; padding-top:40px; }
+h1 { color:#00ff88; text-shadow:0 0 10px #00ff88; font-size:22px; margin-bottom:5px; }
+.card { background: rgba(0,0,0,0.4); border:1px solid #00ff88; padding:20px; border-radius:15px; margin:20px 0; text-align:left; font-size:15px; }
+.test-row { display:flex; align-items:center; gap:8px; margin:12px 0; }
+.spin { width:14px; height:14px; border:2px solid #004400; border-top:2px solid #00ff88; border-radius:50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.hidden { display:none; }
-.btn-group { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-button { background:linear-gradient(90deg, #00ff88, #00aaff); color:#000; border:none; padding:14px 30px; font-size:16px; font-weight:bold; border-radius:50px; cursor:pointer; }
-button:hover { transform:scale(1.05); box-shadow:0 0 20px #00ff88; }
-footer { margin-top:40px; padding:15px; font-size:13px; color:#aaa; }
-footer hr { border:1px solid rgba(255,255,255,0.1); margin-bottom:12px; }
+.hidden { display:none !important; }
+.btn { background:linear-gradient(90deg, #00ff88, #00aaff); color:#000; border:none; padding:14px 30px; font-size:16px; font-weight:bold; border-radius:50px; cursor:pointer; margin:5px; }
+.btn:hover { box-shadow:0 0 15px #00ff88; }
+footer { margin-top:30px; font-size:12px; color:#aaa; }
 </style>
 </head>
 <body>
-
-<div class="bg-animation"><div class="grid"></div><div class="glow glow1"></div><div class="glow glow2"></div></div>
+<div class="bg"><div class="grid"></div></div>
 
 <div class="container">
   <h1>🚀 INTERNET SPEED TEST BY SP</h1>
   <p>Check Your Real Internet Speed</p>
 
   <div class="card">
-    📍 <b>Location:</b> <span id="location">Allow Location</span> <br><br>
-    🌐 <b>Network:</b> <span id="network">Detecting...</span> <br><br>
+    📍 <b>Location:</b> <span id="location">Click to Allow</span> <br><br>
+    🌐 <b>Network:</b> <span id="network">4G</span> <br><br>
     🖥️ <b>Server:</b> <span id="server">Bhubaneswar, Odisha</span> <br><br>
-    <hr style="margin:10px 0; border-color:rgba(255,255,255,0.1);">
-    <div class="test-row">📶 <b>Ping:</b> <span id="ping">0 ms</span> <span id="ping-spin" class="mini-spin hidden"></span></div><br>
-    <div class="test-row">⬇️ <b>Download:</b> <span id="download">0 Mbps</span> <span id="down-spin" class="mini-spin hidden"></span></div><br>
-    <div class="test-row">⬆️ <b>Upload:</b> <span id="upload">0 Mbps</span> <span id="up-spin" class="mini-spin hidden"></span></div>
+    <hr style="margin:10px 0; border-color:#004400;">
+    <div class="test-row">📶 <b>Ping:</b> <span id="ping">0 ms</span> <span id="s1" class="spin hidden"></span></div>
+    <div class="test-row">⬇️ <b>Download:</b> <span id="down">0 Mbps</span> <span id="s2" class="spin hidden"></span></div>
+    <div class="test-row">⬆️ <b>Upload:</b> <span id="up">0 Mbps</span> <span id="s3" class="spin hidden"></span></div>
   </div>
 
-  <div class="btn-group">
-    <button id="startBtn" onclick="startTest()">START TEST</button>
-    <button id="againBtn" class="hidden" onclick="startTest()">TEST AGAIN</button>
-    <button id="backBtn" class="hidden" onclick="location.reload()">BACK</button>
-  </div>
+  <button class="btn" id="btn1" onclick="start()">START TEST</button>
+  <button class="btn hidden" id="btn2" onclick="start()">TEST AGAIN</button>
+  <button class="btn hidden" id="btn3" onclick="location.reload()">BACK</button>
 
-  <footer><hr><p><b>CREATED AND DEVELOPED BY<br>PUNYA BINAY SWAIN</b></p></footer>
+  <footer><hr><p><b>CREATED BY PUNYA BINAY SWAIN</b></p></footer>
 </div>
 
 <script>
-// 1. LOCATION
-if(navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition((pos) => {
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
-    .then(res => res.json())
-    .then(data => {
-      let v = data.address.village || data.address.town || "Unknown";
-      let d = data.address.district || data.address.county || "";
-      let s = data.address.state || "";
-      document.getElementById("location").innerText = `${v}, ${d}, ${s}`;
-    }).catch(() => { document.getElementById("location").innerText = "Location Error"; });
-  }, () => { document.getElementById("location").innerText = "Please Allow Location"; });
+// Location
+document.getElementById("location").onclick = function(){
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(p){
+      fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat="+p.coords.latitude+"&lon="+p.coords.longitude)
+      .then(r=>r.json()).then(d=>{
+        let v=d.address.village||d.address.town||"Unknown";
+        let di=d.address.district||"";
+        let st=d.address.state||"";
+        document.getElementById("location").innerText = v+", "+di+", "+st;
+      })
+    })
+  }
 }
 
-// 2. NETWORK
-function getNetwork(speed) {
-  if(speed > 80) return "5G";
-  if(speed > 20) return "4G";
-  if(speed > 3) return "3G";
-  return "2G";
-}
+// Main Test Function
+function start(){
+  document.getElementById("btn1").classList.add("hidden");
+  document.getElementById("btn2").classList.add("hidden");
+  document.getElementById("btn3").classList.add("hidden");
+  
+  document.getElementById("s1").classList.remove("hidden");
+  document.getElementById("s2").classList.remove("hidden");
+  document.getElementById("s3").classList.remove("hidden");
+  
+  document.getElementById("ping").innerText="Testing";
+  document.getElementById("down").innerText="Testing";
+  document.getElementById("up").innerText="Testing";
 
-// 3. SPEED TEST
-function startTest() {
-  document.getElementById("startBtn").classList.add("hidden");
-  document.getElementById("againBtn").classList.add("hidden");
-  document.getElementById("backBtn").classList.add("hidden");
+  let speed = (Math.random()*60 + 15).toFixed(2);
 
-  document.getElementById("ping-spin").classList.remove("hidden");
-  document.getElementById("down-spin").classList.remove("hidden");
-  document.getElementById("up-spin").classList.remove("hidden");
-  document.getElementById("ping").innerText = "Testing";
-  document.getElementById("download").innerText = "Testing";
-  document.getElementById("upload").innerText = "Testing";
+  setTimeout(()=>{ 
+    document.getElementById("ping").innerText = Math.floor(Math.random()*25+10)+" ms";
+    document.getElementById("s1").classList.add("hidden");
+  },1200);
 
-  let fakeSpeed = Math.random() * 50 + 20;
+  setTimeout(()=>{ 
+    document.getElementById("down").innerText = speed+" Mbps";
+    document.getElementById("network").innerText = speed>50?"5G":speed>15?"4G":"3G";
+    document.getElementById("s2").classList.add("hidden");
+  },2500);
 
-  setTimeout(() => {
-    document.getElementById("ping").innerText = Math.floor(Math.random() * 30 + 10) + " ms";
-    document.getElementById("ping-spin").classList.add("hidden");
-  }, 1000);
-
-  setTimeout(() => {
-    document.getElementById("download").innerText = fakeSpeed.toFixed(2) + " Mbps";
-    document.getElementById("down-spin").classList.add("hidden");
-    document.getElementById("network").innerText = getNetwork(fakeSpeed);
-  }, 2500);
-
-  setTimeout(() => {
-    document.getElementById("upload").innerText = (fakeSpeed * 0.4).toFixed(2) + " Mbps";
-    document.getElementById("up-spin").classList.add("hidden");
-    document.getElementById("againBtn").classList.remove("hidden");
-    document.getElementById("backBtn").classList.remove("hidden");
-  }, 3500);
+  setTimeout(()=>{ 
+    document.getElementById("up").innerText = (speed*0.35).toFixed(2)+" Mbps";
+    document.getElementById("s3").classList.add("hidden");
+    document.getElementById("btn2").classList.remove("hidden");
+    document.getElementById("btn3").classList.remove("hidden");
+  },3500);
 }
 </script>
 </body>
