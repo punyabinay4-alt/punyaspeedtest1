@@ -18,6 +18,7 @@
     .card .value { color: var(--yellow); font-size: 32px; font-weight: bold; margin: 10px 0; }
     button { background: var(--yellow); color: var(--black); border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; }
     button:hover { background: #ffea00; transform: scale(1.05); }
+    button:disabled { background: #555; cursor: not-allowed; transform: scale(1); }
     footer { margin-top: 40px; color: #555; font-size: 12px; }
   </style>
 </head>
@@ -29,29 +30,50 @@
       <div class="card"><div class="label">DOWNLOAD</div><div class="value" id="download">- Mbps</div></div>
       <div class="card"><div class="label">UPLOAD</div><div class="value" id="upload">- Mbps</div></div>
     </div>
-    <button onclick="startTest()">START TEST</button>
+    <button id="btn" onclick="startTest()">START TEST</button>
   </div>
-  <footer>© 2026 Nam Punya Speed Test. Powered by Ookla</footer>
+  <footer>© 2026 Nam Punya Speed Test</footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/fast-speedtest-api@3.0.4/dist/index.min.js"></script>
   <script>
-    let speedtest = new Speedtest();
-    function startTest() {
+    async function startTest() {
+      const btn = document.getElementById('btn');
+      btn.disabled = true;
+      btn.innerText = 'TESTING...';
+      
       document.getElementById('ping').innerText = '...';
       document.getElementById('download').innerText = '...';
       document.getElementById('upload').innerText = '...';
-      
-      speedtest.getSpeed().then(s => {
-        document.getElementById('download').innerText = s.toFixed(2) + ' Mbps';
-        return speedtest.getUploadSpeed();
-      }).then(u => {
-        document.getElementById('upload').innerText = u.toFixed(2) + ' Mbps';
-        return speedtest.getPing();
-      }).then(p => {
-        document.getElementById('ping').innerText = p.toFixed(0) + ' ms';
-      }).catch(e => {
-        alert('Error: ' + e);
-      });
+
+      // 1. PING TEST
+      let start = performance.now();
+      await fetch('https://www.google.com/favicon.ico?cache=' + Math.random(), {mode: 'no-cors'});
+      let ping = performance.now() - start;
+      document.getElementById('ping').innerText = ping.toFixed(0) + ' ms';
+
+      // 2. DOWNLOAD TEST - 10MB file
+      start = performance.now();
+      let downloadSize = 0;
+      const res = await fetch('https://speed.cloudflare.com/__down?bytes=10000000&cache=' + Math.random());
+      const reader = res.body.getReader();
+      while(true) {
+        const {done, value} = await reader.read();
+        if(done) break;
+        downloadSize += value.length;
+      }
+      let time = (performance.now() - start) / 1000;
+      let downloadSpeed = (downloadSize * 8) / (time * 1000000);
+      document.getElementById('download').innerText = downloadSpeed.toFixed(2) + ' Mbps';
+
+      // 3. UPLOAD TEST - 5MB data
+      start = performance.now();
+      let data = new Blob([new ArrayBuffer(5000000)]);
+      await fetch('https://speed.cloudflare.com/__up', {method: 'POST', body: data, mode: 'no-cors'});
+      time = (performance.now() - start) / 1000;
+      let uploadSpeed = (5000000 * 8) / (time * 1000000);
+      document.getElementById('upload').innerText = uploadSpeed.toFixed(2) + ' Mbps';
+
+      btn.disabled = false;
+      btn.innerText = 'START TEST';
     }
   </script>
 </body>
