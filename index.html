@@ -8,17 +8,22 @@
 </head>
 <body>
 
-<!-- Animated Globe Background -->
-<div class="globe-container">
-  <div class="globe"></div>
-  <div class="connections"></div>
+<!-- Earth Globe Background -->
+<div class="earth-container">
+  <div class="earth"></div>
 </div>
 
 <div class="container">
   <h1>🚀 INTERNET SPEED TEST BY SP</h1>
   <p>Check Your Real Internet Speed</p>
 
-  <div class="card">
+  <!-- Spinner Clock -->
+  <div id="spinner" class="hidden">
+    <div class="clock"></div>
+    <p>Testing...</p>
+  </div>
+
+  <div class="card" id="resultCard">
     📍 <b>Location:</b> <span id="location">Getting location...</span> <br><br>
     🌐 <b>Network:</b> <span id="network">Detecting...</span> <br><br>
     📶 <b>Ping:</b> <span id="ping">0 ms</span> <br><br>
@@ -26,7 +31,11 @@
     ⬆️ <b>Upload:</b> <span id="upload">0 Mbps</span>
   </div>
 
-  <button onclick="startTest()">START TEST</button>
+  <div class="btn-group">
+    <button id="startBtn" onclick="startTest()">START TEST</button>
+    <button id="againBtn" class="hidden" onclick="startTest()">TEST AGAIN</button>
+    <button id="backBtn" class="hidden" onclick="goBack()">BACK</button>
+  </div>
 
   <footer>
     <hr>
