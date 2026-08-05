@@ -34,14 +34,15 @@
   .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.1); font-size: 13px; }
   .row span:last-child { color: #003366; font-weight: 600; }
   .footer { text-align: center; font-size: 12px; color: #555; margin-top: 20px; font-weight: 600; }
-  .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 999; }
-  .popup-box { background: rgba(255,255,255,0.98); border-radius: 20px; width: 90%; max-width: 470px; }
+  .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 999; overflow-y: auto; }
+  .popup-box { background: rgba(255,255,255,0.98); border-radius: 20px; width: 90%; max-width: 470px; margin: 20px 0; }
   .popup-header { background: linear-gradient(135deg, #ff6b00, #003366); padding: 25px; text-align: center; color: #fff; }
   .popup-header h2 { font-weight: 700; margin-bottom: 8px; }
   .popup-header .msg { font-size: 13px; opacity: 0.95; font-weight: 500; }
   .popup-body { padding: 20px; }
   .popup .result-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
   .popup .result-row span { color: #ff6b00; font-weight: 600; }
+  .popup-chart { width: 100%; margin: 15px 0; border-radius: 10px; }
   .popup-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
   .popup-footer { background: #f8f9fa; padding: 12px; text-align: center; font-size: 11px; color: #888; font-weight: 600; }
 </style>
@@ -98,6 +99,7 @@
       <div class="msg">Thank you for using speed text X pro by sp<br>-Punya Binay Swain</div>
     </div>
     <div class="popup-body">
+      <canvas id="speedChart" class="popup-chart" width="400" height="200"></canvas>
       <div class="result-row"><b>Ping</b> <span id="p_ping">0</span> ms</div>
       <div class="result-row"><b>Download</b> <span id="p_download">0</span> Mbps</div>
       <div class="result-row"><b>Upload</b> <span id="p_upload">0</span> Mbps</div>
@@ -120,8 +122,11 @@ let running = false;
 let result = {ping:0, download:0, upload:0, loss:0};
 let userInfo = {};
 let currentSpeed = 0;
+let pingValues = [];
+let lossCount = 0;
+let totalPackets = 0;
 
-// LIVE TIME-BASED TEST LIKE GOOGLE
+// LIVE TEST LIKE GOOGLE
 async function startTest() {
   if(running) return;
   running = true;
@@ -129,24 +134,25 @@ async function startTest() {
   document.getElementById('popup').style.display = 'none';
   reset();
 
-  await testPing();
+  await Promise.all([testPingLive(), testLossLive()]); // Ping + Loss together
   await sleep(200);
 
-  await testDownloadLive(); // 8 sec live test
+  await testDownloadLive();
   await sleep(200);
 
-  await testUploadLive(); // 8 sec live test
-  await sleep(200);
-
-  await testLoss();
+  await testUploadLive();
 
   document.getElementById('status').innerText = 'Test Complete - Jai Jagannath 🙏';
+  generateChart();
   showPopup();
   running = false;
 }
 
 function reset() {
   result = {ping:0, download:0, upload:0, loss:0};
+  pingValues = [];
+  lossCount = 0;
+  totalPackets = 0;
   ['ping','download','upload','loss'].forEach(id => document.getElementById(id).innerText = '0');
   document.getElementById('needle').style.transform = 'translateX(-50%) rotate(-90deg)';
   document.getElementById('speedValue').innerText = '0';
@@ -155,36 +161,46 @@ function reset() {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function testPing() {
-  document.getElementById('status').innerText = 'Testing Ping...';
-  let times = [];
-  for(let i=0; i<5; i++) {
+// CONTINUOUS PING TEST - 5 SECONDS
+async function testPingLive() {
+  document.getElementById('status').innerText = 'Testing Ping Continuously...';
+  let startTime = performance.now();
+  while(performance.now() - startTime < 5000) {
     let s = performance.now();
     try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); } catch(e){}
-    times.push(performance.now() - s);
+    let ping = Math.round(performance.now() - s);
+    pingValues.push(ping);
+    result.ping = Math.round(pingValues.reduce((a,b)=>a+b)/pingValues.length);
+    document.getElementById('ping').innerText = result.ping;
+    await sleep(200);
   }
-  result.ping = Math.round(times.reduce((a,b)=>a+b)/times.length);
-  document.getElementById('ping').innerText = result.ping;
 }
 
-// GOOGLE STYLE LIVE DOWNLOAD TEST - 8 SECONDS
+// CONTINUOUS PACKET LOSS TEST
+async function testLossLive() {
+  let startTime = performance.now();
+  while(performance.now() - startTime < 5000) {
+    totalPackets++;
+    try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); }
+    catch(e){ lossCount++; }
+    result.loss = ((lossCount/totalPackets)*100).toFixed(2);
+    document.getElementById('loss').innerText = result.loss;
+    await sleep(100);
+  }
+}
+
 async function testDownloadLive() {
   document.getElementById('status').innerText = 'Testing Download...';
   document.getElementById('speedUnit').innerText = 'Mbps';
-  
   let startTime = performance.now();
-  let duration = 8000; // 8 seconds
+  let duration = 8000;
   let bytesReceived = 0;
   let workers = [];
   
-  // 8 parallel connections
   for(let i=0; i<8; i++) {
-    workers.push(downloadWorker(startTime, duration, (bytes) => {
-      bytesReceived += bytes;
-    }));
+    workers.push(downloadWorker(startTime, duration, (bytes) => { bytesReceived += bytes; }));
   }
   
-  // Update speed every 200ms
   let interval = setInterval(() => {
     let elapsed = (performance.now() - startTime) / 1000;
     let speed = (bytesReceived * 8) / 1000000 / elapsed;
@@ -195,11 +211,9 @@ async function testDownloadLive() {
   
   await Promise.all(workers);
   clearInterval(interval);
-  
   result.download = currentSpeed.toFixed(2);
 }
 
-// GOOGLE STYLE LIVE UPLOAD TEST - 8 SECONDS
 async function testUploadLive() {
   document.getElementById('status').innerText = 'Testing Upload...';
   let startTime = performance.now();
@@ -208,9 +222,7 @@ async function testUploadLive() {
   let workers = [];
   
   for(let i=0; i<4; i++) {
-    workers.push(uploadWorker(startTime, duration, (bytes) => {
-      bytesSent += bytes;
-    }));
+    workers.push(uploadWorker(startTime, duration, (bytes) => { bytesSent += bytes; }));
   }
   
   let interval = setInterval(() => {
@@ -223,11 +235,9 @@ async function testUploadLive() {
   
   await Promise.all(workers);
   clearInterval(interval);
-  
   result.upload = currentSpeed.toFixed(2);
 }
 
-// Worker for continuous download
 async function downloadWorker(startTime, duration, callback) {
   while(performance.now() - startTime < duration) {
     try {
@@ -238,9 +248,8 @@ async function downloadWorker(startTime, duration, callback) {
   }
 }
 
-// Worker for continuous upload
 async function uploadWorker(startTime, duration, callback) {
-  let data = new Blob([new Uint8Array(512 * 1024)]); // 512KB chunk
+  let data = new Blob([new Uint8Array(512 * 1024)]);
   while(performance.now() - startTime < duration) {
     try {
       await fetch("https://httpbin.org/post", {method:'POST', body:data, mode:'no-cors'});
@@ -249,22 +258,29 @@ async function uploadWorker(startTime, duration, callback) {
   }
 }
 
-async function testLoss() {
-  document.getElementById('status').innerText = 'Testing Packet Loss...';
-  let lost = 0;
-  for(let i=0; i<30; i++) {
-    try { await fetch("https://www.google.com/generate_204?"+Date.now()+i, {mode:'no-cors'}); }
-    catch(e){ lost++; }
-  }
-  result.loss = ((lost/30)*100).toFixed(2);
-  document.getElementById('loss').innerText = result.loss;
-}
-
 function moveNeedle(value, max) {
   let deg = (value / max) * 180 - 90;
   deg = Math.max(-90, Math.min(90, deg));
   document.getElementById('needle').style.transform = `translateX(-50%) rotate(${deg}deg)`;
   document.getElementById('speedValue').innerText = parseFloat(value).toFixed(0);
+}
+
+// GENERATE CHART FOR POPUP
+function generateChart() {
+  const canvas = document.getElementById('speedChart');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Simple bar chart
+  ctx.fillStyle = '#ff6b00';
+  ctx.fillRect(50, 150 - result.download*3, 80, result.download*3);
+  ctx.fillStyle = '#003366';
+  ctx.fillRect(150, 150 - result.upload*6, 80, result.upload*6);
+  
+  ctx.fillStyle = '#333';
+  ctx.font = '12px Poppins';
+  ctx.fillText('Download: ' + result.download + ' Mbps', 50, 170);
+  ctx.fillText('Upload: ' + result.upload + ' Mbps', 150, 170);
 }
 
 function showPopup() {
@@ -279,21 +295,33 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
+// ACCURATE LOCATION - DOUBLE API CHECK
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
+  
   try {
-    let res = await fetch('https://ipinfo.io/json');
+    let res = await fetch('https://ipapi.co/json/');
     let data = await res.json();
     userInfo.ip = data.ip;
-    userInfo.location = `${data.city}, ${data.country}`;
+    userInfo.location = `${data.city}, ${data.country_name}`; // Sambalpur sahi aayega
     userInfo.isp = data.org + " - Chennai";
     userInfo.network = navigator.connection?.effectiveType?.toUpperCase() || "WiFi";
-    document.getElementById('ip').innerText = userInfo.ip;
-    document.getElementById('location').innerText = userInfo.location;
-    document.getElementById('isp').innerText = userInfo.isp;
-    document.getElementById('network').innerText = userInfo.network;
-  } catch(e){}
+  } catch(e){
+    try {
+      let res = await fetch('https://ipinfo.io/json');
+      let data = await res.json();
+      userInfo.ip = data.ip;
+      userInfo.location = `${data.city}, ${data.country}`;
+      userInfo.isp = data.org + " - Chennai";
+      userInfo.network = navigator.connection?.effectiveType?.toUpperCase() || "WiFi";
+    } catch(e){}
+  }
+  
+  document.getElementById('ip').innerText = userInfo.ip;
+  document.getElementById('location').innerText = userInfo.location;
+  document.getElementById('isp').innerText = userInfo.isp;
+  document.getElementById('network').innerText = userInfo.network;
 }
 window.onload = getInfo;
 </script>
