@@ -183,7 +183,7 @@ async function testPingLive() {
   let startTime = performance.now();
   while(performance.now() - startTime < 20000) {
     let s = performance.now();
-    try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); } catch(e){}
+    try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors', cache:'no-store'}); } catch(e){}
     let ping = Math.round(performance.now() - s);
     pingValues.push(ping);
     result.ping = Math.round(pingValues.reduce((a,b)=>a+b)/pingValues.length);
@@ -199,7 +199,7 @@ async function testLossLive() {
   let startTime = performance.now();
   while(performance.now() - startTime < 20000) {
     totalPackets++;
-    try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); }
+    try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors', cache:'no-store'}); }
     catch(e){ lossCount++; }
     result.loss = ((lossCount/totalPackets)*100).toFixed(2);
     document.getElementById('loss').innerText = result.loss;
@@ -218,7 +218,7 @@ async function testDownloadLive() {
   let bytesReceived = 0;
   let workers = [];
   
-  for(let i=0; i<3; i++) {
+  for(let i=0; i<4; i++) {
     workers.push(downloadWorker(startTime, duration, (bytes) => { bytesReceived += bytes; }));
   }
   
@@ -228,7 +228,7 @@ async function testDownloadLive() {
       let speed = (bytesReceived * 8) / 1000000 / elapsed;
       currentSpeed = speed;
       document.getElementById('download').innerText = speed.toFixed(2);
-      moveNeedle(speed, 100);
+      moveNeedle(speed, 200);
       document.getElementById('speedValue').innerText = speed.toFixed(0);
     }
   }, 300);
@@ -248,7 +248,7 @@ async function testUploadLive() {
   let bytesSent = 0;
   let workers = [];
   
-  for(let i=0; i<3; i++) {
+  for(let i=0; i<4; i++) {
     workers.push(uploadWorker(startTime, duration, (bytes) => { bytesSent += bytes; }));
   }
   
@@ -258,7 +258,7 @@ async function testUploadLive() {
       let speed = (bytesSent * 8) / 1000000 / elapsed;
       currentSpeed = speed;
       document.getElementById('upload').innerText = speed.toFixed(2);
-      moveNeedle(speed, 50);
+      moveNeedle(speed, 100);
       document.getElementById('speedValue').innerText = speed.toFixed(0);
     }
   }, 200);
@@ -271,7 +271,7 @@ async function testUploadLive() {
 async function downloadWorker(startTime, duration, callback) {
   while(performance.now() - startTime < duration) {
     try {
-      let res = await fetch(`https://speed.cloudflare.com/__down?bytes=3000000&${Date.now()}`);
+      let res = await fetch(`https://speed.cloudflare.com/__down?bytes=5000000&${Date.now()}`, {cache:'no-store'});
       let blob = await res.blob();
       callback(blob.size);
     } catch(e) {}
@@ -279,30 +279,38 @@ async function downloadWorker(startTime, duration, callback) {
 }
 
 async function uploadWorker(startTime, duration, callback) {
+  let servers = [
+    "https://cdn.nperf.com/upload",
+    "https://httpbin.org/post",
+    "https://postman-echo.com/post"
+  ];
   let data = new Blob([new Uint8Array(2 * 1024 * 1024)]);
+  
   while(performance.now() - startTime < duration) {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 10000);
-      let t1 = performance.now();
-      
-      await fetch("https://speed.cloudflare.com/__up", {
-        method:'POST', 
-        body:data, 
-        mode:'cors',
-        signal: controller.signal
-      });
-      
-      let t2 = performance.now();
-      clearTimeout(timeout);
-      if(t2-t1 > 100) callback(data.size);
-    } catch(e) {
+    let success = false;
+    for(let url of servers){
       try {
-        let smallData = new Blob([new Uint8Array(512 * 1024)]);
-        await fetch("https://cdn.nperf.com/upload", {method:'POST', body:smallData, mode:'no-cors'});
-        callback(smallData.size);
-      } catch(e2) {}
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(), 8000);
+        let t1 = performance.now();
+        
+        await fetch(url, {
+          method:'POST', 
+          body:data, 
+          mode:'no-cors',
+          signal: controller.signal,
+          cache: 'no-store'
+        });
+        
+        let t2 = performance.now();
+        if(t2-t1 > 50) {
+          callback(data.size);
+          success = true;
+          break;
+        }
+      } catch(e) {}
     }
+    if(!success) await sleep(500);
   }
 }
 
@@ -363,34 +371,48 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
-// EXACT GPS LOCATION
+// NETWORK DETECTION - SPEED SE NAHI, PHONE SE
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
-  userInfo.network = '4G';
   
-  // GPS - Sabse exact
+  let networkType = 'Mobile Data';
+  let ua = navigator.userAgent;
+  
+  if (navigator.connection) {
+    let conn = navigator.connection;
+    let effective = conn.effectiveType; // 4g, 3g, 2g
+    
+    if(effective === '4g') networkType = '4G';
+    else if(effective === '3g') networkType = '3G';
+    else if(effective === '2g') networkType = '2G';
+    
+    // Kuch phone me UA me 5G/NR likha hota hai
+    if(ua.includes('5G') || ua.includes('NR')){
+      networkType = '5G';
+    }
+  }
+  
+  userInfo.network = networkType;
+  document.getElementById('network').innerText = userInfo.network;
+  document.getElementById('p_network').innerText = userInfo.network;
+
+  // EXACT GPS LOCATION
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       let lat = pos.coords.latitude;
       let lon = pos.coords.longitude;
       try {
-        // OpenStreetMap reverse geocode - free aur accurate
         let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
         let data = await res.json();
         let addr = data.address;
-        userInfo.location = `${addr.road || addr.suburb || ''} ${addr.village || addr.town || addr.city || ''}, ${addr.state_district || addr.county || ''}, ${addr.state || ''}`;
+        userInfo.location = `${addr.road || addr.suburb || ''}, ${addr.village || addr.town || addr.city || ''}, ${addr.state || ''}`;
         document.getElementById('location').innerText = userInfo.location;
-      } catch(e){
-        userInfo.location = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
-        document.getElementById('location').innerText = userInfo.location;
-      }
-    }, (err) => {
-      document.getElementById('location').innerText = 'Location Denied';
-    }, {enableHighAccuracy: true, timeout: 10000});
+        document.getElementById('p_location').innerText = userInfo.location;
+      } catch(e){}
+    }, ()=>{ document.getElementById('location').innerText = 'Permission Denied'; }, {enableHighAccuracy: true, timeout: 10000});
   }
   
-  // IP backup
   try {
     let res = await fetch('https://ipapi.co/json/');
     let data = await res.json();
@@ -400,7 +422,6 @@ async function getInfo() {
   
   document.getElementById('ip').innerText = userInfo.ip;
   document.getElementById('isp').innerText = userInfo.isp + " - India";
-  document.getElementById('network').innerText = userInfo.network;
 }
 window.onload = getInfo;
 </script>
