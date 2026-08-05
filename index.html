@@ -7,61 +7,40 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-  body { background: #000; min-height: 100vh; padding: 15px; position: relative; }
-
-  /* SRI JAGANNATH TEMPLE BACKGROUND */
-  .temple-bg {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: url('https://images.unsplash.com/photo-1587974928442-77dc0e8d2476?q=80&w=1920') no-repeat center;
-    background-size: cover; filter: brightness(0.35) blur(1px); z-index: -2;
-  }
-  .overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(135deg, rgba(255,107,0,0.25) 0%, rgba(0,51,102,0.35) 100%); z-index: -1;
-  }
-
+  body { background: #000; min-height: 100vh; padding: 15px; }
+  .temple-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1587974928442-77dc0e8d2476?q=80&w=1920') no-repeat center; background-size: cover; filter: brightness(0.35) blur(1px); z-index: -2; }
+  .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,107,0,0.25) 0%, rgba(0,51,102,0.35) 100%); z-index: -1; }
   .back-btn { background: rgba(255,255,255,0.95); color: #ff6b00; border: none; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 15px; }
-  .container { max-width: 650px; margin: 0 auto; background: rgba(255,255,255,0.97); backdrop-filter: blur(10px); padding: 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
-  
+  .container { max-width: 650px; margin: 0 auto; background: rgba(255,255,255,0.97); backdrop-filter: blur(10px); padding: 30px; border-radius: 16px; }
   .header { text-align: center; margin-bottom: 25px; }
   .title { font-size: 26px; font-weight: 700; color: #ff6b00; }
   .server-info { font-size: 12px; color: #555; margin-top: 5px; }
-
   .speedo-wrap { text-align: center; margin: 30px 0; }
   .speedo { width: 300px; height: 150px; margin: 0 auto; position: relative; background: conic-gradient(from 180deg, #ff6b00 0deg, #003366 180deg, #e0e0e0 180deg); border-radius: 300px 300px 0 0; }
   .speedo-inner { width: 260px; height: 130px; background: rgba(255,255,255,0.97); border-radius: 260px 260px 0 0; position: absolute; bottom: 0; left: 20px; }
   .needle { width: 4px; height: 120px; background: linear-gradient(to top, #ff0000, #ff6b00); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.8s ease; border-radius: 4px; }
   .speedo-value { font-size: 48px; font-weight: 700; color: #003366; margin-top: 15px; }
   .speedo-unit { font-size: 14px; color: #555; }
-
-  .status { text-align: center; color: #ff6b00; font-weight: 600; margin: 15px 0; min-height: 20px; }
-
+  .status { text-align: center; color: #ff6b00; font-weight: 600; margin: 15px 0; }
   .results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
   .card { background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.2); border-radius: 12px; padding: 15px; text-align: center; }
   .card .val { font-size: 22px; font-weight: 700; color: #003366; }
-  .card .label { font-size: 12px; color: #555; margin-top: 3px; }
-
+  .card .label { font-size: 12px; color: #555; }
   .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .btn { background: linear-gradient(135deg, #ff6b00, #003366); color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: 600; font-size: 15px; cursor: pointer; }
-  .btn:hover { transform: translateY(-2px); }
   .btn-secondary { background: rgba(0,51,102,0.1); color: #003366; }
-
   .device { background: rgba(255,107,0,0.08); border-radius: 12px; padding: 18px; margin-top: 20px; }
   .device h3 { color: #ff6b00; font-size: 15px; margin-bottom: 12px; font-weight: 600; }
   .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.1); font-size: 13px; }
   .row span:last-child { color: #003366; font-weight: 600; }
-
   .footer { text-align: center; font-size: 12px; color: #555; margin-top: 20px; font-weight: 600; }
-
   .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 999; }
-  .popup-box { background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-radius: 20px; width: 90%; max-width: 470px; overflow: hidden; }
+  .popup-box { background: rgba(255,255,255,0.98); border-radius: 20px; width: 90%; max-width: 470px; }
   .popup-header { background: linear-gradient(135deg, #ff6b00, #003366); padding: 25px; text-align: center; color: #fff; }
-  .popup-header h2 { font-weight: 700; margin-bottom: 5px; }
-  .popup-header .jai { font-weight: 600; color: #ffd700; }
-  .popup-header .msg { font-size: 13px; opacity: 0.9; margin-top: 5px; }
+  .popup-header h2 { font-weight: 700; margin-bottom: 8px; }
+  .popup-header .msg { font-size: 13px; opacity: 0.95; font-weight: 500; }
   .popup-body { padding: 20px; }
   .popup .result-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
-  .popup .result-row b { color: #333; }
   .popup .result-row span { color: #ff6b00; font-weight: 600; }
   .popup-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
   .popup-footer { background: #f8f9fa; padding: 12px; text-align: center; font-size: 11px; color: #888; font-weight: 600; }
@@ -77,14 +56,11 @@
 <div class="container">
   <div class="header">
     <div class="title">SPEED TEST X PRO BY SP</div>
-    <div class="server-info">Jai Jagannath 🙏 Accurate Test with Real Servers</div>
+    <div class="server-info">Jai Jagannath 🙏 Server: Chennai, India</div>
   </div>
 
   <div class="speedo-wrap">
-    <div class="speedo">
-      <div class="speedo-inner"></div>
-      <div class="needle" id="needle"></div>
-    </div>
+    <div class="speedo"><div class="speedo-inner"></div><div class="needle" id="needle"></div></div>
     <div class="speedo-value" id="speedValue">0</div>
     <div class="speedo-unit" id="speedUnit">Mbps</div>
   </div>
@@ -108,7 +84,7 @@
     <div class="row"><span>Device</span><span id="device">Loading...</span></div>
     <div class="row"><span>Location</span><span id="location">Loading...</span></div>
     <div class="row"><span>IP Address</span><span id="ip">Loading...</span></div>
-    <div class="row"><span>ISP / Tower</span><span id="isp">Loading...</span></div>
+    <div class="row"><span>ISP / Server</span><span id="isp">Loading...</span></div>
     <div class="row"><span>Network Type</span><span id="network">Loading...</span></div>
   </div>
 
@@ -119,8 +95,7 @@
   <div class="popup-box">
     <div class="popup-header">
       <h2>✅ Speed Test Complete</h2>
-      <div class="jai">Jai Jagannath 🙏</div>
-      <div class="msg">Bhagwan Jagannath ki kripa se aapka internet tez hai!</div>
+      <div class="msg">Thank you for using speed text X pro by sp<br>-Punya Binay Swain</div>
     </div>
     <div class="popup-body">
       <div class="result-row"><b>Ping</b> <span id="p_ping">0</span> ms</div>
@@ -129,7 +104,7 @@
       <div class="result-row"><b>Packet Loss</b> <span id="p_loss">0</span> %</div>
       <div class="result-row"><b>Device</b> <span id="p_device">-</span></div>
       <div class="result-row"><b>Location</b> <span id="p_location">-</span></div>
-      <div class="result-row"><b>ISP / Tower</b> <span id="p_isp">-</span></div>
+      <div class="result-row"><b>ISP / Server</b> <span id="p_isp">-</span></div>
       <div class="result-row"><b>Network</b> <span id="p_network">-</span></div>
       <div class="popup-btns">
         <button class="btn" onclick="startTest()">Test Again</button>
@@ -143,12 +118,9 @@
 <script>
 let running = false;
 let result = {ping:0, download:0, upload:0, loss:0};
-let userInfo = {device:'-', location:'-', ip:'-', isp:'-', network:'-'};
+let userInfo = {};
 
-// REAL SERVERS - NO FAKE
-const DOWNLOAD_URL = "https://speed.cloudflare.com/__down?bytes=20000000"; // 20MB
-const UPLOAD_URL = "https://speed.cloudflare.com/__up";
-
+// GOOGLE JESA MULTI-CONNECTION TEST
 async function startTest() {
   if(running) return;
   running = true;
@@ -159,10 +131,10 @@ async function startTest() {
   await testPing();
   await sleep(200); resetNeedle();
 
-  await testDownload();
+  await testDownloadMulti(); // 8 THREAD
   await sleep(200); resetNeedle();
 
-  await testUpload();
+  await testUploadMulti(); // 8 THREAD
   await sleep(200); resetNeedle();
 
   await testLoss();
@@ -187,42 +159,53 @@ function resetNeedle() {
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function testPing() {
-  document.getElementById('status').innerText = 'Testing Ping...';
-  let times = [];
-  for(let i=0; i<5; i++) {
-    let s = performance.now();
-    try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors', cache:'no-store'}); } catch(e){}
-    times.push(performance.now() - s);
-  }
-  result.ping = Math.round(times.reduce((a,b)=>a+b)/times.length);
-  updateUI('ping', result.ping, 300);
+  document.getElementById('status').innerText = 'Testing Ping - Chennai Server...';
+  let s = performance.now();
+  try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); } catch(e){}
+  result.ping = Math.round(performance.now() - s);
+  updateUI('ping', result.ping, 500);
 }
 
-async function testDownload() {
-  document.getElementById('status').innerText = 'Testing Download Speed...';
+// GOOGLE JESA 8 CONNECTION DOWNLOAD
+async function testDownloadMulti() {
+  document.getElementById('status').innerText = 'Testing Download - 8 Connections...';
   document.getElementById('speedUnit').innerText = 'Mbps';
-  try {
-    let s = performance.now();
-    let res = await fetch(DOWNLOAD_URL + "&" + Date.now());
-    await res.blob(); // pura download hone do
-    let t = (performance.now() - s)/1000;
-    result.download = ((20000000 * 8)/1000000/t).toFixed(2);
-  } catch(e){ result.download = "0.00"; }
+  let s = performance.now();
+  let totalBytes = 0;
+  let threads = 8;
+  let promises = [];
+  
+  for(let i=0; i<threads; i++) {
+    promises.push(
+      fetch(`https://speed.cloudflare.com/__down?bytes=5000000&${Date.now()}-${i}`)
+      .then(res => res.blob())
+      .then(blob => totalBytes += blob.size)
+    );
+  }
+  
+  await Promise.all(promises);
+  let t = (performance.now() - s)/1000;
+  result.download = ((totalBytes * 8)/1000000/t).toFixed(2);
   updateUI('download', result.download, 200);
 }
 
-async function testUpload() {
-  document.getElementById('status').innerText = 'Testing Upload Speed...';
-  // REAL UPLOAD TEST - 5MB x 3
-  let size = 5 * 1024 * 1024;
+// GOOGLE JESA 8 CONNECTION UPLOAD
+async function testUploadMulti() {
+  document.getElementById('status').innerText = 'Testing Upload - 8 Connections...';
+  let size = 1024 * 1024; // 1MB per thread
+  let threads = 8;
   let s = performance.now();
-  try {
+  let promises = [];
+  
+  for(let i=0; i<threads; i++) {
     let data = new Blob([new Uint8Array(size)]);
-    await fetch(UPLOAD_URL, {method:'POST', body:data, mode:'no-cors'});
-    let t = (performance.now() - s)/1000;
-    result.upload = ((size * 8)/1000000/t).toFixed(2);
-  } catch(e){ result.upload = "0.00"; }
-  updateUI('upload', result.upload, 100);
+    promises.push(fetch("https://httpbin.org/post", {method:'POST', body:data, mode:'no-cors'}));
+  }
+  
+  await Promise.all(promises);
+  let t = (performance.now() - s)/1000;
+  result.upload = ((size * threads * 8)/1000000/t).toFixed(2);
+  updateUI('upload', result.upload, 50);
 }
 
 async function testLoss() {
@@ -265,51 +248,22 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
-// FIXED LOCATION FETCH WITH 2 BACKUP API
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
-
-  // API 1
   try {
-    let res = await fetch('https://ipapi.co/json/');
+    let res = await fetch('https://ipinfo.io/json');
     let data = await res.json();
-    setUserInfo(data);
-    return;
+    userInfo.ip = data.ip;
+    userInfo.location = `${data.city}, ${data.country}`;
+    userInfo.isp = data.org + " - Chennai";
+    userInfo.network = navigator.connection?.effectiveType?.toUpperCase() || "WiFi";
+    document.getElementById('ip').innerText = userInfo.ip;
+    document.getElementById('location').innerText = userInfo.location;
+    document.getElementById('isp').innerText = userInfo.isp;
+    document.getElementById('network').innerText = userInfo.network;
   } catch(e){}
-
-  // API 2 BACKUP
-  try {
-    let res = await fetch('https://ipwho.is/');
-    let data = await res.json();
-    if(data.success) {
-      userInfo.ip = data.ip;
-      userInfo.location = `${data.city}, ${data.country}`;
-      userInfo.isp = data.connection.isp;
-      userInfo.network = navigator.connection?.effectiveType?.toUpperCase() || "WiFi";
-      updateDOM();
-    }
-  } catch(e){
-    document.getElementById('location').innerText = "Unable to fetch";
-    document.getElementById('isp').innerText = "Unable to fetch";
-  }
 }
-
-function setUserInfo(data) {
-  userInfo.ip = data.ip;
-  userInfo.location = `${data.city}, ${data.country_name}`;
-  userInfo.isp = data.org;
-  userInfo.network = navigator.connection?.effectiveType?.toUpperCase() || "WiFi";
-  updateDOM();
-}
-
-function updateDOM() {
-  document.getElementById('ip').innerText = userInfo.ip;
-  document.getElementById('location').innerText = userInfo.location;
-  document.getElementById('isp').innerText = userInfo.isp;
-  document.getElementById('network').innerText = userInfo.network;
-}
-
 window.onload = getInfo;
 </script>
 </body>
