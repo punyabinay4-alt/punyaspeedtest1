@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPEED TEST X PRO BY SP</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+  body {
+    /* TRAI STYLE CITY BACKGROUND - INSTANT LOAD */
+    background: linear-gradient(to bottom, #e6f0ff 0%, #cce0ff 100%);
+    position: relative;
+    color: #222; padding: 10px; min-height: 100vh;
+  }
+  /* CITY SILHOUETTE LIKE TRAI */
+  body::after {
+    content: ''; position: fixed; bottom: 0; left: 0; width: 100%; height: 150px;
+    background: 
+      linear-gradient(transparent 50%, rgba(0,51,102,0.9) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns=N/A viewBox='0 0 1200 150'%3E%3Cg fill='%23003366'%3E%3Crect x='20' y='80' width='25' height='70'/%3E%3Crect x='60' y='60' width='30' height='90'/%3E%3Crect x='110' y='90' width='20' height='60'/%3E%3Crect x='150' y='50' width='35' height='100'/%3E%3Crect x='200' y='70' width='28' height='80'/%3E%3Crect x='250' y='40' width='40' height='110'/%3E%3Crect x='310' y='85' width='22' height='65'/%3E%3Crect x='350' y='55' width='32' height='95'/%3E%3Crect x='400' y='75' width='26' height='75'/%3E%3Crect x='450' y='45' width='38' height='105'/%3E%3Crect x='510' y='65' width='30' height='85'/%3E%3Crect x='560' y='95' width='18' height='55'/%3E%3Crect x='600' y='50' width='34' height='100'/%3E%3Crect x='650' y='80' width='24' height='70'/%3E%3Crect x='700' y='35' width='42' height='115'/%3E%3Crect x='760' y='70' width='28' height='80'/%3E%3Crect x='810' y='90' width='20' height='60'/%3E%3Crect x='850' y='60' width='30' height='90'/%3E%3Crect x='900' y='85' width='22' height='65'/%3E%3Crect x='940' y='40' width='40' height='110'/%3E%3Crect x='1000' y='75' width='26' height='75'/%3E%3Crect x='1050' y='55' width='32' height='95'/%3E%3Crect x='1100' y='80' width='25' height='70'/%3E%3Crect x='1140' y='65' width='30' height='85'/%3E%3C/g%3E%3C/svg%3E") repeat-x bottom;
+    background-size: contain;
+    z-index: -1;
+  }
+
+.container { max-width: 650px; margin: 20px auto; }
+
+/* HEADER */
+.header { text-align: center; margin-bottom: 20px; }
+.title { font-size: 26px; font-weight: 900; color: #003366; letter-spacing: 1px; }
+.tagline { font-size: 13px; color: #0055aa; margin-top: 4px; font-weight: 500; }
+
+/* MAIN BOX */
+.main-box {
+    background: #fff; border-radius: 12px; padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,51,102,0.15); margin-bottom: 20px;
+    border: 1px solid #cce0ff;
+  }
+
+/* SPEEDOMETER */
+.speedometer-container { position: relative; width: 280px; height: 160px; margin: 0 auto 15px; }
+.speedo-bg {
+    width: 280px; height: 140px; border: 20px solid #e6e6e6;
+    border-bottom: none; border-radius: 280px 280px 0 0;
+  }
+.speedo-progress {
+    width: 280px; height: 140px; border: 20px solid transparent;
+    border-top: 20px solid #007bff; border-radius: 280px 280px 0 0;
+    position: absolute; top: 0; left: 0; transform-origin: center bottom;
+    transform: rotate(-90deg); transition: transform 1s ease-out;
+  }
+.speedo-needle {
+    position: absolute; bottom: 0; left: 50%; width: 3px; height: 110px;
+    background: #ff0000; transform-origin: bottom center;
+    transform: translateX(-50%) rotate(-90deg); transition: transform 1s ease-out;
+    z-index: 10;
+  }
+.speedo-center { position: absolute; width: 100%; top: 70px; text-align: center; }
+.speedo-value { font-size: 32px; font-weight: 900; color: #003366; }
+.speedo-unit { font-size: 12px; color: #555; }
+.speedo-mark { position: absolute; font-size: 10px; color: #003366; font-weight: 700; }
+.m0{bottom:5px;left:8px}.m50{bottom:70px;left:35px}.m100{top:10px;left:50%;transform:translateX(-50%)}
+.m150{bottom:70px;right:35px}.m200{bottom:35px;right:20px}.m250{bottom:8px;right:15px}
+.m300{bottom:8px;right:70px}.m350{bottom:35px;right:110px}.m400{top:10px;right:80px}
+.m450{bottom:70px;right:40px}.m500{bottom:5px;right:8px}
+
+.status { text-align: center; color: #ff6600; font-weight: 700; margin-bottom: 15px; height: 20px; }
+
+/* RESULTS GRID */
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.result-card {
+    background: #f0f7ff; border: 1px solid #b3d9ff; border-radius: 8px;
+    padding: 15px; text-align: center;
+  }
+.result-card .val { font-size: 18px; font-weight: 900; color: #003366; }
+.result-card .label { font-size: 12px; color: #555; margin-top: 3px; }
+
+.btn {
+    background: #007bff; color: #fff; border: none; padding: 12px;
+    border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer;
+    width: 100%; margin-top: 15px; transition: 0.3s;
+  }
+.btn:hover { background: #0056b3; }
+.btn-secondary { background: #6c757d; margin-top: 8px; }
+
+/* DEVICE BOX */
+.device-box {
+    background: #fff; border-radius: 12px; padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,51,102,0.15);
+    border: 1px solid #cce0ff;
+  }
+.device-box h3 { color: #003366; font-size: 16px; margin-bottom: 15px; text-align: center; }
+.info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+.info-row span:first-child { font-weight: 700; color: #555; }
+.info-row span:last-child { color: #003366; font-weight: 500; }
+
+/* POPUP */
+.popup {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center;
+    z-index: 999;
+  }
+.popup-content {
+    background: #fff; padding: 25px; border-radius: 12px; width: 90%; max-width: 400px;
+    text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+.popup h2 { color: #007bff; margin-bottom: 10px; }
+.popup .result-line { margin: 8px 0; font-size: 14px; }
+
+/* FOOTER */
+.tiranga { height: 5px; background: linear-gradient(90deg, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%); margin: 20px 0 10px; }
+.footer { text-align: center; font-size: 12px; color: #555; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="title">SPEED TEST X PRO BY SP</div>
+    <div class="tagline">India's Most Accurate & Fast Internet Speed Tester</div>
+  </div>
+
+  <div class="main-box">
+    <!-- SPEEDOMETER -->
+    <div class="speedometer-container">
+      <div class="speedo-bg"></div>
+      <div class="speedo-progress" id="speedoProgress"></div>
+      <div class="speedo-needle" id="speedoNeedle"></div>
+      <div class="speedo-mark m0">0</div><div class="speedo-mark m50">50</div><div class="speedo-mark m100">100</div>
+      <div class="speedo-mark m150">150</div><div class="speedo-mark m200">200</div><div class="speedo-mark m250">250</div>
+      <div class="speedo-mark m300">300</div><div class="speedo-mark m350">350</div><div class="speedo-mark m400">400</div>
+      <div class="speedo-mark m450">450</div><div class="speedo-mark m500">500</div>
+      <div class="speedo-center">
+        <div class="speedo-value" id="speedoValue">0.00</div>
+        <div class="speedo-unit" id="speedoUnit">Mbps</div>
+      </div>
+    </div>
+    <div class="status" id="status">Click START to begin test</div>
+
+    <!-- RESULTS BOX -->
+    <div class="results-grid">
+      <div class="result-card"><div class="val" id="ping">0</div><div class="label">ms Ping</div></div>
+      <div class="result-card"><div class="val" id="download">0</div><div class="label">Mbps Download</div></div>
+      <div class="result-card"><div class="val" id="upload">0</div><div class="label">Mbps Upload</div></div>
+      <div class="result-card"><div class="val" id="loss">0</div><div class="label">% Packet Loss</div></div>
+    </div>
+
+    <button class="btn" id="startBtn" onclick="startFullTest()">START TEST</button>
+  </div>
+
+  <!-- DEVICE INFO BOX -->
+  <div class="device-box">
+    <h3>DEVICE INFORMATION</h3>
+    <div class="info-row"><span>Device Name</span><span id="device">Detecting...</span></div>
+    <div class="info-row"><span>Location</span><span id="location">Detecting...</span></div>
+    <div class="info-row"><span>IP Address</span><span id="ip">Detecting...</span></div>
+    <div class="info-row"><span>Network Server / ISP</span><span id="isp">Detecting...</span></div>
+    <div class="info-row"><span>Network Type</span><span id="network">Detecting...</span></div>
+    <div class="info-row"><span>Network Quality</span><span id="quality">Detecting...</span></div>
+  </div>
+
+  <div class="tiranga"></div>
+  <div class="footer">CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</div>
+
+</div>
+
+<!-- RESULT POPUP -->
+<div class="popup" id="resultPopup">
+  <div class="popup-content">
+    <h2>Test Complete ✅</h2>
+    <p>Thank You for using SPEED TEST X PRO</p>
+    <div style="margin:15px 0;">
+      <div class="result-line"><b>Ping:</b> <span id="p_ping">0</span> ms</div>
+      <div class="result-line"><b>Download:</b> <span id="p_download">0</span> Mbps</div>
+      <div class="result-line"><b>Upload:</b> <span id="p_upload">0</span> Mbps</div>
+      <div class="result-line"><b>Packet Loss:</b> <span id="p_loss">0</span> %</div>
+    </div>
+    <button class="btn" onclick="startFullTest()">TEST AGAIN</button>
+    <button class="btn btn-secondary" onclick="location.reload()">REFRESH</button>
+    <button class="btn btn-secondary" onclick="downloadReportJPG()">DOWNLOAD RESULT JPG</button>
+    <button class="btn btn-secondary" onclick="document.getElementById('resultPopup').style.display='none'">CLOSE</button>
+  </div>
+</div>
+
+<canvas id="reportCanvas" width="600" height="800" style="display:none;"></canvas>
+
+<script>
+let testRunning = false;
+
+// TRAI SERVER - MOST ACCURATE FOR INDIA
+const TRAI_SERVER = "https://nms.trai.gov.in/speedtest/"; 
+
+async function startFullTest() {
+  if(testRunning) return;
+  testRunning = true;
+  document.getElementById('startBtn').style.display = 'none';
+  document.getElementById('resultPopup').style.display = 'none';
+  resetAll();
+
+  await runTest('ping', 'Testing Ping...', 'ms', 200);
+  await runTest('download', 'Testing Download...', 'Mbps', 500);
+  await runTest('upload', 'Testing Upload...', 'Mbps', 500);
+  await runTest('loss', 'Testing Packet Loss...', '%', 100);
+
+  document.getElementById('status').innerText = 'Test Complete';
+  showResultPopup();
+  testRunning = false;
+}
+
+function resetAll() {
+  document.getElementById('speedoProgress').style.transform = 'rotate(-90deg)';
+  document.getElementById('speedoNeedle').style.transform = 'translateX(-50%) rotate(-90deg)';
+  document.getElementById('speedoValue').innerText = '0.00';
+  ['ping','download','upload','loss'].forEach(id => document.getElementById(id).innerText = '0');
+  document.getElementById('startBtn').style.display = 'block';
+}
+
+async function runTest(type, statusText, unit, max) {
+  document.getElementById('status').innerText = statusText;
+  document.getElementById('speedoUnit').innerText = unit;
+  let value = 0;
+
+  try {
+    if(type === 'ping') {
+      const start = performance.now();
+      await fetch(TRAI_SERVER + `ping?${Date.now()}`, {mode: 'no-cors', cache: 'no-store'});
+      value = Math.round(performance.now() - start);
+    }
+    if(type === 'download') {
+      const start = performance.now();
+      await fetch(TRAI_SERVER + `download?size=20000000&${Date.now()}`, {cache: 'no-store'});
+      const time = (performance.now() - start) / 1000;
+      value = ((20 * 8) / time).toFixed(2);
+    }
+    if(type === 'upload') {
+      const data = new Blob([new ArrayBuffer(5000000)]);
+      const start = performance.now();
+      await fetch(TRAI_SERVER + 'upload', {method: 'POST', body: data, mode: 'no-cors', cache: 'no-store'});
+      const time = (performance.now() - start) / 1000;
+      value = ((5 * 8) / time).toFixed(2);
+    }
+    if(type === 'loss') {
+      let lost=0;
+      for(let i=0; i<10; i++){
+        try{ await fetch(TRAI_SERVER + `ping?${Date.now()+i}`, {mode: 'no-cors', cache: 'no-store'}); }
+        catch(e){ lost++; }
+      }
+      value = ((lost/10)*100).toFixed(2);
+    }
+  } catch(e) { value = "0"; }
+
+  animateSpeedo(value, max);
+  document.getElementById(type).innerText = value;
+  await new Promise(r => setTimeout(r, 800));
+}
+
+function animateSpeedo(value, max) {
+  const progress = document.getElementById('speedoProgress');
+  const needle = document.getElementById('speedoNeedle');
+  const val = document.getElementById('speedoValue');
+  let deg = Math.min((value / max) * 180, 180) - 90;
+  progress.style.transform = `rotate(${deg}deg)`;
+  needle.style.transform = `translateX(-50%) rotate(${deg}deg)`;
+  
+  let i = 0;
+  let interval = setInterval(() => {
+    i += value/20;
+    if(i >= value) { i = value; clearInterval(interval); }
+    val.innerText = parseFloat(i).toFixed(2);
+  }, 20);
+}
+
+function showResultPopup() {
+  document.getElementById('p_ping').innerText = document.getElementById('ping').innerText;
+  document.getElementById('p_download').innerText = document.getElementById('download').innerText;
+  document.getElementById('p_upload').innerText = document.getElementById('upload').innerText;
+  document.getElementById('p_loss').innerText = document.getElementById('loss').innerText;
+  document.getElementById('resultPopup').style.display = 'flex';
+}
+
+// AUTO DEVICE + GPS LOCATION
+async function getDeviceInfo() {
+  let deviceName = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
+  document.getElementById('device').innerText = deviceName;
+  
+  let net = navigator.connection;
+  let netType = net?.effectiveType?.toUpperCase() || 'UNKNOWN';
+  document.getElementById('network').innerText = netType;
+  document.getElementById('quality').innerText = net?.downlink ? net.downlink + ' Mbps' : '-';
+
+  try {
+    const res = await fetch('https://ipwho.is/');
+    const data = await res.json();
+    if(data.success) {
+      document.getElementById('ip').innerText = data.ip;
+      document.getElementById('isp').innerText = data.connection.isp;
+      let loc = `${data.city}, ${data.country}`;
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(pos => {
+          loc = `Lat:${pos.coords.latitude.toFixed(4)}, Lon:${pos.coords.longitude.toFixed(4)} - ${data.city}`;
+          document.getElementById('location').innerText = loc;
+        });
+      } else {
+        document.getElementById('location').innerText = loc;
+      }
+    }
+  } catch(e) {}
+}
+
+function downloadReportJPG() {
+  const canvas = document.getElementById('reportCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, 600, 800);
+  ctx.fillStyle = '#003366'; ctx.font = 'bold 24px Roboto'; ctx.textAlign = 'center';
+  ctx.fillText('SPEED TEST X PRO BY SP', 300, 50);
+  ctx.font = '14px Roboto'; ctx.fillText(new Date().toLocaleString(), 300, 80);
+  ctx.font = '18px Roboto'; ctx.fillText('TEST RESULTS', 300, 130);
+  ctx.textAlign = 'left'; ctx.font = '16px Roboto';
+  ctx.fillText(`Ping: ${document.getElementById('ping').innerText} ms`, 50, 180);
+  ctx.fillText(`Download: ${document.getElementById('download').innerText} Mbps`, 50, 210);
+  ctx.fillText(`Upload: ${document.getElementById('upload').innerText} Mbps`, 50, 240);
+  ctx.fillText(`Packet Loss: ${document.getElementById('loss').innerText} %`, 50, 270);
+  ctx.font = '18px Roboto'; ctx.fillText('DEVICE INFO', 300, 330);
+  ctx.font = '14px Roboto';
+  ctx.fillText(`Device: ${document.getElementById('device').innerText}`, 50, 370);
+  ctx.fillText(`Location: ${document.getElementById('location').innerText}`, 50, 400);
+  ctx.fillText(`IP: ${document.getElementById('ip').innerText}`, 50, 430);
+  ctx.fillText(`ISP: ${document.getElementById('isp').innerText}`, 50, 460);
+  ctx.fillStyle = '#FF9933'; ctx.fillRect(0,750,200,5);
+  ctx.fillStyle = '#FFFFFF'; ctx.fillRect(200,750,200,5);
+  ctx.fillStyle = '#138808'; ctx.fillRect(400,750,200,5);
+  ctx.fillStyle = '#003366'; ctx.textAlign = 'center'; ctx.font = '14px Roboto';
+  ctx.fillText('CREATED AND DEVELOPED BY PUNYA BINAY SWAIN', 300, 780);
+  
+  const link = document.createElement('a');
+  link.download = 'SpeedTest_Report.jpg';
+  link.href = canvas.toDataURL('image/jpeg', 0.9);
+  link.click();
+}
+
+window.onload = getDeviceInfo;
+</script>
+</body>
+</html>
