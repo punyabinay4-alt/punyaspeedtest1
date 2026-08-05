@@ -4,95 +4,97 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SpeedTestX Pro by SP</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    /* PAKKA CITY BACKGROUND - SVG + GRADIENT */
-    background:
-      linear-gradient(to bottom, rgba(2,2,16,0.9), rgba(10,15,42,0.95)),
-      url("data:image/svg+xml,%3Csvg xmlns=N/A viewBox='0 0 1440 400'%3E%3Cdefs%3E%3ClinearGradient id='g'%3E%3Cstop offset='0%' stop-color='%2300FFC6'/%3E%3Cstop offset='100%' stop-color='%238A2BE2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='%23050A18' width='1440' height='400'/%3E%3Cg fill='url(%23g)' opacity='0.15'%3E%3Crect x='50' y='200' width='30' height='200'/%3E%3Crect x='100' y='150' width='40' height='250'/%3E%3Crect x='160' y='220' width='25' height='180'/%3E%3Crect x='210' y='100' width='50' height='300'/%3E%3Crect x='280' y='180' width='35' height='220'/%3E%3Crect x='340' y='120' width='45' height='280'/%3E%3Crect x='400' y='200' width='30' height='200'/%3E%3Crect x='450' y='160' width='40' height='240'/%3E%3Crect x='510' y='90' width='55' height='310'/%3E%3Crect x='580' y='210' width='30' height='190'/%3E%3Crect x='630' y='140' width='42' height='260'/%3E%3Crect x='690' y='110' width='48' height='290'/%3E%3Crect x='760' y='190' width='32' height='210'/%3E%3Crect x='810' y='130' width='40' height='270'/%3E%3Crect x='870' y='100' width='50' height='300'/%3E%3Crect x='940' y='170' width='36' height='230'/%3E%3Crect x='1000' y='120' width='44' height='280'/%3E%3Crect x='1060' y='80' width='60' height='320'/%3E%3Crect x='1140' y='150' width='38' height='250'/%3E%3Crect x='1200' y='200' width='30' height='200'/%3E%3Crect x='1250' y='110' width='46' height='290'/%3E%3Crect x='1310' y='160' width='40' height='240'/%3E%3Crect x='1360' y='190' width='32' height='210'/%3E%3C/g%3E%3C/svg%3E") no-repeat bottom center;
+    background: 
+      linear-gradient(180deg, #0D0221 0%, #1A0B3A 100%),
+      url("data:image/svg+xml,%3Csvg xmlns=N/A viewBox='0 0 1440 500'%3E%3Crect fill='%230D0221' width='1440' height='500'/%3E%3Cg fill='%239D4EDD' opacity='0.3'%3E%3Crect x='40' y='250' width='20' height='250'/%3E%3Crect x='80' y='200' width='25' height='300'/%3E%3Crect x='130' y='280' width='15' height='220'/%3E%3Crect x='170' y='150' width='30' height='350'/%3E%3Crect x='220' y='230' width='22' height='270'/%3E%3Crect x='260' y='180' width='28' height='320'/%3E%3Crect x='310' y='260' width='20' height='240'/%3E%3Crect x='350' y='120' width='35' height='380'/%3E%3Crect x='400' y='240' width='18' height='260'/%3E%3Crect x='440' y='160' width='32' height='340'/%3E%3Crect x='490' y='270' width='16' height='230'/%3E%3Crect x='530' y='140' width='30' height='360'/%3E%3Crect x='580' y='220' width='24' height='280'/%3E%3Crect x='620' y='100' width='40' height='400'/%3E%3Crect x='680' y='250' width='20' height='250'/%3E%3Crect x='720' y='170' width='26' height='330'/%3E%3Crect x='770' y='290' width='14' height='210'/%3E%3Crect x='810' y='130' width='34' height='370'/%3E%3Crect x='860' y='200' width='22' height='300'/%3E%3Crect x='900' y='110' width='38' height='390'/%3E%3Crect x='960' y='240' width='20' height='260'/%3E%3Crect x='1000' y='150' width='28' height='350'/%3E%3Crect x='1050' y='280' width='16' height='220'/%3E%3Crect x='1090' y='125' width='32' height='375'/%3E%3Crect x='1140' y='210' width='24' height='290'/%3E%3Crect x='1180' y='90' width='42' height='410'/%3E%3Crect x='1240' y='260' width='18' height='240'/%3E%3Crect x='1280' y='175' width='26' height='325'/%3E%3Crect x='1320' y='230' width='20' height='270'/%3E%3Crect x='1360' y='160' width='30' height='340'/%3E%3C/g%3E%3Ccircle cx='1200' cy='80' r='40' fill='%2300F5FF' opacity='0.4'/%3E%3C/svg%3E") no-repeat bottom;
     background-size: cover;
-    color: #fff; text-align: center; padding: 15px; min-height: 100vh;
+    color: #E0E0FF; text-align: center; padding: 15px; min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
   }
-.container { max-width: 550px; margin: auto; }
+.container { max-width: 600px; margin: auto; }
 
-/* HEADER */
-.top-title { font-size: 12px; color: #00FFC6; letter-spacing: 3px; margin-bottom: 8px; font-weight: 600; }
-.main-title { color: #00FFC6; font-size: 28px; font-weight: 800; text-shadow: 0 0 20px #00FFC6; margin-bottom: 5px; }
-.main-title span { color: #FFA500; font-size: 17px; }
-.server-tag { font-size: 11px; color: #aaa; margin-bottom: 20px; }
+.top-title { font-family: 'Orbitron', sans-serif; font-size: 12px; color: #00F5FF; letter-spacing: 3px; margin-bottom: 8px; }
+.main-title { font-family: 'Orbitron', sans-serif; color: #00F5FF; font-size: 28px; font-weight: 900; text-shadow: 0 0 20px #00F5FF; margin-bottom: 5px; }
+.main-title span { color: #FF00FF; font-size: 17px; }
+.server-tag { font-size: 11px; color: #A0A0FF; margin-bottom: 20px; }
 
-/* CLOCK WITH NUMBERS */
-.gauge-container { position: relative; width: 280px; height: 150px; margin: 0 auto 15px; }
+/* NORMAL SIZE CLOCK - CHOTA KIYA */
+.gauge-container { position: relative; width: 240px; height: 130px; margin: 0 auto 15px; }
 .gauge-bg {
-    width: 280px; height: 140px; border: 20px solid rgba(0,255,198,0.1);
-    border-bottom: none; border-radius: 280px 280px 0 0;
+    width: 240px; height: 120px; border: 16px solid rgba(157,78,221,0.2);
+    border-bottom: none; border-radius: 240px 240px 0 0;
   }
 .gauge-arc {
-    width: 280px; height: 140px; border: 20px solid transparent;
-    border-top: 20px solid #00FFC6; border-radius: 280px 280px 0 0;
+    width: 240px; height: 120px; border: 16px solid transparent;
+    border-top: 16px solid #00F5FF; border-radius: 240px 240px 0 0;
     position: absolute; top: 0; left: 0; transform-origin: center bottom;
     transform: rotate(-90deg); transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-    filter: drop-shadow(0 0 15px #00FFC6);
+    filter: drop-shadow(0 0 15px #00F5FF);
   }
-.gauge-center { position: absolute; width: 100%; top: 65px; }
-.gauge-value { font-size: 40px; font-weight: 800; color: #fff; text-shadow: 0 0 10px #fff; }
-.gauge-unit { font-size: 13px; color: #aaa; }
-/* CLOCK NUMBERS */
-.gauge-mark { position: absolute; font-size: 10px; color: #00FFC6; font-weight: 600; }
+.gauge-arrow {
+    position: absolute; bottom: 0; left: 50%; width: 3px; height: 95px;
+    background: linear-gradient(to top, #FF00FF, #00F5FF); transform-origin: bottom center;
+    transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 10;
+  }
+.gauge-center { position: absolute; width: 100%; top: 55px; z-index: 5; }
+.gauge-value { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 0 10px #fff; }
+.gauge-unit { font-size: 12px; color: #A0A0FF; }
+/* CLOCK NUMBERS 0-500 */
+.gauge-mark { position: absolute; font-family: 'Orbitron'; font-size: 9px; color: #00F5FF; font-weight: 700; }
 .mark-0 { bottom: 5px; left: 5px; }
-.mark-50 { bottom: 80px; left: 40px; }
-.mark-100 { top: 10px; left: 50%; transform: translateX(-50%); }
-.mark-150 { bottom: 80px; right: 40px; }
-.mark-200 { bottom: 5px; right: 5px; }
+.mark-100 { bottom: 70px; left: 30px; }
+.mark-200 { top: 8px; left: 50%; transform: translateX(-50%); }
+.mark-300 { bottom: 70px; right: 30px; }
+.mark-400 { bottom: 35px; right: 15px; }
+.mark-500 { bottom: 5px; right: 5px; }
 
-.test-status { color: #FFA500; font-weight: 600; height: 18px; margin-bottom: 15px; font-size: 14px; }
+.test-status { color: #FF00FF; font-weight: 600; height: 18px; margin-bottom: 15px; font-size: 14px; }
 
-/* RESULTS CARDS */
 .results { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
 .circle-result {
-    background: linear-gradient(135deg, rgba(255,140,0,0.9), rgba(255,69,0,0.9));
-    border-radius: 18px; padding: 18px 10px;
-    color: #000; font-weight: 700; box-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
+    background: rgba(157,78,221,0.2); border: 1px solid #9D4EDD;
+    border-radius: 16px; padding: 18px 10px;
+    color: #fff; font-weight: 700; box-shadow: 0 0 15px rgba(157, 78, 221, 0.4);
     backdrop-filter: blur(10px);
   }
-.circle-result.val { font-size: 20px; }
-.circle-result.label { font-size: 11px; margin-top: 4px; opacity: 0.9; }
+.circle-result.val { font-family: 'Orbitron'; font-size: 20px; color: #00F5FF; }
+.circle-result.label { font-size: 11px; margin-top: 4px; color: #A0A0FF; }
 
 button {
-    background: linear-gradient(90deg, #8A2BE2, #00FFC6); border: none; padding: 14px 30px;
-    border-radius: 12px; color: #000; font-weight: 700; font-size: 15px;
-    cursor: pointer; margin: 10px 0; width: 100%;
-    transition: 0.3s; box-shadow: 0 4px 15px rgba(0,255,198,0.3);
+    background: linear-gradient(90deg, #FF00FF, #00F5FF); border: none; padding: 14px 30px;
+    border-radius: 10px; color: #0D0221; font-weight: 700; font-size: 15px;
+    cursor: pointer; margin: 8px 0; width: 100%;
+    transition: 0.3s; box-shadow: 0 4px 15px rgba(0,245,255,0.3); font-family: 'Orbitron';
   }
-.btn-download { background: linear-gradient(90deg, #FF8C00, #FFD700); }
+.btn-secondary { background: linear-gradient(90deg, #7B2CBF, #9D4EDD); color: #fff; }
+.btn-download { background: linear-gradient(90deg, #00F5FF, #FF00FF); }
 
 .card {
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(0,255,198,0.2);
+    background: rgba(157,78,221,0.1); border: 1px solid rgba(157,78,221,0.3);
     border-radius: 20px; padding: 20px; margin: 20px auto;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(15px);
   }
-.info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 13px; text-align: left; }
+.info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(157,78,221,0.2); font-size: 13px; text-align: left; }
 
-/* POPUP */
 .popup {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center;
-    z-index: 999; backdrop-filter: blur(5px);
+    background: rgba(13,2,33,0.9); display: none; align-items: center; justify-content: center;
+    z-index: 999; backdrop-filter: blur(8px);
   }
 .popup-content {
-    background: linear-gradient(135deg, #0a1128, #1a1f3a); padding: 30px; border-radius: 20px; border: 1px solid #00FFC6;
-    text-align: center; animation: pop 0.5s; box-shadow: 0 0 30px #00FFC6;
+    background: linear-gradient(135deg, #1A0B3A, #2D1B69); padding: 30px; border-radius: 20px; border: 1px solid #00F5FF;
+    text-align: center; box-shadow: 0 0 40px #00F5FF;
   }
-@keyframes pop { from {transform: scale(0.7); opacity:0;} to {transform: scale(1); opacity:1;} }
-.popup h2 { color: #00FFC6; margin-bottom: 10px; }
-.popup p { margin: 5px 0; }
-.popup.from { color: #FFA500; font-weight: 700; margin-top: 10px; }
+.popup h2 { font-family: 'Orbitron'; color: #00F5FF; margin-bottom: 10px; }
+.popup .from { color: #FF00FF; font-weight: 700; margin-top: 10px; }
 
-.footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #888; }
-.footer.dev { color: #00FFC6; font-weight: 700; }
-.tiranga { height: 3px; background: linear-gradient(90deg, #FF9933 33%, #fff 33%, #fff 66%, #138808 66%); margin-top: 8px; border-radius: 2px; }
+.footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(157,78,221,0.3); font-size: 12px; color: #888; }
+.footer.dev { color: #00F5FF; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -102,15 +104,17 @@ button {
   <h1 class="main-title">⚡ SPEEDTEST <span>X PRO by SP</span></h1>
   <div class="server-tag" id="serverTag">Server: Detecting...</div>
 
-  <!-- CLOCK -->
+  <!-- NORMAL CLOCK -->
   <div class="gauge-container">
     <div class="gauge-bg"></div>
     <div class="gauge-arc" id="gaugeArc"></div>
+    <div class="gauge-arrow" id="gaugeArrow"></div>
     <div class="gauge-mark mark-0">0</div>
-    <div class="gauge-mark mark-50">50</div>
     <div class="gauge-mark mark-100">100</div>
-    <div class="gauge-mark mark-150">150</div>
     <div class="gauge-mark mark-200">200</div>
+    <div class="gauge-mark mark-300">300</div>
+    <div class="gauge-mark mark-400">400</div>
+    <div class="gauge-mark mark-500">500</div>
     <div class="gauge-center">
       <div class="gauge-value" id="gaugeValue">0.00</div>
       <div class="gauge-unit" id="gaugeUnit">Mbps</div>
@@ -118,7 +122,6 @@ button {
   </div>
   <div class="test-status" id="testStatus">Ready to Test</div>
 
-  <!-- RESULTS -->
   <div class="results">
     <div class="circle-result"><div class="val" id="ping">0</div><div class="label">ms Ping</div></div>
     <div class="circle-result"><div class="val" id="download">0</div><div class="label">Mbps Down</div></div>
@@ -127,28 +130,27 @@ button {
   </div>
 
   <button id="startBtn" onclick="startFullTest()">START TEST</button>
+  <button id="testAgainBtn" class="btn-secondary" onclick="startFullTest()" style="display:none;">TEST AGAIN</button>
+  <button id="refreshBtn" class="btn-secondary" onclick="location.reload()" style="display:none;">REFRESH DATA</button>
 
-  <!-- DEVICE INFO CARD WAPAS -->
   <div class="card">
     <button onclick="getDeviceInfo()">📍 GET LOCATION</button>
-    <h3 style="color:#00FFC6; margin: 15px 0; font-size:16px;">DEVICE INFORMATION</h3>
+    <h3 style="color:#00F5FF; margin: 15px 0; font-size:16px; font-family:Orbitron;">DEVICE INFORMATION</h3>
     <div class="info-row"><span>📱 DEVICE</span><span id="device">-</span></div>
     <div class="info-row"><span>📍 LOCATION</span><span id="location">-</span></div>
     <div class="info-row"><span>🏷️ IP ADDRESS</span><span id="ip">-</span></div>
     <div class="info-row"><span>📡 ISP / SERVER</span><span id="isp">-</span></div>
     <div class="info-row"><span>📶 NETWORK TYPE</span><span id="network">-</span></div>
     <div class="info-row"><span>📊 NETWORK QUALITY</span><span id="quality">-</span></div>
-    <button class="btn-download" onclick="downloadReport()">⬇️ DOWNLOAD REPORT</button>
+    <button class="btn-download" onclick="downloadReportJPG()">⬇️ DOWNLOAD REPORT JPG</button>
   </div>
 
   <div class="footer">
     Created and Developed by <span class="dev">Punya Binay Swain</span>
-    <div class="tiranga"></div>
   </div>
 
 </div>
 
-<!-- THANK YOU POPUP -->
 <div class="popup" id="thankPopup">
   <div class="popup-content">
     <h2>✅ Test Complete!</h2>
@@ -159,35 +161,39 @@ button {
   </div>
 </div>
 
+<canvas id="reportCanvas" width="800" height="1000" style="display:none;"></canvas>
+
 <script>
 let testRunning = false;
-const CUSTOM_SERVER = ""; // YAHAN APNA SERVER DAAL
+const CUSTOM_SERVER = "";
 const WEBSITE_NAME = "SpeedTestX Pro by SP";
 
 async function startFullTest() {
   if(testRunning) return;
   testRunning = true;
-  document.getElementById('startBtn').disabled = true;
-  
-  // HAR TEST KE BAAD ZERO
+  document.getElementById('startBtn').style.display = 'none';
+  document.getElementById('testAgainBtn').style.display = 'none';
+  document.getElementById('refreshBtn').style.display = 'none';
   resetAll();
 
   await runTestStep('ping', 'Testing Ping...', 'ms', 200);
   await new Promise(r => setTimeout(r, 500));
   await runTestStep('download', 'Testing Download...', 'Mbps', 500);
   await new Promise(r => setTimeout(r, 500));
-  await runTestStep('upload', 'Testing Upload...', 'Mbps', 200);
+  await runTestStep('upload', 'Testing Upload...', 'Mbps', 500);
   await new Promise(r => setTimeout(r, 500));
   await runTestStep('loss', 'Testing Packet Loss...', '%', 100);
 
   document.getElementById('testStatus').innerText = 'Test Complete ✅';
-  document.getElementById('startBtn').disabled = false;
+  document.getElementById('testAgainBtn').style.display = 'block';
+  document.getElementById('refreshBtn').style.display = 'block';
   document.getElementById('thankPopup').style.display = 'flex';
   testRunning = false;
 }
 
 function resetAll() {
   document.getElementById('gaugeArc').style.transform = 'rotate(-90deg)';
+  document.getElementById('gaugeArrow').style.transform = 'translateX(-50%) rotate(-90deg)';
   document.getElementById('gaugeValue').innerText = '0.00';
   ['ping','download','upload','loss'].forEach(id => {
     document.getElementById(id).innerText = '0';
@@ -215,7 +221,7 @@ async function runTestStep(type, statusText, unit, max) {
   if(type === 'download') {
     const start = performance.now();
     const promises = [];
-    for(let i=0; i<4; i++){
+    for(let i=0; i<6; i++){
       promises.push(fetch(`${server}/__down?bytes=10000000&cb=${Date.now()+i}`, {cache: 'no-store'}).then(r => r.blob()));
     }
     const blobs = await Promise.all(promises);
@@ -225,7 +231,7 @@ async function runTestStep(type, statusText, unit, max) {
   }
 
   if(type === 'upload') {
-    const data = new Blob([new ArrayBuffer(4 * 1024 * 1024)]);
+    const data = new Blob([new ArrayBuffer(5 * 1024 * 1024)]);
     const start = performance.now();
     await fetch(`${server}/post`, {method: 'POST', body: data, mode: 'no-cors', cache: 'no-store'});
     const time = (performance.now() - start) / 1000;
@@ -247,10 +253,13 @@ async function runTestStep(type, statusText, unit, max) {
 }
 
 function animateGauge(value, max, displayVal) {
-  const gauge = document.getElementById('gaugeArc');
+  const gaugeArc = document.getElementById('gaugeArc');
+  const gaugeArrow = document.getElementById('gaugeArrow');
   const val = document.getElementById('gaugeValue');
   let deg = Math.min((value / max) * 180, 180) - 90;
-  gauge.style.transform = `rotate(${deg}deg)`;
+  gaugeArc.style.transform = `rotate(${deg}deg)`;
+  gaugeArrow.style.transform = `translateX(-50%) rotate(${deg}deg)`;
+  
   let i = 0;
   let interval = setInterval(() => {
     i += value/25;
@@ -264,7 +273,7 @@ async function getDeviceInfo() {
   document.getElementById('device').innerText = deviceName;
   let net = navigator.connection;
   document.getElementById('network').innerText = net?.effectiveType?.toUpperCase() || 'UNKNOWN';
-  document.getElementById('quality').innerText = net?.downlink + ' Mbps' || '-';
+  document.getElementById('quality').innerText = net?.downlink ? net.downlink + ' Mbps' : '-';
 
   try {
     const res = await fetch('https://ipwho.is/');
@@ -277,35 +286,53 @@ async function getDeviceInfo() {
   } catch(e) { document.getElementById('ip').innerText = 'Error'; }
 }
 
-function downloadReport() {
-  const data = `=================================
-      ${WEBSITE_NAME}
-=================================
-Designed by: SP
-Created and Developed by: Punya Binay Swain
-Date & Time: ${new Date().toLocaleString()}
-Server: ${document.getElementById('serverTag').innerText}
-
----------- RESULTS ----------
-Ping: ${document.getElementById('ping').innerText} ms
-Download: ${document.getElementById('download').innerText} Mbps
-Upload: ${document.getElementById('upload').innerText} Mbps
-Packet Loss: ${document.getElementById('loss').innerText} %
-
----------- DEVICE ----------
-IP: ${document.getElementById('ip').innerText}
-Location: ${document.getElementById('location').innerText}
-ISP: ${document.getElementById('isp').innerText}
-Network: ${document.getElementById('network').innerText}
-
-Thank you for using ${WEBSITE_NAME}!
-Visit Again.
-- From Punya Binay Swain
-=================================`;
-  const blob = new Blob([data], {type: 'text/plain'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'SpeedTestX_Report.txt'; a.click();
+function downloadReportJPG() {
+  const canvas = document.getElementById('reportCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  ctx.fillStyle = '#0D0221';
+  ctx.fillRect(0, 0, 800, 1000);
+  
+  ctx.fillStyle = '#00F5FF';
+  ctx.font = 'bold 40px Orbitron';
+  ctx.textAlign = 'center';
+  ctx.fillText(WEBSITE_NAME, 400, 80);
+  
+  ctx.fillStyle = '#FF00FF';
+  ctx.font = '20px Poppins';
+  ctx.fillText('Designed by: SP', 400, 120);
+  ctx.fillText('Created by: Punya Binay Swain', 400, 150);
+  ctx.fillText(new Date().toLocaleString(), 400, 180);
+  
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 28px Orbitron';
+  ctx.fillText('TEST RESULTS', 400, 250);
+  
+  ctx.font = '24px Poppins';
+  ctx.textAlign = 'left';
+  ctx.fillText(`Ping: ${document.getElementById('ping').innerText} ms`, 100, 320);
+  ctx.fillText(`Download: ${document.getElementById('download').innerText} Mbps`, 100, 370);
+  ctx.fillText(`Upload: ${document.getElementById('upload').innerText} Mbps`, 100, 420);
+  ctx.fillText(`Packet Loss: ${document.getElementById('loss').innerText} %`, 100, 470);
+  
+  ctx.font = 'bold 28px Orbitron';
+  ctx.fillText('DEVICE INFO', 400, 550);
+  ctx.font = '20px Poppins';
+  ctx.fillText(`IP: ${document.getElementById('ip').innerText}`, 100, 600);
+  ctx.fillText(`Location: ${document.getElementById('location').innerText}`, 100, 640);
+  ctx.fillText(`ISP: ${document.getElementById('isp').innerText}`, 100, 680);
+  ctx.fillText(`Network: ${document.getElementById('network').innerText}`, 100, 720);
+  
+  ctx.fillStyle = '#FF00FF';
+  ctx.font = '22px Poppins';
+  ctx.textAlign = 'center';
+  ctx.fillText('Thank you for using SpeedTestX Pro!', 400, 850);
+  ctx.fillText('- From Punya Binay Swain', 400, 890);
+  
+  const link = document.createElement('a');
+  link.download = 'SpeedTestX_Report.jpg';
+  link.href = canvas.toDataURL('image/jpeg', 0.9);
+  link.click();
 }
 
 window.onload = getDeviceInfo;
