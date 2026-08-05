@@ -1,184 +1,216 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SpeedTestX Pro by Punya Binay</title>
+<title>SpeedTestX Pro by SP</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
   body {
-    background: radial-gradient(circle at top, #0a1128 0%, #050A18 100%);
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-    min-height: 100vh;
+    background: url('https://images.unsplash.com/photo-1477959858617-67e8a6a73bd7?q=80&w=1920') no-repeat center fixed;
+    background-size: cover;
+    color: #fff; text-align: center; padding: 20px; min-height: 100vh;
+    display: flex; flex-direction: column;
   }
- .container { max-width: 650px; margin: auto; }
+  body::before {
+    content: ''; position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(5, 10, 30, 0.88); backdrop-filter: blur(8px);
+    z-index: -1;
+  }
+.container { max-width: 700px; margin: auto; flex: 1; }
 
-  h1 { color: #00FFC6; font-size: 28px; font-weight: 700; text-shadow: 0 0 15px #00FFC6; }
-  h1 span { color: #FFA500; }
- .subtitle { color: #aaa; margin-bottom: 20px; }
+/* HEADER */
+.header {
+    margin-bottom: 15px;
+  }
+.header.design { font-size: 13px; color: #00FFC6; letter-spacing: 3px; font-weight: 600; }
 
- .card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 24px;
-    padding: 25px;
-    margin: 20px auto;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+/* MAIN */
+  h1 { color: #00FFC6; font-size: 32px; font-weight: 700; text-shadow: 0 0 20px #00FFC6; }
+  h1 span { color: #FFA500; font-size: 20px; font-weight: 600; }
+.subtitle { color: #aaa; margin-bottom: 10px; }
+.server-tag { font-size: 11px; color: #00FFC6; margin-bottom: 20px; }
+
+.card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(0,255,198,0.2);
+    border-radius: 24px; padding: 25px; margin: 20px auto;
+    backdrop-filter: blur(20px); box-shadow: 0 8px 32px 0 rgba(0, 255, 198, 0.15);
   }
 
-  /* ATTRACTIVE GAUGE CLOCK */
- .gauge-container { position: relative; width: 300px; height: 160px; margin: 0 auto 20px; }
- .gauge-bg {
-    width: 300px; height: 150px;
-    border: 20px solid rgba(255,255,255,0.1);
-    border-bottom: none;
-    border-radius: 300px 300px 0 0;
+/* GAUGE CLOCK */
+.gauge-container { position: relative; width: 320px; height: 170px; margin: 0 auto 20px; }
+.gauge-bg {
+    width: 320px; height: 160px; border: 22px solid rgba(255,255,255,0.08);
+    border-bottom: none; border-radius: 320px 320px 0 0;
   }
- .gauge-arc {
-    width: 300px; height: 150px;
-    border: 20px solid transparent;
-    border-top: 20px solid #00FFC6;
-    border-radius: 300px 300px 0 0;
-    position: absolute; top: 0; left: 0;
-    transform-origin: center bottom;
-    transform: rotate(-90deg);
-    transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-    filter: drop-shadow(0 0 10px #00FFC6);
+.gauge-arc {
+    width: 320px; height: 160px; border: 22px solid transparent;
+    border-top: 22px solid #00FFC6; border-radius: 320px 320px 0 0;
+    position: absolute; top: 0; left: 0; transform-origin: center bottom;
+    transform: rotate(-90deg); transition: transform 2s cubic-bezier(0.17, 0.89, 0.32, 1.49);
+    filter: drop-shadow(0 0 15px #00FFC6);
   }
- .gauge-value {
-    position: absolute; width: 100%; top: 70px;
-    font-size: 42px; font-weight: 700; color: #fff;
-  }
- .gauge-unit { font-size: 14px; color: #aaa; }
+.gauge-value { position: absolute; width: 100%; top: 75px; font-size: 44px; font-weight: 700; color: #fff; }
+.gauge-unit { font-size: 14px; color: #aaa; }
+.test-status { color: #FFA500; font-weight: 600; height: 20px; margin-top: 5px; }
 
-  /* CIRCLE RESULTS */
- .results { display: flex; justify-content: space-around; margin: 20px 0; flex-wrap: wrap; gap: 15px; }
- .circle-result {
-    width: 115px; height: 115px; border-radius: 50%;
-    background: linear-gradient(135deg, #FFA500, #FF6B00);
+/* CIRCLE RESULTS */
+.results { display: flex; justify-content: space-around; margin: 20px 0; flex-wrap: wrap; gap: 12px; }
+.circle-result {
+    width: 105px; height: 105px; border-radius: 50%;
+    background: conic-gradient(from 180deg, #FFA500, #FF6B00);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #000; font-weight: 700; box-shadow: 0 0 20px rgba(255, 165, 0, 0.6);
+    color: #000; font-weight: 700; box-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
+    transition: transform 0.5s; opacity: 0.3;
   }
- .circle-result.val { font-size: 24px; }
- .circle-result.label { font-size: 11px; margin-top: 4px; }
+.circle-result.active { opacity: 1; transform: scale(1.1); }
+.circle-result.val { font-size: 20px; }
+.circle-result.label { font-size: 10px; margin-top: 4px; }
 
-  /* BUTTONS */
-  button {
-    background: linear-gradient(90deg, #6A5ACD, #00FFC6);
-    border: none; padding: 15px 30px; border-radius: 12px;
-    color: #000; font-weight: 700; font-size: 16px;
+button {
+    background: linear-gradient(90deg, #8A2BE2, #00FFC6); border: none; padding: 15px 30px;
+    border-radius: 12px; color: #000; font-weight: 700; font-size: 16px;
     cursor: pointer; margin: 10px 5px; width: 95%;
     transition: 0.3s; box-shadow: 0 4px 15px rgba(0,255,198,0.3);
   }
-  button:hover { transform: translateY(-2px); }
- .btn-download { background: linear-gradient(90deg, #FF8C00, #FFD700); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-download { background: linear-gradient(90deg, #FF8C00, #FFD700); }
 
-  /* DEVICE INFO */
- .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; text-align: left; }
- .info-row span:first-child { opacity: 0.8; }
- .info-row span:last-child { font-weight: 600; text-align: right; }
+.info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; text-align: left; }
+.info-row span:first-child { opacity: 0.8; }
+.info-row span:last-child { font-weight: 600; text-align: right; max-width: 60%; }
 
- .footer { margin-top: 30px; font-size: 12px; color: #666; }
- .tiranga { height: 4px; background: linear-gradient(90deg, #FF9933 33%, #fff 33%, #fff 66%, #138808 66%); margin-top: 20px; border-radius: 2px; }
- .loading { animation: pulse 1s infinite; }
-  @keyframes pulse { 0% {opacity: 1;} 50% {opacity: 0.5;} 100% {opacity: 1;} }
+/* FOOTER */
+.footer {
+    margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 13px; color: #888;
+  }
+.footer.dev { color: #00FFC6; font-weight: 700; }
+.tiranga { height: 4px; background: linear-gradient(90deg, #FF9933 33%, #fff 33%, #fff 66%, #138808 66%); margin-top: 10px; border-radius: 2px; }
 </style>
 </head>
 <body>
 <div class="container">
 
-<h1>⚡ SPEEDTEST <span>X PRO</span></h1>
-<p class="subtitle">BY PUNYA BINAY</p>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="design">DESIGNED BY SP</div>
+  </div>
 
-<div class="card">
-  <h3 style="color:#00FFC6; margin-bottom:15px;">SPEED TEST</h3>
+  <!-- TITLE BY SP -->
+  <h1>⚡ SPEEDTEST <span>X PRO by SP</span></h1>
+  <p class="subtitle">TRAI STYLE SPEED TEST</p>
+  <div class="server-tag" id="serverTag">Server: Auto Select</div>
 
-  <!-- ATTRACTIVE GAUGE -->
-  <div class="gauge-container">
-    <div class="gauge-bg"></div>
-    <div class="gauge-arc" id="gaugeArc"></div>
-    <div class="gauge-value">
-      <div id="gaugeValue">0.00</div>
-      <div class="gauge-unit" id="gaugeUnit">Mbps</div>
+  <div class="card">
+    <h3 style="color:#00FFC6; margin-bottom:15px;">SPEED TEST</h3>
+
+    <div class="gauge-container">
+      <div class="gauge-bg"></div>
+      <div class="gauge-arc" id="gaugeArc"></div>
+      <div class="gauge-value">
+        <div id="gaugeValue">0.00</div>
+        <div class="gauge-unit" id="gaugeUnit">Ready</div>
+      </div>
     </div>
+    <div class="test-status" id="testStatus">Click START to begin</div>
+
+    <div class="results">
+      <div class="circle-result" id="card-ping"><div class="val" id="ping">0</div><div class="label">ms Ping</div></div>
+      <div class="circle-result" id="card-download"><div class="val" id="download">0</div><div class="label">Mbps Down</div></div>
+      <div class="circle-result" id="card-upload"><div class="val" id="upload">0</div><div class="label">Mbps Up</div></div>
+      <div class="circle-result" id="card-loss"><div class="val" id="loss">0</div><div class="label">% Loss</div></div>
+    </div>
+
+    <button id="startBtn" onclick="startFullTest()">START TEST</button>
   </div>
 
-  <!-- CIRCLE RESULTS -->
-  <div class="results">
-    <div class="circle-result"><div class="val" id="ping">0</div><div class="label">ms Latency</div></div>
-    <div class="circle-result"><div class="val" id="download">0</div><div class="label">Mbps Download</div></div>
-    <div class="circle-result"><div class="val" id="upload">0</div><div class="label">Mbps Upload</div></div>
+  <div class="card">
+    <button onclick="getDeviceInfo()">📍 GET PRECISE DEVICE LOCATION</button>
+    <h3 style="color:#00FFC6; margin: 15px 0;">DEVICE INFORMATION</h3>
+    <div class="info-row"><span>📱 DEVICE</span><span id="device">Detecting...</span></div>
+    <div class="info-row"><span>📍 LOCATION</span><span id="location">-</span></div>
+    <div class="info-row"><span>🏷️ IP ADDRESS</span><span id="ip">-</span></div>
+    <div class="info-row"><span>📡 ISP / NETWORK</span><span id="isp">-</span></div>
+    <div class="info-row"><span>📶 NETWORK TYPE</span><span id="network">-</span></div>
+    <button class="btn-download" onclick="downloadReport()">⬇️ DOWNLOAD REPORT</button>
   </div>
 
-  <button onclick="startTest()">START TEST</button>
-  <button onclick="startTest()">TEST AGAIN</button>
-</div>
-
-<div class="card">
-  <button onclick="getDeviceInfo()">📍 GET PRECISE DEVICE LOCATION</button>
-  <h3 style="color:#00FFC6; margin: 15px 0;">DEVICE INFORMATION</h3>
-  <div class="info-row"><span>📱 DEVICE</span><span id="device" class="loading">Detecting...</span></div>
-  <div class="info-row"><span>📍 LOCATION</span><span id="location" class="loading">-</span></div>
-  <div class="info-row"><span>🏷️ IP ADDRESS</span><span id="ip" class="loading">-</span></div>
-  <div class="info-row"><span>📡 ISP / NETWORK</span><span id="isp" class="loading">-</span></div>
-  <div class="info-row"><span>📶 NETWORK TYPE</span><span id="network" class="loading">-</span></div>
-  <button class="btn-download" onclick="downloadReport()">⬇️ DOWNLOAD REPORT</button>
-</div>
-
-<div class="tiranga"></div>
-<p class="footer">Made with ❤️ by Punya Binay | SpeedTestX Pro v2.0</p>
+  <!-- FOOTER -->
+  <div class="footer">
+    Created and Developed by <span class="dev">Punya Binay Swain</span>
+    <div class="tiranga"></div>
+  </div>
 
 </div>
 
 <script>
 let testRunning = false;
 
-async function startTest() {
+// ====== APNA SERVER YAHAN DAAL ======
+const CUSTOM_SERVER = ""; // Example: "https://speed.yourdomain.com"
+// =====================================
+
+async function startFullTest() {
   if(testRunning) return;
   testRunning = true;
+  document.getElementById('startBtn').disabled = true;
+  resetCards();
+  document.getElementById('gaugeArc').style.transform = 'rotate(-90deg)';
 
-  const gauge = document.getElementById('gaugeArc');
-  const val = document.getElementById('gaugeValue');
-  const unit = document.getElementById('gaugeUnit');
+  await runTestStep('ping', 'Testing Ping...', 'ms', 300);
+  await new Promise(r => setTimeout(r, 800));
+  await runTestStep('download', 'Testing Download...', 'Mbps', 500);
+  await new Promise(r => setTimeout(r, 800));
+  await runTestStep('upload', 'Testing Upload...', 'Mbps', 200);
+  await new Promise(r => setTimeout(r, 800));
+  await runTestStep('loss', 'Testing Packet Loss...', '%', 100);
 
-  // Reset
-  gauge.style.transform = 'rotate(-90deg)';
-  val.innerText = '0.00';
-
-  // 1. PING TEST - Real
-  unit.innerText = 'ms';
-  const pingStart = performance.now();
-  await fetch('https://www.google.com/favicon.ico?'+Date.now(), {mode: 'no-cors'});
-  const ping = Math.round(performance.now() - pingStart);
-  animateGauge(ping, 300, ping);
-  document.getElementById('ping').innerText = ping;
-
-  // 2. DOWNLOAD TEST - Real 10MB file
-  await new Promise(r => setTimeout(r, 1000));
-  unit.innerText = 'Mbps';
-  const downStart = performance.now();
-  const downRes = await fetch('https://speed.cloudflare.com/__down?bytes=10000000&'+Date.now());
-  const downBlob = await downRes.blob();
-  const downTime = (performance.now() - downStart) / 1000;
-  const downSpeed = ((10 * 8) / downTime).toFixed(2); // 10MB to Mbps
-  animateGauge(downSpeed, 500, downSpeed);
-  document.getElementById('download').innerText = downSpeed;
-
-  // 3. UPLOAD TEST - Real
-  await new Promise(r => setTimeout(r, 1000));
-  const upData = new Blob([new ArrayBuffer(5 * 1024 * 1024)]); // 5MB
-  const upStart = performance.now();
-  await fetch('https://httpbin.org/post', {method: 'POST', body: upData, mode: 'no-cors'});
-  const upTime = (performance.now() - upStart) / 1000;
-  const upSpeed = ((5 * 8) / upTime).toFixed(2);
-  animateGauge(upSpeed, 200, upSpeed);
-  document.getElementById('upload').innerText = upSpeed;
-
+  document.getElementById('testStatus').innerText = 'Test Complete ✅';
+  document.getElementById('startBtn').disabled = false;
   testRunning = false;
+}
+
+async function runTestStep(type, statusText, unit, max) {
+  document.getElementById('testStatus').innerText = statusText;
+  document.getElementById('gaugeUnit').innerText = unit;
+  document.getElementById(`card-${type}`).classList.add('active');
+
+  let value = 0;
+  const server = CUSTOM_SERVER || "https://speed.cloudflare.com";
+  document.getElementById('serverTag').innerText = `Server: ${CUSTOM_SERVER? 'Custom' : 'Cloudflare Auto'}`;
+
+  if(type === 'ping') {
+    const start = performance.now();
+    await fetch(`${server}/cdn-cgi/trace?${Date.now()}`, {mode: 'no-cors'});
+    value = Math.round(performance.now() - start);
+  }
+  if(type === 'download') {
+    const start = performance.now();
+    await fetch(`${server}/__down?bytes=20000000&${Date.now()}`);
+    const time = (performance.now() - start) / 1000;
+    value = ((20 * 8) / time).toFixed(2);
+  }
+  if(type === 'upload') {
+    const data = new Blob([new ArrayBuffer(10 * 1024 * 1024)]);
+    const start = performance.now();
+    await fetch(`${server}/post`, {method: 'POST', body: data, mode: 'no-cors'});
+    const time = (performance.now() - start) / 1000;
+    value = ((10 * 8) / time).toFixed(2);
+  }
+  if(type === 'loss') {
+    let lost = 0;
+    for(let i=0; i<5; i++){
+      try{ await fetch(`${server}/cdn-cgi/trace?${Date.now()+i}`, {mode: 'no-cors'}); }
+      catch(e){ lost++; }
+    }
+    value = ((lost/5)*100).toFixed(2);
+  }
+
+  animateGauge(value, max, value);
+  document.getElementById(type).innerText = value;
+  await new Promise(r => setTimeout(r, 1500));
 }
 
 function animateGauge(value, max, displayVal) {
@@ -189,45 +221,60 @@ function animateGauge(value, max, displayVal) {
 
   let i = 0;
   let interval = setInterval(() => {
-    i += value/30;
+    i += value/25;
     if(i >= value) { i = value; clearInterval(interval); }
     val.innerText = parseFloat(i).toFixed(2);
-  }, 30);
+  }, 40);
 }
 
-// ACCURATE IP + LOCATION + ISP
+function resetCards() {
+  ['ping','download','upload','loss'].forEach(id => {
+    document.getElementById(id).innerText = '0';
+    document.getElementById(`card-${id}`).classList.remove('active');
+  });
+}
+
+// IP + LOCATION
 async function getDeviceInfo() {
-  document.getElementById('device').innerText = navigator.userAgent.split(')[1].split(')')[0];
+  let deviceName = navigator.userAgent;
+  if(deviceName.includes("Windows")) deviceName = "Windows PC";
+  else if(deviceName.includes("Android")) deviceName = "Android Phone";
+  document.getElementById('device').innerText = deviceName;
   document.getElementById('network').innerText = navigator.connection?.effectiveType?.toUpperCase() || 'UNKNOWN';
 
   try {
-    const res = await fetch('https://ipapi.co/json/');
+    const res = await fetch('https://ipwho.is/');
     const data = await res.json();
-    document.getElementById('ip').innerText = data.ip;
-    document.getElementById('location').innerText = `${data.city}, ${data.region}`;
-    document.getElementById('isp').innerText = data.org; // Tower/ISP name
-  } catch(e) {
-    document.getElementById('ip').innerText = 'Error';
-  }
+    if(data.success) {
+      document.getElementById('ip').innerText = data.ip;
+      document.getElementById('location').innerText = `${data.city}, ${data.country}`;
+      document.getElementById('isp').innerText = data.connection.isp;
+    }
+  } catch(e) { document.getElementById('ip').innerText = 'Error'; }
 }
 
 function downloadReport() {
-  const data = `
-SpeedTestX Pro Report
+  const data = `SpeedTestX Pro Report v3.3
+Title: SpeedTestX Pro by SP
+Designed by: SP
+Created and Developed by: Punya Binay Swain
+Date: ${new Date().toLocaleString()}
+Server: ${CUSTOM_SERVER || 'Cloudflare Auto'}
+Ping: ${document.getElementById('ping').innerText} ms
 Download: ${document.getElementById('download').innerText} Mbps
 Upload: ${document.getElementById('upload').innerText} Mbps
-Ping: ${document.getElementById('ping').innerText} ms
+Packet Loss: ${document.getElementById('loss').innerText} %
 IP: ${document.getElementById('ip').innerText}
 Location: ${document.getElementById('location').innerText}
+ISP: ${document.getElementById('isp').innerText}
   `;
   const blob = new Blob([data], {type: 'text/plain'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = 'SpeedTest_Report.txt'; a.click();
+  a.href = url; a.download = 'SpeedTest_Report_v3.3.txt'; a.click();
 }
 
-getDeviceInfo(); // Page load pe auto
+window.onload = getDeviceInfo;
 </script>
-
 </body>
 </html>
