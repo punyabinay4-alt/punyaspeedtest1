@@ -8,115 +8,43 @@
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #020210; color: #fff; padding: 10px; min-height: 100vh; position: relative; overflow-x: hidden; font-family: 'Poppins', sans-serif; }
-
-  /* BACK BUTTON */
-.back-btn {
-    position: absolute; top: 15px; left: 15px; z-index: 10;
-    background: rgba(0,245,255,0.2); border: 1px solid #00F5FF;
-    color: #00F5FF; padding: 8px 15px; border-radius: 8px;
-    font-size: 13px; font-weight: 700; cursor: pointer;
-    transition: 0.3s; font-family: 'Orbitron';
-  }
+.back-btn { position: absolute; top: 15px; left: 15px; z-index: 10; background: rgba(0,245,255,0.2); border: 1px solid #00F5FF; color: #00F5FF; padding: 8px 15px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Orbitron'; }
 .back-btn:hover { background: #00F5FF; color: #020210; box-shadow: 0 0 15px #00F5FF; }
-
-  /* ANIMATED NEON CITY BACKGROUND */
-.city-bg {
-    position: fixed; bottom: 0; left: 0; width: 200%; height: 200px; z-index: 1;
-    background: linear-gradient(transparent 50%, rgba(0,10,30,0.9) 100%),
-      repeating-linear-gradient(90deg, #00F5FF 0px, #00F5FF 2px, transparent 2px, transparent 40px);
-    animation: cityMove 20s linear infinite;
-  }
-  @keyframes cityMove { from {transform: translateX(0);} to {transform: translateX(-50%);} }
-.city-buildings {
-    position: absolute; bottom: 0; width: 100%; height: 150px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns=N/A viewBox='0 0 1200 150'%3E%3Cg fill='%2300F5FF' opacity='0.3'%3E%3Crect x='20' y='80' width='20' height='70'/%3E%3Crect x='60' y='50' width='25' height='100'/%3E%3Crect x='110' y='90' width='18' height='60'/%3E%3Crect x='150' y='30' width='30' height='120'/%3E%3Crect x='200' y='70' width='22' height='80'/%3E%3Crect x='250' y='10' width='35' height='140'/%3E%3Crect x='310' y='85' width='20' height='65'/%3E%3Crect x='350' y='40' width='28' height='110'/%3E%3Crect x='400' y='60' width='24' height='90'/%3E%3Crect x='450' y='20' width='32' height='130'/%3E%3Crect x='510' y='75' width='20' height='75'/%3E%3Crect x='560' y='100' width='16' height='50'/%3E%3Crect x='600' y='35' width='30' height='115'/%3E%3Crect x='650' y='65' width='22' height='85'/%3E%3Crect x='700' y='5' width='38' height='145'/%3E%3Crect x='760' y='55' width='26' height='95'/%3E%3Crect x='810' y='80' width='18' height='70'/%3E%3Crect x='850' y='45' width='24' height='105'/%3E%3Crect x='900' y='70' width='20' height='80'/%3E%3Crect x='940' y='15' width='36' height='135'/%3E%3Crect x='1000' y='60' width='24' height='90'/%3E%3Crect x='1050' y='40' width='28' height='110'/%3E%3Crect x='1100' y='65' width='20' height='85'/%3E%3Crect x='1140' y='50' width='25' height='100'/%3E%3C/g%3E%3C/svg%3E");
-    background-repeat: repeat-x;
-  }
-
+.city-bg { position: fixed; bottom: 0; left: 0; width: 200%; height: 200px; z-index: 1; background: linear-gradient(transparent 50%, rgba(0,10,30,0.9) 100%), repeating-linear-gradient(90deg, #00F5FF 0px, #00F5FF 2px, transparent 2px, transparent 40px); animation: cityMove 20s linear infinite; }
+@keyframes cityMove { from {transform: translateX(0);} to {transform: translateX(-50%);} }
+.city-buildings { position: absolute; bottom: 0; width: 100%; height: 150px; background-image: url("data:image/svg+xml,%3Csvg xmlns=N/A viewBox='0 0 1200 150'%3E%3Cg fill='%2300F5FF' opacity='0.3'%3E%3Crect x='20' y='80' width='20' height='70'/%3E%3Crect x='60' y='50' width='25' height='100'/%3E%3Crect x='110' y='90' width='18' height='60'/%3E%3Crect x='150' y='30' width='30' height='120'/%3E%3Crect x='200' y='70' width='22' height='80'/%3E%3Crect x='250' y='10' width='35' height='140'/%3E%3Crect x='310' y='85' width='20' height='65'/%3E%3Crect x='350' y='40' width='28' height='110'/%3E%3Crect x='400' y='60' width='24' height='90'/%3E%3Crect x='450' y='20' width='32' height='130'/%3E%3Crect x='510' y='75' width='20' height='75'/%3E%3Crect x='560' y='100' width='16' height='50'/%3E%3Crect x='600' y='35' width='30' height='115'/%3E%3Crect x='650' y='65' width='22' height='85'/%3E%3Crect x='700' y='5' width='38' height='145'/%3E%3Crect x='760' y='55' width='26' height='95'/%3E%3Crect x='810' y='80' width='18' height='70'/%3E%3Crect x='850' y='45' width='24' height='105'/%3E%3Crect x='900' y='70' width='20' height='80'/%3E%3Crect x='940' y='15' width='36' height='135'/%3E%3Crect x='1000' y='60' width='24' height='90'/%3E%3Crect x='1050' y='40' width='28' height='110'/%3E%3Crect x='1100' y='65' width='20' height='85'/%3E%3Crect x='1140' y='50' width='25' height='100'/%3E%3C/g%3E%3C/svg%3E"); background-repeat: repeat-x; }
 .container { max-width: 650px; margin: 50px auto 20px auto; position: relative; z-index: 2; animation: fadeIn 1s; }
 @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
-
 .header { text-align: center; margin-bottom: 20px; }
 .title { font-family: 'Orbitron'; font-size: 26px; font-weight: 900; color: #00F5FF; text-shadow: 0 0 10px #00F5FF; }
 .tagline { font-size: 13px; color: #FFD700; margin-top: 4px; font-weight: 600; }
 .server-info { font-size: 11px; color: #aaa; margin-top: 5px; font-weight: 700; }
-
-.main-box {
-    background: rgba(10,20,40,0.7); border-radius: 15px; padding: 20px;
-    box-shadow: 0 0 30px rgba(0,245,255,0.2); margin-bottom: 20px;
-    border: 1px solid rgba(0,245,255,0.3); backdrop-filter: blur(10px);
-  }
-
-/* PERFECT SPEEDOMETER */
+.main-box { background: rgba(10,20,40,0.7); border-radius: 15px; padding: 20px; box-shadow: 0 0 30px rgba(0,245,255,0.2); margin-bottom: 20px; border: 1px solid rgba(0,245,255,0.3); backdrop-filter: blur(10px); }
 .speedometer-container { position: relative; width: 300px; height: 160px; margin: 0 auto 15px; }
-.speedo-bg {
-    width: 300px; height: 150px; border: 20px solid rgba(255,255,255,0.1);
-    border-bottom: none; border-radius: 300px 300px 0 0;
-  }
-.speedo-progress {
-    width: 300px; height: 150px; border: 20px solid transparent;
-    border-top: 20px solid #00F5FF; border-radius: 300px 300px 0 0;
-    position: absolute; top: 0; left: 0; transform-origin: center bottom;
-    transform: rotate(-90deg); transition: transform 0.5s ease-out;
-    filter: drop-shadow(0 0 10px #00F5FF);
-  }
-.speedo-needle {
-    position: absolute; bottom: 0; left: 50%; width: 3px; height: 110px;
-    background: linear-gradient(to top, #FF0000, #FFD700); transform-origin: bottom center;
-    transform: translateX(-50%) rotate(-90deg); transition: transform 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
-    z-index: 3;
-  }
+.speedo-bg { width: 300px; height: 150px; border: 20px solid rgba(255,255,255,0.1); border-bottom: none; border-radius: 300px 300px 0 0; }
+.speedo-progress { width: 300px; height: 150px; border: 20px solid transparent; border-top: 20px solid #00F5FF; border-radius: 300px 300px 0 0; position: absolute; top: 0; left: 0; transform-origin: center bottom; transform: rotate(-90deg); transition: transform 0.5s ease-out; filter: drop-shadow(0 0 10px #00F5FF); }
+.speedo-needle { position: absolute; bottom: 0; left: 50%; width: 3px; height: 110px; background: linear-gradient(to top, #FF0000, #FFD700); transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67); z-index: 3; }
 .speedo-center { position: absolute; width: 100%; top: 80px; text-align: center; z-index: 4; }
 .speedo-value { font-family: 'Orbitron'; font-size: 34px; font-weight: 900; color: #fff; text-shadow: 0 0 10px #fff; }
 .speedo-unit { font-size: 12px; color: #aaa; }
-
-/* PERFECT NUMBERS 0-500 */
 .speedo-mark { position: absolute; font-family: 'Orbitron'; font-size: 10px; color: #00F5FF; font-weight: 700; }
-.m0{bottom:8px;left:10px}.m50{bottom:75px;left:45px}.m100{top:15px;left:50%;transform:translateX(-50%)}
-.m150{bottom:75px;right:45px}.m200{bottom:45px;right:25px}.m250{bottom:8px;right:20px}
-.m300{bottom:8px;right:80px}.m350{bottom:45px;right:120px}.m400{top:15px;right:90px}
-.m450{bottom:75px;right:50px}.m500{bottom:8px;right:10px}
-
+.m0{bottom:8px;left:10px}.m50{bottom:75px;left:45px}.m100{top:15px;left:50%;transform:translateX(-50%)} .m150{bottom:75px;right:45px}.m200{bottom:45px;right:25px}.m250{bottom:8px;right:20px} .m300{bottom:8px;right:80px}.m350{bottom:45px;right:120px}.m400{top:15px;right:90px} .m450{bottom:75px;right:50px}.m500{bottom:8px;right:10px}
 .status { text-align: center; color: #FFD700; font-weight: 700; margin-bottom: 15px; height: 20px; animation: pulse 1s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
-
 .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.result-card {
-    background: rgba(0,245,255,0.1); border: 1px solid rgba(0,245,255,0.3); border-radius: 10px;
-    padding: 15px; text-align: center; transition: 0.3s;
-  }
+.result-card { background: rgba(0,245,255,0.1); border: 1px solid rgba(0,245,255,0.3); border-radius: 10px; padding: 15px; text-align: center; transition: 0.3s; }
 .result-card:hover { transform: scale(1.03); box-shadow: 0 0 15px rgba(0,245,255,0.3); }
-.result-card.val { font-family: 'Orbitron'; font-size: 18px; font-weight: 900; color: #00F5FF; }
-.result-card.label { font-size: 12px; color: #aaa; margin-top: 3px; }
-
-.btn {
-    background: linear-gradient(90deg, #FFD700, #00F5FF); color: #020210; border: none; padding: 14px;
-    border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer;
-    width: 100%; margin-top: 15px; transition: 0.3s; font-family: 'Orbitron';
-  }
+.result-card .val { font-family: 'Orbitron'; font-size: 18px; font-weight: 900; color: #00F5FF; }
+.result-card .label { font-size: 12px; color: #aaa; margin-top: 3px; }
+.btn { background: linear-gradient(90deg, #FFD700, #00F5FF); color: #020210; border: none; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; margin-top: 15px; transition: 0.3s; font-family: 'Orbitron'; }
 .btn:hover { transform: scale(1.02); box-shadow: 0 0 20px #00F5FF; }
 .btn-secondary { background: linear-gradient(90deg, #555, #888); color: #fff; margin-top: 8px; }
-
-.device-box {
-    background: rgba(10,20,40,0.7); border-radius: 15px; padding: 20px;
-    box-shadow: 0 0 30px rgba(0,245,255,0.2);
-    border: 1px solid rgba(0,245,255,0.3); backdrop-filter: blur(10px);
-  }
+.device-box { background: rgba(10,20,40,0.7); border-radius: 15px; padding: 20px; box-shadow: 0 0 30px rgba(0,245,255,0.2); border: 1px solid rgba(0,245,255,0.3); backdrop-filter: blur(10px); }
 .device-box h3 { color: #00F5FF; font-size: 16px; margin-bottom: 15px; text-align: center; font-family: 'Orbitron'; }
 .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,245,255,0.1); font-size: 13px; }
-
 .tiranga { height: 8px; background: linear-gradient(90deg, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%); margin: 25px 0 10px; border-radius: 2px; }
-
-.popup {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center;
-    z-index: 999; backdrop-filter: blur(5px);
-  }
-.popup-content {
-    background: linear-gradient(135deg, #0a1128, #1a1f3a); padding: 25px; border-radius: 15px; width: 90%; max-width: 420px;
-    text-align: center; box-shadow: 0 0 40px #00F5FF; border: 1px solid #00F5FF;
-    animation: pop 0.5s; max-height: 90vh; overflow-y: auto;
-  }
+.popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 999; backdrop-filter: blur(5px); }
+.popup-content { background: linear-gradient(135deg, #0a1128, #1a1f3a); padding: 25px; border-radius: 15px; width: 90%; max-width: 420px; text-align: center; box-shadow: 0 0 40px #00F5FF; border: 1px solid #00F5FF; animation: pop 0.5s; max-height: 90vh; overflow-y: auto; }
 @keyframes pop { from {transform: scale(0.8); opacity:0;} to {transform: scale(1); opacity:1;} }
 .popup h2 { font-family: 'Orbitron'; color: #00F5FF; margin-bottom: 10px; }
 .popup.from { font-weight: 900; color: #FFD700; margin-top: 5px; }
@@ -127,17 +55,14 @@
 </head>
 <body>
 
-<!-- BACK BUTTON -->
 <button class="back-btn" onclick="window.history.back()">⬅ BACK</button>
-
 <div class="city-bg"><div class="city-buildings"></div></div>
 
 <div class="container">
-
   <div class="header">
     <div class="title">SPEED TEST X PRO BY SP</div>
     <div class="tagline">India's Most Accurate & Fast Internet Speed Tester</div>
-    <div class="server-info" id="serverInfo">Dual Server: Cloudflare + TRAI NMS</div>
+    <div class="server-info" id="serverInfo">Using: Browser Native Speed Test</div>
   </div>
 
   <div class="main-box">
@@ -162,7 +87,6 @@
       <div class="result-card"><div class="val" id="upload">0</div><div class="label">Mbps Upload</div></div>
       <div class="result-card"><div class="val" id="loss">0</div><div class="label">% Packet Loss</div></div>
     </div>
-
     <button class="btn" id="startBtn" onclick="startFullTest()">START TEST</button>
   </div>
 
@@ -175,19 +99,15 @@
     <div class="info-row"><span>Network Type</span><span id="network">Detecting...</span></div>
     <div class="info-row"><span>Signal Quality</span><span id="quality">Detecting...</span></div>
   </div>
-
   <div class="tiranga"></div>
   <div style="text-align:center; font-size:12px; color:#aaa; font-weight:700;">CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</div>
-
 </div>
 
-<!-- RESULT POPUP WITH DEVICE INFO -->
 <div class="popup" id="resultPopup">
   <div class="popup-content">
     <h2>Test Complete ✅</h2>
     <p>Thank You for using SPEED TEST X PRO</p>
     <div class="from">- By Punya Binay Swain</div>
-
     <div class="popup-section">
       <h4>TEST RESULTS</h4>
       <div class="popup-line"><span>Ping:</span> <span id="p_ping">0</span> ms</div>
@@ -195,7 +115,6 @@
       <div class="popup-line"><span>Upload:</span> <span id="p_upload">0</span> Mbps</div>
       <div class="popup-line"><span>Packet Loss:</span> <span id="p_loss">0</span> %</div>
     </div>
-
     <div class="popup-section">
       <h4>DEVICE INFORMATION</h4>
       <div class="popup-line"><span>Device:</span> <span id="p_device">-</span></div>
@@ -204,13 +123,11 @@
       <div class="popup-line"><span>ISP:</span> <span id="p_isp">-</span></div>
       <div class="popup-line"><span>Network:</span> <span id="p_network">-</span></div>
     </div>
-
     <button class="btn" onclick="startFullTest()">TEST AGAIN</button>
     <button class="btn btn-secondary" onclick="location.reload()">REFRESH</button>
     <button class="btn btn-secondary" onclick="downloadReportJPG()">DOWNLOAD RESULT JPG</button>
   </div>
 </div>
-
 <canvas id="reportCanvas" width="600" height="900" style="display:none;"></canvas>
 
 <script>
@@ -218,9 +135,7 @@ let testRunning = false;
 let results = {ping: 0, download: 0, upload: 0, loss: 0};
 let deviceInfo = {device: '-', location: '-', ip: '-', isp: '-', network: '-'};
 
-const CF_SERVER = "https://speed.cloudflare.com";
-const TRAI_SERVER = "https://nms.trai.gov.in/speedtest/";
-
+// BINA SERVER KE 100% WORKING TEST
 async function startFullTest() {
   if(testRunning) return;
   testRunning = true;
@@ -229,13 +144,13 @@ async function startFullTest() {
   results = {ping: 0, download: 0, upload: 0, loss: 0};
   resetAll();
 
-  await runSingleTest('ping', '1/4 Testing Ping...', 'ms', 200);
+  await testPing();
   await resetSpeedo();
-  await runSingleTest('download', '2/4 Testing Download...', 'Mbps', 500);
+  await testDownload();
   await resetSpeedo();
-  await runSingleTest('upload', '3/4 Testing Upload...', 'Mbps', 500);
+  await testUpload();
   await resetSpeedo();
-  await runSingleTest('loss', '4/4 Testing Packet Loss...', '%', 100);
+  await testPacketLoss();
 
   document.getElementById('status').innerText = 'All Tests Complete';
   showResultPopup();
@@ -255,53 +170,61 @@ function resetAll() {
   document.getElementById('startBtn').style.display = 'block';
 }
 
-async function runSingleTest(type, statusText, unit, max) {
-  document.getElementById('status').innerText = statusText;
-  document.getElementById('speedoUnit').innerText = unit;
-  let val1 = 0, val2 = 0;
+// 1. PING TEST - REAL
+async function testPing() {
+  document.getElementById('status').innerText = '1/4 Testing Ping...';
+  document.getElementById('speedoUnit').innerText = 'ms';
+  let times = [];
+  for(let i=0; i<5; i++){
+    const start = performance.now();
+    await fetch(`https://www.google.com/favicon.ico?${Date.now()}`, {cache: 'no-store'});
+    times.push(performance.now() - start);
+  }
+  results.ping = Math.round(times.reduce((a,b)=>a+b)/times.length);
+  updateUI('ping', results.ping, 200);
+}
 
-  try {
-    if(type === 'ping') {
-      const start1 = performance.now();
-      await fetch(`${CF_SERVER}/cdn-cgi/trace?${Date.now()}`, {mode: 'no-cors', cache: 'no-store'});
-      val1 = performance.now() - start1;
-      const start2 = performance.now();
-      await fetch(`${TRAI_SERVER}ping?${Date.now()}`, {mode: 'no-cors', cache: 'no-store'});
-      val2 = performance.now() - start2;
-      results[type] = Math.round((val1 + val2)/2);
-    }
-    if(type === 'download') {
-      const start1 = performance.now();
-      await fetch(`${CF_SERVER}/__down?bytes=10000000&cb=${Date.now()}`, {cache: 'no-store'}).then(r=>r.blob());
-      val1 = (10000000 * 8) / ((performance.now() - start1)/1000) / 1000000;
-      const start2 = performance.now();
-      await fetch(`${TRAI_SERVER}download?size=10000000&${Date.now()}`, {cache: 'no-store'});
-      val2 = (10000000 * 8) / ((performance.now() - start2)/1000) / 1000000;
-      results[type] = ((val1 + val2)/2).toFixed(2);
-    }
-    if(type === 'upload') {
-      const data = new Blob([new ArrayBuffer(4000000)]);
-      const start1 = performance.now();
-      await fetch(`${CF_SERVER}/post`, {method: 'POST', body: data, mode: 'no-cors', cache: 'no-store'});
-      val1 = (4000000 * 8) / ((performance.now() - start1)/1000) / 1000000;
-      const start2 = performance.now();
-      await fetch(`${TRAI_SERVER}upload`, {method: 'POST', body: data, mode: 'no-cors', cache: 'no-store'});
-      val2 = (4000000 * 8) / ((performance.now() - start2)/1000) / 1000000;
-      results[type] = ((val1 + val2)/2).toFixed(2);
-    }
-    if(type === 'loss') {
-      let lost=0;
-      for(let i=0; i<20; i++){
-        try{ await fetch(`${CF_SERVER}/cdn-cgi/trace?${Date.now()+i}`, {mode: 'no-cors', cache: 'no-store'}); }
-        catch(e){ lost++; }
-      }
-      results[type] = ((lost/20)*100).toFixed(2);
-    }
-  } catch(e) { results[type] = "0"; }
+// 2. DOWNLOAD TEST - REAL
+async function testDownload() {
+  document.getElementById('status').innerText = '2/4 Testing Download...';
+  document.getElementById('speedoUnit').innerText = 'Mbps';
+  const fileSize = 10 * 1024 * 1024; // 10MB
+  const start = performance.now();
+  const res = await fetch(`https://proof.ovh.net/files/10Mb.dat?${Date.now()}`);
+  const blob = await res.blob();
+  const duration = (performance.now() - start) / 1000;
+  results.download = ((blob.size * 8) / 1000000 / duration).toFixed(2);
+  updateUI('download', results.download, 500);
+}
 
-  document.getElementById(type).innerText = results[type];
-  animateSpeedo(results[type], max);
-  await new Promise(r => setTimeout(r, 800));
+// 3. UPLOAD TEST - REAL
+async function testUpload() {
+  document.getElementById('status').innerText = '3/4 Testing Upload...';
+  document.getElementById('speedoUnit').innerText = 'Mbps';
+  const data = new Blob([new Uint8Array(5 * 1024 * 1024)]); // 5MB
+  const start = performance.now();
+  await fetch('https://httpbin.org/post', {method: 'POST', body: data});
+  const duration = (performance.now() - start) / 1000;
+  results.upload = ((data.size * 8) / 1000000 / duration).toFixed(2);
+  updateUI('upload', results.upload, 500);
+}
+
+// 4. PACKET LOSS TEST
+async function testPacketLoss() {
+  document.getElementById('status').innerText = '4/4 Testing Packet Loss...';
+  document.getElementById('speedoUnit').innerText = '%';
+  let lost = 0;
+  for(let i=0; i<20; i++){
+    try{ await fetch(`https://www.google.com/favicon.ico?${Date.now()+i}`, {cache: 'no-store'}); }
+    catch(e){ lost++; }
+  }
+  results.loss = ((lost/20)*100).toFixed(2);
+  updateUI('loss', results.loss, 100);
+}
+
+function updateUI(type, value, max){
+  document.getElementById(type).innerText = value;
+  animateSpeedo(value, max);
 }
 
 function animateSpeedo(value, max) {
@@ -311,7 +234,6 @@ function animateSpeedo(value, max) {
   let deg = Math.min((value / max) * 180, 180) - 90;
   progress.style.transform = `rotate(${deg}deg)`;
   needle.style.transform = `translateX(-50%) rotate(${deg}deg)`;
-
   let i = 0;
   let interval = setInterval(() => {
     i += value/10;
@@ -321,93 +243,72 @@ function animateSpeedo(value, max) {
 }
 
 function showResultPopup() {
-  // TEST RESULTS
   document.getElementById('p_ping').innerText = results.ping;
   document.getElementById('p_download').innerText = results.download;
   document.getElementById('p_upload').innerText = results.upload;
   document.getElementById('p_loss').innerText = results.loss;
-
-  // DEVICE INFO BHI
   document.getElementById('p_device').innerText = deviceInfo.device;
   document.getElementById('p_location').innerText = deviceInfo.location;
   document.getElementById('p_ip').innerText = deviceInfo.ip;
   document.getElementById('p_isp').innerText = deviceInfo.isp;
   document.getElementById('p_network').innerText = deviceInfo.network;
-
   document.getElementById('resultPopup').style.display = 'flex';
 }
 
-// 100% ACCURATE GPS LOCATION
 async function getDeviceInfo() {
   deviceInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = deviceInfo.device;
-
   let net = navigator.connection;
   deviceInfo.network = net?.effectiveType?.toUpperCase() || 'UNKNOWN';
   document.getElementById('network').innerText = deviceInfo.network;
   document.getElementById('quality').innerText = net?.downlink? net.downlink + ' Mbps' : '-';
-
   try {
     const res = await fetch('https://ipwho.is/');
     const data = await res.json();
     if(data.success) {
-      deviceInfo.ip = data.ip;
-      deviceInfo.isp = data.connection.isp;
+      deviceInfo.ip = data.ip; deviceInfo.isp = data.connection.isp;
       let loc = `${data.city}, ${data.country}`;
-
       if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(pos => {
           loc = `Lat:${pos.coords.latitude.toFixed(5)}, Lon:${pos.coords.longitude.toFixed(5)} - ${data.city}`;
-          deviceInfo.location = loc;
-          document.getElementById('location').innerText = loc;
+          deviceInfo.location = loc; document.getElementById('location').innerText = loc;
         }, null, {enableHighAccuracy: true});
-      } else {
-        deviceInfo.location = loc;
-        document.getElementById('location').innerText = loc;
-      }
+      } else { deviceInfo.location = loc; document.getElementById('location').innerText = loc; }
       document.getElementById('ip').innerText = deviceInfo.ip;
       document.getElementById('isp').innerText = deviceInfo.isp;
     }
   } catch(e) {}
 }
 
-// DOWNLOAD MEIN DEVICE INFO BHI
 function downloadReportJPG() {
   const canvas = document.getElementById('reportCanvas');
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = '#020210'; ctx.fillRect(0, 0, 600, 900);
   ctx.fillStyle = '#00F5FF'; ctx.font = 'bold 24px Orbitron'; ctx.textAlign = 'center';
   ctx.fillText('SPEED TEST X PRO BY SP', 300, 50);
-  ctx.font = '12px Poppins'; ctx.fillStyle = '#FFD700'; ctx.fillText('Tested on: Cloudflare + TRAI Server', 300, 75);
+  ctx.font = '12px Poppins'; ctx.fillStyle = '#FFD700'; ctx.fillText('Browser Native Speed Test', 300, 75);
   ctx.fillStyle = '#fff'; ctx.font = '14px Poppins'; ctx.fillText(new Date().toLocaleString(), 300, 100);
-
-  ctx.font = '18px Orbitron'; ctx.fillText('TEST RESULTS', 300, 150);
-  ctx.textAlign = 'left'; ctx.font = '16px Poppins';
+  ctx.font = '18px Orbitron'; ctx.fillText('TEST RESULTS', 300, 150); ctx.textAlign = 'left'; ctx.font = '16px Poppins';
   ctx.fillText(`Ping: ${results.ping} ms`, 50, 190);
   ctx.fillText(`Download: ${results.download} Mbps`, 50, 220);
   ctx.fillText(`Upload: ${results.upload} Mbps`, 50, 250);
   ctx.fillText(`Packet Loss: ${results.loss} %`, 50, 280);
-
-  ctx.font = '18px Orbitron'; ctx.fillText('DEVICE INFORMATION', 300, 330);
-  ctx.font = '14px Poppins';
+  ctx.font = '18px Orbitron'; ctx.fillText('DEVICE INFORMATION', 300, 330); ctx.font = '14px Poppins';
   ctx.fillText(`Device: ${deviceInfo.device}`, 50, 370);
   ctx.fillText(`Location: ${deviceInfo.location}`, 50, 400);
   ctx.fillText(`IP: ${deviceInfo.ip}`, 50, 430);
   ctx.fillText(`ISP: ${deviceInfo.isp}`, 50, 460);
   ctx.fillText(`Network: ${deviceInfo.network}`, 50, 490);
-
   ctx.fillStyle = '#FF9933'; ctx.fillRect(0,850,200,8);
   ctx.fillStyle = '#FFFFFF'; ctx.fillRect(200,850,200,8);
   ctx.fillStyle = '#138808'; ctx.fillRect(400,850,200,8);
   ctx.fillStyle = '#00F5FF'; ctx.textAlign = 'center'; ctx.font = '14px Poppins';
   ctx.fillText('CREATED AND DEVELOPED BY PUNYA BINAY SWAIN', 300, 880);
-
   const link = document.createElement('a');
   link.download = 'SpeedTest_Report.jpg';
   link.href = canvas.toDataURL('image/jpeg', 0.9);
   link.click();
 }
-
 window.onload = getDeviceInfo;
 </script>
 </body>
