@@ -15,7 +15,6 @@
   .header { text-align: center; margin-bottom: 25px; }
   .title { font-size: 26px; font-weight: 700; color: #ff6b00; }
   .subtitle { font-size: 13px; color: #003366; font-weight: 600; margin-top: 3px; }
-  .server-info { font-size: 12px; color: #555; margin-top: 5px; }
   .speedo-wrap { text-align: center; margin: 30px 0; }
   .speedo { width: 300px; height: 150px; margin: 0 auto; position: relative; background: conic-gradient(from 180deg, #ff6b00 0deg, #003366 180deg, #e0e0e0 180deg); border-radius: 300px 300px 0 0; }
   .speedo-inner { width: 260px; height: 130px; background: rgba(255,255,255,0.97); border-radius: 260px 260px 0 0; position: absolute; bottom: 0; left: 20px; }
@@ -87,7 +86,7 @@
   <div class="device">
     <h3>DEVICE INFORMATION</h3>
     <div class="row"><span>Device</span><span id="device">Loading...</span></div>
-    <div class="row"><span>Location</span><span id="location">Detecting...</span></div>
+    <div class="row"><span>Location</span><span id="location">Getting GPS...</span></div>
     <div class="row"><span>IP Address</span><span id="ip">Loading...</span></div>
     <div class="row"><span>ISP / Server</span><span id="isp">Loading...</span></div>
     <div class="row"><span>Network Type</span><span id="network">Loading...</span></div>
@@ -364,34 +363,42 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
+// EXACT GPS LOCATION
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
   userInfo.network = '4G';
   
+  // GPS - Sabse exact
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       let lat = pos.coords.latitude;
       let lon = pos.coords.longitude;
       try {
-        let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+        // OpenStreetMap reverse geocode - free aur accurate
+        let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
         let data = await res.json();
-        userInfo.location = `${data.address.village || data.address.town || data.address.city || 'India'}, ${data.address.state || 'India'}`;
+        let addr = data.address;
+        userInfo.location = `${addr.road || addr.suburb || ''} ${addr.village || addr.town || addr.city || ''}, ${addr.state_district || addr.county || ''}, ${addr.state || ''}`;
         document.getElementById('location').innerText = userInfo.location;
-      } catch(e){}
-    });
+      } catch(e){
+        userInfo.location = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+        document.getElementById('location').innerText = userInfo.location;
+      }
+    }, (err) => {
+      document.getElementById('location').innerText = 'Location Denied';
+    }, {enableHighAccuracy: true, timeout: 10000});
   }
   
+  // IP backup
   try {
     let res = await fetch('https://ipapi.co/json/');
     let data = await res.json();
     userInfo.ip = data.ip;
-    if(!userInfo.location) userInfo.location = `${data.city}, ${data.region}, India`;
     userInfo.isp = data.org;
   } catch(e){}
   
   document.getElementById('ip').innerText = userInfo.ip;
-  document.getElementById('location').innerText = userInfo.location || 'Detecting...';
   document.getElementById('isp').innerText = userInfo.isp + " - India";
   document.getElementById('network').innerText = userInfo.network;
 }
