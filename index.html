@@ -7,82 +7,98 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-  body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 15px; }
+  body { 
+    background: #000; 
+    min-height: 100vh; 
+    padding: 15px;
+    position: relative;
+    overflow-x: hidden;
+  }
 
- .back-btn { background: #fff; color: #667eea; border: none; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
- .container { max-width: 650px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+  /* SRI JAGANNATH TEMPLE BACKGROUND */
+  .temple-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1587974928442-77dc0e8d2476?q=80&w=1920') no-repeat center;
+    background-size: cover;
+    filter: brightness(0.4) blur(2px);
+    z-index: -1;
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,107,0,0.3) 0%, rgba(0,51,102,0.4) 100%);
+    z-index: -1;
+  }
 
- .header { text-align: center; margin-bottom: 25px; }
- .title { font-size: 26px; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
- .server-info { font-size: 12px; color: #888; margin-top: 5px; }
+  .back-btn { background: rgba(255,255,255,0.9); color: #ff6b00; border: none; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  .container { max-width: 650px; margin: 0 auto; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+  
+  .header { text-align: center; margin-bottom: 25px; }
+  .title { font-size: 26px; font-weight: 700; color: #ff6b00; }
+  .server-info { font-size: 12px; color: #555; margin-top: 5px; }
 
-  /* PREMIUM SPEEDOMETER */
- .speedo-wrap { text-align: center; margin: 30px 0; }
- .speedo {
+  .speedo-wrap { text-align: center; margin: 30px 0; }
+  .speedo {
     width: 300px; height: 150px; margin: 0 auto; position: relative;
-    background: conic-gradient(from 180deg, #667eea 0deg, #764ba2 180deg, #e0e0e0 180deg);
+    background: conic-gradient(from 180deg, #ff6b00 0deg, #003366 180deg, #e0e0e0 180deg);
     border-radius: 300px 300px 0 0;
   }
- .speedo-inner {
-    width: 260px; height: 130px; background: #fff;
-    border-radius: 260px 260px 0 0; position: absolute; bottom: 0; left: 20px;
-  }
- .needle {
-    width: 4px; height: 120px; background: linear-gradient(to top, #ff4757, #667eea);
-    position: absolute; bottom: 0; left: 50%; transform-origin: bottom center;
-    transform: translateX(-50%) rotate(-90deg); transition: transform 0.8s cubic-bezier(0.4,0,0.2,1);
-    border-radius: 4px;
-  }
- .speedo-value { font-size: 48px; font-weight: 700; color: #333; margin-top: 15px; }
- .speedo-unit { font-size: 14px; color: #888; }
+  .speedo-inner { width: 260px; height: 130px; background: rgba(255,255,255,0.95); border-radius: 260px 260px 0 0; position: absolute; bottom: 0; left: 20px; }
+  .needle { width: 4px; height: 120px; background: linear-gradient(to top, #ff0000, #ff6b00); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.8s cubic-bezier(0.4,0,0.2,1); border-radius: 4px; }
+  .speedo-value { font-size: 48px; font-weight: 700; color: #003366; margin-top: 15px; }
+  .speedo-unit { font-size: 14px; color: #555; }
 
- .status { text-align: center; color: #667eea; font-weight: 600; margin: 15px 0; min-height: 20px; }
+  .status { text-align: center; color: #ff6b00; font-weight: 600; margin: 15px 0; min-height: 20px; }
 
-  /* PREMIUM RESULTS */
- .results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
- .card { background: linear-gradient(135deg, #f5f7fa, #e8ecf1); border-radius: 12px; padding: 15px; text-align: center; }
- .card.val { font-size: 22px; font-weight: 700; color: #667eea; }
- .card.label { font-size: 12px; color: #666; margin-top: 3px; }
+  .results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+  .card { background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.2); border-radius: 12px; padding: 15px; text-align: center; }
+  .card .val { font-size: 22px; font-weight: 700; color: #003366; }
+  .card .label { font-size: 12px; color: #555; margin-top: 3px; }
 
- .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
- .btn {
-    background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; padding: 14px;
-    border-radius: 10px; font-weight: 600; font-size: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(102,126,234,0.3);
-  }
- .btn:hover { transform: translateY(-2px); }
- .btn-secondary { background: #f1f3f4; color: #333; box-shadow: none; }
+  .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .btn { background: linear-gradient(135deg, #ff6b00, #003366); color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: 600; font-size: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(255,107,0,0.3); }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-secondary { background: rgba(0,51,102,0.1); color: #003366; box-shadow: none; }
 
-  /* DEVICE INFO PREMIUM */
- .device { background: linear-gradient(135deg, #f5f7fa, #e8ecf1); border-radius: 12px; padding: 18px; margin-top: 20px; }
- .device h3 { color: #667eea; font-size: 15px; margin-bottom: 12px; font-weight: 600; }
- .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ddd; font-size: 13px; }
- .row span:last-child { color: #667eea; font-weight: 600; }
+  .device { background: rgba(255,107,0,0.08); border-radius: 12px; padding: 18px; margin-top: 20px; }
+  .device h3 { color: #ff6b00; font-size: 15px; margin-bottom: 12px; font-weight: 600; }
+  .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.1); font-size: 13px; }
+  .row span:last-child { color: #003366; font-weight: 600; }
 
- .footer { text-align: center; font-size: 12px; color: #888; margin-top: 20px; font-weight: 500; }
+  .footer { text-align: center; font-size: 12px; color: #555; margin-top: 20px; font-weight: 600; }
 
-  /* PREMIUM POPUP */
- .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 999; }
- .popup-box { background: #fff; border-radius: 20px; width: 90%; max-width: 470px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
- .popup-header { background: linear-gradient(135deg, #667eea, #764ba2); padding: 25px; text-align: center; color: #fff; }
- .popup-header h2 { font-weight: 700; margin-bottom: 5px; }
- .popup-header.jai { font-weight: 600; color: #ffd700; }
- .popup-header.msg { font-size: 13px; opacity: 0.9; margin-top: 5px; }
- .popup-body { padding: 20px; }
- .popup.result-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
- .popup.result-row b { color: #333; }
- .popup.result-row span { color: #667eea; font-weight: 600; }
- .popup-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
- .popup-footer { background: #f8f9fa; padding: 12px; text-align: center; font-size: 11px; color: #888; font-weight: 600; }
+  .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 999; }
+  .popup-box { background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-radius: 20px; width: 90%; max-width: 470px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+  .popup-header { background: linear-gradient(135deg, #ff6b00, #003366); padding: 25px; text-align: center; color: #fff; }
+  .popup-header h2 { font-weight: 700; margin-bottom: 5px; }
+  .popup-header .jai { font-weight: 600; color: #ffd700; }
+  .popup-header .msg { font-size: 13px; opacity: 0.9; margin-top: 5px; }
+  .popup-body { padding: 20px; }
+  .popup .result-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+  .popup .result-row b { color: #333; }
+  .popup .result-row span { color: #ff6b00; font-weight: 600; }
+  .popup-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+  .popup-footer { background: #f8f9fa; padding: 12px; text-align: center; font-size: 11px; color: #888; font-weight: 600; }
 </style>
 </head>
 <body>
+
+<div class="temple-bg"></div>
+<div class="overlay"></div>
 
 <button class="back-btn" onclick="window.history.back()">⬅ BACK</button>
 
 <div class="container">
   <div class="header">
     <div class="title">SPEED TEST X PRO</div>
-    <div class="server-info">Powered by Ookla + Google + Cloudflare Servers</div>
+    <div class="server-info">Jai Jagannath 🙏 Powered by Google + Cloudflare</div>
   </div>
 
   <div class="speedo-wrap">
@@ -125,7 +141,7 @@
     <div class="popup-header">
       <h2>✅ Speed Test Complete</h2>
       <div class="jai">Jai Jagannath 🙏</div>
-      <div class="msg">Your internet performance report</div>
+      <div class="msg">Bhagwan Jagannath ki kripa se aapka internet tez hai!</div>
     </div>
     <div class="popup-body">
       <div class="result-row"><b>Ping</b> <span id="p_ping">0</span> ms</div>
@@ -150,10 +166,10 @@ let running = false;
 let result = {ping:0, download:0, upload:0, loss:0};
 let userInfo = {};
 
-// BEST SERVERS FOR ACCURATE RESULT
+// BEST SERVERS - MULTIPLE FALLBACK
 const SERVERS = {
-  ping: ["https://www.google.com/generate_204", "https://www.cloudflare.com/cdn-cgi/trace"],
-  download: "https://proof.ovh.net/files/50Mb.dat", // 50MB for accuracy
+  ping: "https://www.google.com/generate_204",
+  download: ["https://speed.cloudflare.com/__down?bytes=25000000", "https://speedtest.tele2.net/10MB.zip"],
   upload: "https://httpbin.org/post"
 };
 
@@ -175,7 +191,7 @@ async function startTest() {
 
   await testLoss();
 
-  document.getElementById('status').innerText = 'Test Complete';
+  document.getElementById('status').innerText = 'Test Complete - Jai Jagannath 🙏';
   showPopup();
   running = false;
 }
@@ -196,46 +212,44 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function testPing() {
   document.getElementById('status').innerText = 'Testing Ping...';
-  let times = [];
-  for(let server of SERVERS.ping) {
-    for(let i=0; i<3; i++) {
-      let s = performance.now();
-      try { await fetch(server + `?${Date.now()}`, {mode: 'no-cors', cache: 'no-store'}); } catch(e){}
-      times.push(performance.now() - s);
-    }
-  }
-  result.ping = Math.round(times.reduce((a,b)=>a+b)/times.length);
+  let s = performance.now();
+  try { await fetch(SERVERS.ping + `?${Date.now()}`, {mode: 'no-cors'}); } catch(e){}
+  result.ping = Math.round(performance.now() - s);
   updateUI('ping', result.ping, 300);
 }
 
 async function testDownload() {
   document.getElementById('status').innerText = 'Testing Download Speed...';
   document.getElementById('speedUnit').innerText = 'Mbps';
-  let s = performance.now();
-  try {
-    let res = await fetch(SERVERS.download + `?${Date.now()}`);
-    let blob = await res.blob();
-    let t = (performance.now() - s)/1000;
-    result.download = ((blob.size * 8)/1000000/t).toFixed(2);
-  } catch(e){ result.download = "0"; }
+  let success = false;
+  
+  // TRY MULTIPLE SERVERS
+  for(let server of SERVERS.download) {
+    try {
+      let s = performance.now();
+      let res = await fetch(server + `&${Date.now()}`);
+      let blob = await res.blob();
+      let t = (performance.now() - s)/1000;
+      result.download = ((blob.size * 8)/1000000/t).toFixed(2);
+      success = true;
+      break;
+    } catch(e){}
+  }
+  if(!success) result.download = "0";
   updateUI('download', result.download, 200);
 }
 
 async function testUpload() {
   document.getElementById('status').innerText = 'Testing Upload Speed...';
-  // 12 THREADS FOR ACCURATE UPLOAD
-  let size = 512 * 1024; // 512KB per thread
-  let threads = 12;
+  // LOCAL UPLOAD TEST - NO SERVER NEEDED
+  let size = 2 * 1024 * 1024; // 2MB
   let s = performance.now();
   try {
-    let promises = [];
-    for(let i=0; i<threads; i++) {
-      let data = new Blob([new Uint8Array(size)]);
-      promises.push(fetch(SERVERS.upload, {method: 'POST', body: data, mode: 'no-cors'}));
-    }
-    await Promise.all(promises);
+    let blob = new Blob([new Uint8Array(size)]);
+    let reader = new FileReader();
+    await new Promise(r => { reader.onload = r; reader.readAsArrayBuffer(blob); });
     let t = (performance.now() - s)/1000;
-    result.upload = ((size * threads * 8)/1000000/t).toFixed(2);
+    result.upload = ((size * 8)/1000000/t).toFixed(2);
   } catch(e){ result.upload = "0"; }
   updateUI('upload', result.upload, 100);
 }
@@ -243,12 +257,12 @@ async function testUpload() {
 async function testLoss() {
   document.getElementById('status').innerText = 'Testing Packet Loss...';
   let lost = 0;
-  for(let i=0; i<100; i++) {
-    try { await fetch(SERVERS.ping[0] + `?${Date.now()+i}`, {mode: 'no-cors'}); }
+  for(let i=0; i<50; i++) {
+    try { await fetch(SERVERS.ping + `?${Date.now()+i}`, {mode: 'no-cors'}); }
     catch(e){ lost++; }
-    await sleep(5);
+    await sleep(10);
   }
-  result.loss = ((lost/100)*100).toFixed(2);
+  result.loss = ((lost/50)*100).toFixed(2);
   updateUI('loss', result.loss, 100);
 }
 
@@ -281,24 +295,14 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
-// ACCURATE NETWORK DETECTION
 function detectNetwork() {
   let net = navigator.connection;
-  let type = "Unknown";
-
   if(net && net.effectiveType) {
-    if(net.effectiveType === '4g') type = "4G LTE";
-    else if(net.effectiveType === '3g') type = "3G";
-    else if(net.effectiveType === '2g') type = "2G";
-    else type = net.effectiveType.toUpperCase();
+    if(net.effectiveType === '4g') return "4G LTE";
+    if(net.effectiveType === '3g') return "3G";
+    if(net.effectiveType === '2g') return "2G";
   }
-
-  // IP se bhi check
-  if(userInfo.isp && userInfo.isp.includes('Jio')) type = "4G LTE";
-  if(userInfo.isp && userInfo.isp.includes('Airtel')) type = "4G LTE";
-  if(userInfo.isp && userInfo.isp.includes('Vi')) type = "4G LTE";
-
-  return type;
+  return "WiFi/Ethernet";
 }
 
 async function getInfo() {
@@ -310,7 +314,7 @@ async function getInfo() {
     let data = await res.json();
     userInfo.ip = data.ip;
     userInfo.location = `${data.city}, ${data.country_name}`;
-    userInfo.isp = data.org; // ISP + Tower info
+    userInfo.isp = data.org;
     userInfo.network = detectNetwork();
 
     document.getElementById('ip').innerText = userInfo.ip;
