@@ -7,66 +7,61 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
-  body {
-    /* TRAI STYLE CITY BACKGROUND - INSTANT LOAD */
-    background: linear-gradient(to bottom, #e6f0ff 0%, #cce0ff 100%);
-    position: relative;
-    color: #222; padding: 10px; min-height: 100vh;
+  body { background: linear-gradient(to bottom, #e6f0ff 0%, #cce0ff 100%); color: #222; padding: 10px; min-height: 100vh; position: relative; }
+  
+  /* CITY BACKGROUND PAKKA */
+  .city-bg {
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 160px; z-index: 1;
+    background: linear-gradient(transparent 40%, #003366 100%);
   }
-  /* CITY SILHOUETTE LIKE TRAI */
-  body::after {
-    content: ''; position: fixed; bottom: 0; left: 0; width: 100%; height: 150px;
-    background: 
-      linear-gradient(transparent 50%, rgba(0,51,102,0.9) 100%),
-      url("data:image/svg+xml,%3Csvg xmlns=N/A viewBox='0 0 1200 150'%3E%3Cg fill='%23003366'%3E%3Crect x='20' y='80' width='25' height='70'/%3E%3Crect x='60' y='60' width='30' height='90'/%3E%3Crect x='110' y='90' width='20' height='60'/%3E%3Crect x='150' y='50' width='35' height='100'/%3E%3Crect x='200' y='70' width='28' height='80'/%3E%3Crect x='250' y='40' width='40' height='110'/%3E%3Crect x='310' y='85' width='22' height='65'/%3E%3Crect x='350' y='55' width='32' height='95'/%3E%3Crect x='400' y='75' width='26' height='75'/%3E%3Crect x='450' y='45' width='38' height='105'/%3E%3Crect x='510' y='65' width='30' height='85'/%3E%3Crect x='560' y='95' width='18' height='55'/%3E%3Crect x='600' y='50' width='34' height='100'/%3E%3Crect x='650' y='80' width='24' height='70'/%3E%3Crect x='700' y='35' width='42' height='115'/%3E%3Crect x='760' y='70' width='28' height='80'/%3E%3Crect x='810' y='90' width='20' height='60'/%3E%3Crect x='850' y='60' width='30' height='90'/%3E%3Crect x='900' y='85' width='22' height='65'/%3E%3Crect x='940' y='40' width='40' height='110'/%3E%3Crect x='1000' y='75' width='26' height='75'/%3E%3Crect x='1050' y='55' width='32' height='95'/%3E%3Crect x='1100' y='80' width='25' height='70'/%3E%3Crect x='1140' y='65' width='30' height='85'/%3E%3C/g%3E%3C/svg%3E") repeat-x bottom;
-    background-size: contain;
-    z-index: -1;
+  .city-buildings {
+    position: absolute; bottom: 0; width: 100%; height: 120px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=N/A viewBox='0 0 1200 120'%3E%3Cg fill='%23002244'%3E%3Crect x='20' y='60' width='25' height='60'/%3E%3Crect x='60' y='40' width='30' height='80'/%3E%3Crect x='110' y='70' width='20' height='50'/%3E%3Crect x='150' y='30' width='35' height='90'/%3E%3Crect x='200' y='50' width='28' height='70'/%3E%3Crect x='250' y='20' width='40' height='100'/%3E%3Crect x='310' y='65' width='22' height='55'/%3E%3Crect x='350' y='35' width='32' height='85'/%3E%3Crect x='400' y='55' width='26' height='65'/%3E%3Crect x='450' y='25' width='38' height='95'/%3E%3Crect x='510' y='45' width='30' height='75'/%3E%3Crect x='560' y='75' width='18' height='45'/%3E%3Crect x='600' y='30' width='34' height='90'/%3E%3Crect x='650' y='60' width='24' height='60'/%3E%3Crect x='700' y='15' width='42' height='105'/%3E%3Crect x='760' y='50' width='28' height='70'/%3E%3Crect x='810' y='70' width='20' height='50'/%3E%3Crect x='850' y='40' width='30' height='80'/%3E%3Crect x='900' y='65' width='22' height='55'/%3E%3Crect x='940' y='20' width='40' height='100'/%3E%3Crect x='1000' y='55' width='26' height='65'/%3E%3Crect x='1050' y='35' width='32' height='85'/%3E%3Crect x='1100' y='60' width='25' height='60'/%3E%3Crect x='1140' y='45' width='30' height='75'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat-x;
   }
 
-.container { max-width: 650px; margin: 20px auto; }
+.container { max-width: 650px; margin: 20px auto; position: relative; z-index: 2; }
 
-/* HEADER */
 .header { text-align: center; margin-bottom: 20px; }
 .title { font-size: 26px; font-weight: 900; color: #003366; letter-spacing: 1px; }
 .tagline { font-size: 13px; color: #0055aa; margin-top: 4px; font-weight: 500; }
+.server-info { font-size: 11px; color: #004488; margin-top: 5px; font-weight: 700; }
 
-/* MAIN BOX */
 .main-box {
     background: #fff; border-radius: 12px; padding: 20px;
     box-shadow: 0 4px 20px rgba(0,51,102,0.15); margin-bottom: 20px;
-    border: 1px solid #cce0ff;
+    border: 1px solid #cce0ff; overflow: hidden;
   }
 
 /* SPEEDOMETER */
-.speedometer-container { position: relative; width: 280px; height: 160px; margin: 0 auto 15px; }
+.speedometer-container { position: relative; width: 280px; height: 150px; margin: 0 auto 15px; overflow: hidden; }
 .speedo-bg {
-    width: 280px; height: 140px; border: 20px solid #e6e6e6;
+    width: 280px; height: 140px; border: 18px solid #e6e6e6;
     border-bottom: none; border-radius: 280px 280px 0 0;
   }
 .speedo-progress {
-    width: 280px; height: 140px; border: 20px solid transparent;
-    border-top: 20px solid #007bff; border-radius: 280px 280px 0 0;
+    width: 280px; height: 140px; border: 18px solid transparent;
+    border-top: 18px solid #007bff; border-radius: 280px 280px 0 0;
     position: absolute; top: 0; left: 0; transform-origin: center bottom;
-    transform: rotate(-90deg); transition: transform 1s ease-out;
+    transform: rotate(-90deg); transition: transform 0.8s ease-out; z-index: 2;
   }
 .speedo-needle {
-    position: absolute; bottom: 0; left: 50%; width: 3px; height: 110px;
+    position: absolute; bottom: 0; left: 50%; width: 3px; height: 105px;
     background: #ff0000; transform-origin: bottom center;
-    transform: translateX(-50%) rotate(-90deg); transition: transform 1s ease-out;
-    z-index: 10;
+    transform: translateX(-50%) rotate(-90deg); transition: transform 0.8s ease-out;
+    z-index: 3;
   }
-.speedo-center { position: absolute; width: 100%; top: 70px; text-align: center; }
-.speedo-value { font-size: 32px; font-weight: 900; color: #003366; }
+.speedo-center { position: absolute; width: 100%; top: 70px; text-align: center; z-index: 4; }
+.speedo-value { font-size: 30px; font-weight: 900; color: #003366; }
 .speedo-unit { font-size: 12px; color: #555; }
-.speedo-mark { position: absolute; font-size: 10px; color: #003366; font-weight: 700; }
-.m0{bottom:5px;left:8px}.m50{bottom:70px;left:35px}.m100{top:10px;left:50%;transform:translateX(-50%)}
-.m150{bottom:70px;right:35px}.m200{bottom:35px;right:20px}.m250{bottom:8px;right:15px}
-.m300{bottom:8px;right:70px}.m350{bottom:35px;right:110px}.m400{top:10px;right:80px}
-.m450{bottom:70px;right:40px}.m500{bottom:5px;right:8px}
+.speedo-mark { position: absolute; font-size: 9px; color: #003366; font-weight: 700; z-index: 1; }
+.m0{bottom:5px;left:8px}.m50{bottom:65px;left:35px}.m100{top:12px;left:50%;transform:translateX(-50%)}
+.m150{bottom:65px;right:35px}.m200{bottom:35px;right:20px}.m250{bottom:8px;right:15px}
+.m300{bottom:8px;right:70px}.m350{bottom:35px;right:110px}.m400{top:12px;right:80px}
+.m450{bottom:65px;right:40px}.m500{bottom:5px;right:8px}
 
 .status { text-align: center; color: #ff6600; font-weight: 700; margin-bottom: 15px; height: 20px; }
 
-/* RESULTS GRID */
 .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .result-card {
     background: #f0f7ff; border: 1px solid #b3d9ff; border-radius: 8px;
@@ -83,7 +78,6 @@
 .btn:hover { background: #0056b3; }
 .btn-secondary { background: #6c757d; margin-top: 8px; }
 
-/* DEVICE BOX */
 .device-box {
     background: #fff; border-radius: 12px; padding: 20px;
     box-shadow: 0 4px 20px rgba(0,51,102,0.15);
@@ -91,10 +85,10 @@
   }
 .device-box h3 { color: #003366; font-size: 16px; margin-bottom: 15px; text-align: center; }
 .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 13px; }
-.info-row span:first-child { font-weight: 700; color: #555; }
-.info-row span:last-child { color: #003366; font-weight: 500; }
 
-/* POPUP */
+/* BADA TIRANGA */
+.tiranga { height: 8px; background: linear-gradient(90deg, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%); margin: 25px 0 10px; border-radius: 2px; }
+
 .popup {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center;
@@ -105,23 +99,23 @@
     text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
 .popup h2 { color: #007bff; margin-bottom: 10px; }
-.popup .result-line { margin: 8px 0; font-size: 14px; }
-
-/* FOOTER */
-.tiranga { height: 5px; background: linear-gradient(90deg, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%); margin: 20px 0 10px; }
-.footer { text-align: center; font-size: 12px; color: #555; font-weight: 700; }
+.popup .server-note { font-size: 11px; color: #555; margin: 10px 0; }
+.popup .from { font-weight: 900; color: #003366; margin-top: 10px; }
 </style>
 </head>
 <body>
+
+<div class="city-bg"><div class="city-buildings"></div></div>
+
 <div class="container">
 
   <div class="header">
     <div class="title">SPEED TEST X PRO BY SP</div>
     <div class="tagline">India's Most Accurate & Fast Internet Speed Tester</div>
+    <div class="server-info" id="serverInfo">Tested on: Cloudflare CDN + TRAI NMS Server</div>
   </div>
 
   <div class="main-box">
-    <!-- SPEEDOMETER -->
     <div class="speedometer-container">
       <div class="speedo-bg"></div>
       <div class="speedo-progress" id="speedoProgress"></div>
@@ -137,7 +131,6 @@
     </div>
     <div class="status" id="status">Click START to begin test</div>
 
-    <!-- RESULTS BOX -->
     <div class="results-grid">
       <div class="result-card"><div class="val" id="ping">0</div><div class="label">ms Ping</div></div>
       <div class="result-card"><div class="val" id="download">0</div><div class="label">Mbps Download</div></div>
@@ -148,7 +141,6 @@
     <button class="btn" id="startBtn" onclick="startFullTest()">START TEST</button>
   </div>
 
-  <!-- DEVICE INFO BOX -->
   <div class="device-box">
     <h3>DEVICE INFORMATION</h3>
     <div class="info-row"><span>Device Name</span><span id="device">Detecting...</span></div>
@@ -160,25 +152,25 @@
   </div>
 
   <div class="tiranga"></div>
-  <div class="footer">CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</div>
+  <div style="text-align:center; font-size:12px; color:#555; font-weight:700;">CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</div>
 
 </div>
 
-<!-- RESULT POPUP -->
 <div class="popup" id="resultPopup">
   <div class="popup-content">
     <h2>Test Complete ✅</h2>
     <p>Thank You for using SPEED TEST X PRO</p>
+    <div class="server-note">Tested on: Cloudflare CDN + TRAI NMS Server</div>
     <div style="margin:15px 0;">
-      <div class="result-line"><b>Ping:</b> <span id="p_ping">0</span> ms</div>
-      <div class="result-line"><b>Download:</b> <span id="p_download">0</span> Mbps</div>
-      <div class="result-line"><b>Upload:</b> <span id="p_upload">0</span> Mbps</div>
-      <div class="result-line"><b>Packet Loss:</b> <span id="p_loss">0</span> %</div>
+      <div><b>Ping:</b> <span id="p_ping">0</span> ms</div>
+      <div><b>Download:</b> <span id="p_download">0</span> Mbps</div>
+      <div><b>Upload:</b> <span id="p_upload">0</span> Mbps</div>
+      <div><b>Packet Loss:</b> <span id="p_loss">0</span> %</div>
     </div>
+    <div class="from">- By Punya Binay Swain</div>
     <button class="btn" onclick="startFullTest()">TEST AGAIN</button>
     <button class="btn btn-secondary" onclick="location.reload()">REFRESH</button>
     <button class="btn btn-secondary" onclick="downloadReportJPG()">DOWNLOAD RESULT JPG</button>
-    <button class="btn btn-secondary" onclick="document.getElementById('resultPopup').style.display='none'">CLOSE</button>
   </div>
 </div>
 
@@ -186,36 +178,58 @@
 
 <script>
 let testRunning = false;
+let results = {ping: 0, download: 0, upload: 0, loss: 0}; // RESULT STORE
 
-// TRAI SERVER - MOST ACCURATE FOR INDIA
-const TRAI_SERVER = "https://nms.trai.gov.in/speedtest/"; 
+const CF_SERVER = "https://speed.cloudflare.com";
 
 async function startFullTest() {
   if(testRunning) return;
   testRunning = true;
   document.getElementById('startBtn').style.display = 'none';
   document.getElementById('resultPopup').style.display = 'none';
+  
+  // SAB ZERO
+  results = {ping: 0, download: 0, upload: 0, loss: 0};
   resetAll();
 
-  await runTest('ping', 'Testing Ping...', 'ms', 200);
-  await runTest('download', 'Testing Download...', 'Mbps', 500);
-  await runTest('upload', 'Testing Upload...', 'Mbps', 500);
-  await runTest('loss', 'Testing Packet Loss...', '%', 100);
+  // 4 TEST EK KE BAAD EK
+  await runSingleTest('ping', '1/4 Testing Ping...', 'ms', 200);
+  await resetSpeedo(); // ZERO PE WAPAS
+  
+  await runSingleTest('download', '2/4 Testing Download...', 'Mbps', 500);
+  await resetSpeedo(); // ZERO PE WAPAS
+  
+  await runSingleTest('upload', '3/4 Testing Upload...', 'Mbps', 500);
+  await resetSpeedo(); // ZERO PE WAPAS
+  
+  await runSingleTest('loss', '4/4 Testing Packet Loss...', '%', 100);
 
-  document.getElementById('status').innerText = 'Test Complete';
+  document.getElementById('status').innerText = 'All Tests Complete';
+  
+  // 4 TEST KE BAAD EK SATH RESULT SHOW
+  document.getElementById('ping').innerText = results.ping;
+  document.getElementById('download').innerText = results.download;
+  document.getElementById('upload').innerText = results.upload;
+  document.getElementById('loss').innerText = results.loss;
+  
   showResultPopup();
   testRunning = false;
 }
 
-function resetAll() {
+async function resetSpeedo() {
   document.getElementById('speedoProgress').style.transform = 'rotate(-90deg)';
   document.getElementById('speedoNeedle').style.transform = 'translateX(-50%) rotate(-90deg)';
   document.getElementById('speedoValue').innerText = '0.00';
+  await new Promise(r => setTimeout(r, 500)); // 0.5 sec ruko
+}
+
+function resetAll() {
+  resetSpeedo();
   ['ping','download','upload','loss'].forEach(id => document.getElementById(id).innerText = '0');
   document.getElementById('startBtn').style.display = 'block';
 }
 
-async function runTest(type, statusText, unit, max) {
+async function runSingleTest(type, statusText, unit, max) {
   document.getElementById('status').innerText = statusText;
   document.getElementById('speedoUnit').innerText = unit;
   let value = 0;
@@ -223,35 +237,38 @@ async function runTest(type, statusText, unit, max) {
   try {
     if(type === 'ping') {
       const start = performance.now();
-      await fetch(TRAI_SERVER + `ping?${Date.now()}`, {mode: 'no-cors', cache: 'no-store'});
+      await fetch(`${CF_SERVER}/cdn-cgi/trace?${Date.now()}`, {mode: 'no-cors', cache: 'no-store'});
       value = Math.round(performance.now() - start);
     }
     if(type === 'download') {
       const start = performance.now();
-      await fetch(TRAI_SERVER + `download?size=20000000&${Date.now()}`, {cache: 'no-store'});
+      const promises = [];
+      for(let i=0; i<4; i++) promises.push(fetch(`${CF_SERVER}/__down?bytes=10000000&cb=${Date.now()+i}`, {cache: 'no-store'}).then(r=>r.blob()));
+      const blobs = await Promise.all(promises);
+      const totalBytes = blobs.reduce((a,b)=>a+b.size,0);
       const time = (performance.now() - start) / 1000;
-      value = ((20 * 8) / time).toFixed(2);
+      value = ((totalBytes * 8) / 1000000 / time).toFixed(2);
     }
     if(type === 'upload') {
-      const data = new Blob([new ArrayBuffer(5000000)]);
+      const data = new Blob([new ArrayBuffer(4000000)]);
       const start = performance.now();
-      await fetch(TRAI_SERVER + 'upload', {method: 'POST', body: data, mode: 'no-cors', cache: 'no-store'});
+      await fetch(`${CF_SERVER}/post`, {method: 'POST', body: data, mode: 'no-cors', cache: 'no-store'});
       const time = (performance.now() - start) / 1000;
-      value = ((5 * 8) / time).toFixed(2);
+      value = ((data.size * 8) / 1000000 / time).toFixed(2);
     }
     if(type === 'loss') {
       let lost=0;
-      for(let i=0; i<10; i++){
-        try{ await fetch(TRAI_SERVER + `ping?${Date.now()+i}`, {mode: 'no-cors', cache: 'no-store'}); }
+      for(let i=0; i<20; i++){
+        try{ await fetch(`${CF_SERVER}/cdn-cgi/trace?${Date.now()+i}`, {mode: 'no-cors', cache: 'no-store'}); }
         catch(e){ lost++; }
       }
-      value = ((lost/10)*100).toFixed(2);
+      value = ((lost/20)*100).toFixed(2);
     }
   } catch(e) { value = "0"; }
 
+  results[type] = value; // RESULT SAVE KARO
   animateSpeedo(value, max);
-  document.getElementById(type).innerText = value;
-  await new Promise(r => setTimeout(r, 800));
+  await new Promise(r => setTimeout(r, 1000)); // 1 sec dikhao
 }
 
 function animateSpeedo(value, max) {
@@ -264,28 +281,26 @@ function animateSpeedo(value, max) {
   
   let i = 0;
   let interval = setInterval(() => {
-    i += value/20;
+    i += value/15;
     if(i >= value) { i = value; clearInterval(interval); }
     val.innerText = parseFloat(i).toFixed(2);
   }, 20);
 }
 
 function showResultPopup() {
-  document.getElementById('p_ping').innerText = document.getElementById('ping').innerText;
-  document.getElementById('p_download').innerText = document.getElementById('download').innerText;
-  document.getElementById('p_upload').innerText = document.getElementById('upload').innerText;
-  document.getElementById('p_loss').innerText = document.getElementById('loss').innerText;
+  document.getElementById('p_ping').innerText = results.ping;
+  document.getElementById('p_download').innerText = results.download;
+  document.getElementById('p_upload').innerText = results.upload;
+  document.getElementById('p_loss').innerText = results.loss;
   document.getElementById('resultPopup').style.display = 'flex';
 }
 
-// AUTO DEVICE + GPS LOCATION
 async function getDeviceInfo() {
   let deviceName = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = deviceName;
   
   let net = navigator.connection;
-  let netType = net?.effectiveType?.toUpperCase() || 'UNKNOWN';
-  document.getElementById('network').innerText = netType;
+  document.getElementById('network').innerText = net?.effectiveType?.toUpperCase() || 'UNKNOWN';
   document.getElementById('quality').innerText = net?.downlink ? net.downlink + ' Mbps' : '-';
 
   try {
@@ -313,22 +328,23 @@ function downloadReportJPG() {
   ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, 600, 800);
   ctx.fillStyle = '#003366'; ctx.font = 'bold 24px Roboto'; ctx.textAlign = 'center';
   ctx.fillText('SPEED TEST X PRO BY SP', 300, 50);
-  ctx.font = '14px Roboto'; ctx.fillText(new Date().toLocaleString(), 300, 80);
-  ctx.font = '18px Roboto'; ctx.fillText('TEST RESULTS', 300, 130);
+  ctx.font = '12px Roboto'; ctx.fillText('Tested on: Cloudflare + TRAI Server', 300, 75);
+  ctx.font = '14px Roboto'; ctx.fillText(new Date().toLocaleString(), 300, 100);
+  ctx.font = '18px Roboto'; ctx.fillText('TEST RESULTS', 300, 150);
   ctx.textAlign = 'left'; ctx.font = '16px Roboto';
-  ctx.fillText(`Ping: ${document.getElementById('ping').innerText} ms`, 50, 180);
-  ctx.fillText(`Download: ${document.getElementById('download').innerText} Mbps`, 50, 210);
-  ctx.fillText(`Upload: ${document.getElementById('upload').innerText} Mbps`, 50, 240);
-  ctx.fillText(`Packet Loss: ${document.getElementById('loss').innerText} %`, 50, 270);
-  ctx.font = '18px Roboto'; ctx.fillText('DEVICE INFO', 300, 330);
+  ctx.fillText(`Ping: ${results.ping} ms`, 50, 200);
+  ctx.fillText(`Download: ${results.download} Mbps`, 50, 230);
+  ctx.fillText(`Upload: ${results.upload} Mbps`, 50, 260);
+  ctx.fillText(`Packet Loss: ${results.loss} %`, 50, 290);
+  ctx.font = '18px Roboto'; ctx.fillText('DEVICE INFO', 300, 350);
   ctx.font = '14px Roboto';
-  ctx.fillText(`Device: ${document.getElementById('device').innerText}`, 50, 370);
-  ctx.fillText(`Location: ${document.getElementById('location').innerText}`, 50, 400);
-  ctx.fillText(`IP: ${document.getElementById('ip').innerText}`, 50, 430);
-  ctx.fillText(`ISP: ${document.getElementById('isp').innerText}`, 50, 460);
-  ctx.fillStyle = '#FF9933'; ctx.fillRect(0,750,200,5);
-  ctx.fillStyle = '#FFFFFF'; ctx.fillRect(200,750,200,5);
-  ctx.fillStyle = '#138808'; ctx.fillRect(400,750,200,5);
+  ctx.fillText(`Device: ${document.getElementById('device').innerText}`, 50, 390);
+  ctx.fillText(`Location: ${document.getElementById('location').innerText}`, 50, 420);
+  ctx.fillText(`IP: ${document.getElementById('ip').innerText}`, 50, 450);
+  ctx.fillText(`ISP: ${document.getElementById('isp').innerText}`, 50, 480);
+  ctx.fillStyle = '#FF9933'; ctx.fillRect(0,750,200,8);
+  ctx.fillStyle = '#FFFFFF'; ctx.fillRect(200,750,200,8);
+  ctx.fillStyle = '#138808'; ctx.fillRect(400,750,200,8);
   ctx.fillStyle = '#003366'; ctx.textAlign = 'center'; ctx.font = '14px Roboto';
   ctx.fillText('CREATED AND DEVELOPED BY PUNYA BINAY SWAIN', 300, 780);
   
