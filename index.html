@@ -23,6 +23,8 @@
   .speedo-value { font-size: 48px; font-weight: 700; color: #003366; margin-top: 15px; }
   .speedo-unit { font-size: 14px; color: #555; }
   .process-text { font-size: 12px; color: #ff6b00; font-weight: 600; margin-top: 8px; min-height: 18px; }
+  .dots::after { content: ''; animation: dots 1.5s steps(5, end) infinite; }
+  @keyframes dots { 0%,20%{content:'';} 40%{content:'.';} 60%{content:'..';} 80%,100%{content:'...';} }
   .status { text-align: center; color: #ff6b00; font-weight: 600; margin: 15px 0; }
   .results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
   .card { background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.2); border-radius: 12px; padding: 15px; text-align: center; }
@@ -40,7 +42,7 @@
   .popup-box { background: rgba(255,255,255,0.98); border-radius: 20px; width: 90%; max-width: 470px; margin: 20px 0; }
   .popup-header { background: linear-gradient(135deg, #ff6b00, #003366); padding: 25px; text-align: center; color: #fff; }
   .popup-header h2 { font-weight: 700; margin-bottom: 8px; }
-  .popup-header .msg { font-size: 13px; opacity: 0.95; font-weight: 500; }
+  .popup-header .msg { font-size: 13px; opacity: 0.95; font-weight: 500; line-height: 1.6; }
   .popup-body { padding: 20px; }
   .popup .result-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
   .popup .result-row span { color: #ff6b00; font-weight: 600; }
@@ -59,14 +61,13 @@
   <div class="header">
     <div class="title">SPEED TEST X PRO BY SP</div>
     <div class="subtitle">A Genuine Speed Test Platform</div>
-    <div class="server-info">Jai Jagannath 🙏 20-25 Sec Test</div>
   </div>
 
   <div class="speedo-wrap">
     <div class="speedo"><div class="speedo-inner"></div><div class="needle" id="needle"></div></div>
     <div class="speedo-value" id="speedValue">0</div>
     <div class="speedo-unit" id="speedUnit">Mbps</div>
-    <div class="process-text" id="processText"></div>
+    <div class="process-text dots" id="processText"></div>
   </div>
 
   <div class="status" id="status">Tap RUN TEST to start</div>
@@ -100,7 +101,12 @@
   <div class="popup-box">
     <div class="popup-header">
       <h2>✅ Speed Test Complete</h2>
-      <div class="msg">Thank you, Have a nice day, Jay Jagannath<br>- Punya Binay Swain</div>
+      <div class="msg">
+        Thank you for visiting my site,<br>
+        Have a Nice day<br>
+        "Jay Jagannath"<br>
+        By Punya Binay Swain
+      </div>
     </div>
     <div class="popup-body">
       <div class="result-row"><b>Test Time</b> <span id="p_time">-</span></div>
@@ -147,8 +153,9 @@ async function startTest() {
 
   await testUploadLive();
 
-  document.getElementById('status').innerText = 'Test Complete - Jai Jagannath 🙏';
+  document.getElementById('status').innerText = 'Test Complete';
   document.getElementById('processText').innerText = '';
+  document.getElementById('processText').classList.remove('dots');
   showPopup();
   running = false;
 }
@@ -163,18 +170,19 @@ function reset() {
   document.getElementById('speedValue').innerText = '0';
   document.getElementById('speedUnit').innerText = 'Mbps';
   document.getElementById('processText').innerText = '';
+  document.getElementById('processText').classList.remove('dots');
   document.getElementById('startBtn').style.display = 'block';
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// PING 20 SEC + METER PE MS ME
 async function testPingLive() {
   document.getElementById('status').innerText = 'Testing Ping...';
-  document.getElementById('processText').innerText = 'Your test is in process, keep patience until we get result...';
+  document.getElementById('processText').innerText = 'Your test is in process';
+  document.getElementById('processText').classList.add('dots');
   document.getElementById('speedUnit').innerText = 'ms';
   let startTime = performance.now();
-  while(performance.now() - startTime < 20000) { // 20 sec
+  while(performance.now() - startTime < 20000) {
     let s = performance.now();
     try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); } catch(e){}
     let ping = Math.round(performance.now() - s);
@@ -188,31 +196,30 @@ async function testPingLive() {
   document.getElementById('speedUnit').innerText = 'Mbps';
 }
 
-// PACKET LOSS 20 SEC + METER CHALEGA
 async function testLossLive() {
   let startTime = performance.now();
-  while(performance.now() - startTime < 20000) { // 20 sec
+  while(performance.now() - startTime < 20000) {
     totalPackets++;
     try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); }
     catch(e){ lossCount++; }
     result.loss = ((lossCount/totalPackets)*100).toFixed(2);
     document.getElementById('loss').innerText = result.loss;
-    moveNeedle(parseFloat(result.loss), 100); // meter chalega
+    moveNeedle(parseFloat(result.loss), 100);
     await sleep(150);
   }
 }
 
-// DOWNLOAD 25 SEC
 async function testDownloadLive() {
   document.getElementById('status').innerText = 'Testing Download...';
-  document.getElementById('processText').innerText = 'Your test is in process, keep patience until we get result...';
+  document.getElementById('processText').innerText = 'Your test is in process';
+  document.getElementById('processText').classList.add('dots');
   document.getElementById('speedUnit').innerText = 'Mbps';
   let startTime = performance.now();
-  let duration = 25000; // 25 sec
+  let duration = 25000;
   let bytesReceived = 0;
   let workers = [];
   
-  for(let i=0; i<3; i++) { // 3 connection for more data
+  for(let i=0; i<3; i++) {
     workers.push(downloadWorker(startTime, duration, (bytes) => { bytesReceived += bytes; }));
   }
   
@@ -232,17 +239,17 @@ async function testDownloadLive() {
   result.download = currentSpeed.toFixed(2);
 }
 
-// UPLOAD 25 SEC
 async function testUploadLive() {
   document.getElementById('status').innerText = 'Testing Upload...';
-  document.getElementById('processText').innerText = 'Your test is in process, keep patience until we get result...';
+  document.getElementById('processText').innerText = 'Your test is in process';
+  document.getElementById('processText').classList.add('dots');
   document.getElementById('speedUnit').innerText = 'Mbps';
   let startTime = performance.now();
-  let duration = 25000; // 25 sec
+  let duration = 25000;
   let bytesSent = 0;
   let workers = [];
   
-  for(let i=0; i<3; i++) { // 3 connection for more data
+  for(let i=0; i<3; i++) {
     workers.push(uploadWorker(startTime, duration, (bytes) => { bytesSent += bytes; }));
   }
   
@@ -265,7 +272,7 @@ async function testUploadLive() {
 async function downloadWorker(startTime, duration, callback) {
   while(performance.now() - startTime < duration) {
     try {
-      let res = await fetch(`https://speed.cloudflare.com/__down?bytes=3000000&${Date.now()}`); // 3MB for more data
+      let res = await fetch(`https://speed.cloudflare.com/__down?bytes=3000000&${Date.now()}`);
       let blob = await res.blob();
       callback(blob.size);
     } catch(e) {}
@@ -273,7 +280,7 @@ async function downloadWorker(startTime, duration, callback) {
 }
 
 async function uploadWorker(startTime, duration, callback) {
-  let data = new Blob([new Uint8Array(2 * 1024 * 1024)]); // 2MB for more data
+  let data = new Blob([new Uint8Array(2 * 1024 * 1024)]);
   while(performance.now() - startTime < duration) {
     try {
       const controller = new AbortController();
@@ -351,13 +358,12 @@ function showPopup() {
   document.getElementById('p_upload').innerText = result.upload;
   document.getElementById('p_loss').innerText = result.loss;
   document.getElementById('p_device').innerText = userInfo.device;
-  document.getElementById('p_location').innerText = userInfo.location; // EXACT LOCATION
+  document.getElementById('p_location').innerText = userInfo.location;
   document.getElementById('p_isp').innerText = userInfo.isp;
   document.getElementById('p_network').innerText = userInfo.network;
   document.getElementById('popup').style.display = 'flex';
 }
 
-// EXACT LOCATION - INDIA MEIN KAHIN BHI
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
@@ -370,7 +376,6 @@ async function getInfo() {
       try {
         let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
         let data = await res.json();
-        // EXACT ADDRESS
         userInfo.location = `${data.address.village || data.address.town || data.address.city || 'India'}, ${data.address.state || 'India'}`;
         document.getElementById('location').innerText = userInfo.location;
       } catch(e){}
