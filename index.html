@@ -18,7 +18,7 @@
   .speedo-wrap { text-align: center; margin: 30px 0; }
   .speedo { width: 300px; height: 150px; margin: 0 auto; position: relative; background: conic-gradient(from 180deg, #ff6b00 0deg, #003366 180deg, #e0e0e0 180deg); border-radius: 300px 300px 0 0; }
   .speedo-inner { width: 260px; height: 130px; background: rgba(255,255,255,0.97); border-radius: 260px 260px 0 0; position: absolute; bottom: 0; left: 20px; }
-  .needle { width: 4px; height: 120px; background: linear-gradient(to top, #ff0000, #ff6b00); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.8s ease; border-radius: 4px; }
+  .needle { width: 4px; height: 120px; background: linear-gradient(to top, #ff0000, #ff6b00); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.2s ease; border-radius: 4px; }
   .speedo-value { font-size: 48px; font-weight: 700; color: #003366; margin-top: 15px; }
   .speedo-unit { font-size: 14px; color: #555; }
   .status { text-align: center; color: #ff6b00; font-weight: 600; margin: 15px 0; }
@@ -119,8 +119,9 @@
 let running = false;
 let result = {ping:0, download:0, upload:0, loss:0};
 let userInfo = {};
+let currentSpeed = 0;
 
-// GOOGLE JESA MULTI-CONNECTION TEST
+// LIVE TIME-BASED TEST LIKE GOOGLE
 async function startTest() {
   if(running) return;
   running = true;
@@ -129,13 +130,13 @@ async function startTest() {
   reset();
 
   await testPing();
-  await sleep(200); resetNeedle();
+  await sleep(200);
 
-  await testDownloadMulti(); // 8 THREAD
-  await sleep(200); resetNeedle();
+  await testDownloadLive(); // 8 sec live test
+  await sleep(200);
 
-  await testUploadMulti(); // 8 THREAD
-  await sleep(200); resetNeedle();
+  await testUploadLive(); // 8 sec live test
+  await sleep(200);
 
   await testLoss();
 
@@ -147,65 +148,105 @@ async function startTest() {
 function reset() {
   result = {ping:0, download:0, upload:0, loss:0};
   ['ping','download','upload','loss'].forEach(id => document.getElementById(id).innerText = '0');
-  resetNeedle();
-  document.getElementById('startBtn').style.display = 'block';
-}
-
-function resetNeedle() {
   document.getElementById('needle').style.transform = 'translateX(-50%) rotate(-90deg)';
   document.getElementById('speedValue').innerText = '0';
+  document.getElementById('startBtn').style.display = 'block';
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function testPing() {
-  document.getElementById('status').innerText = 'Testing Ping - Chennai Server...';
-  let s = performance.now();
-  try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); } catch(e){}
-  result.ping = Math.round(performance.now() - s);
-  updateUI('ping', result.ping, 500);
+  document.getElementById('status').innerText = 'Testing Ping...';
+  let times = [];
+  for(let i=0; i<5; i++) {
+    let s = performance.now();
+    try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); } catch(e){}
+    times.push(performance.now() - s);
+  }
+  result.ping = Math.round(times.reduce((a,b)=>a+b)/times.length);
+  document.getElementById('ping').innerText = result.ping;
 }
 
-// GOOGLE JESA 8 CONNECTION DOWNLOAD
-async function testDownloadMulti() {
-  document.getElementById('status').innerText = 'Testing Download - 8 Connections...';
+// GOOGLE STYLE LIVE DOWNLOAD TEST - 8 SECONDS
+async function testDownloadLive() {
+  document.getElementById('status').innerText = 'Testing Download...';
   document.getElementById('speedUnit').innerText = 'Mbps';
-  let s = performance.now();
-  let totalBytes = 0;
-  let threads = 8;
-  let promises = [];
   
-  for(let i=0; i<threads; i++) {
-    promises.push(
-      fetch(`https://speed.cloudflare.com/__down?bytes=5000000&${Date.now()}-${i}`)
-      .then(res => res.blob())
-      .then(blob => totalBytes += blob.size)
-    );
+  let startTime = performance.now();
+  let duration = 8000; // 8 seconds
+  let bytesReceived = 0;
+  let workers = [];
+  
+  // 8 parallel connections
+  for(let i=0; i<8; i++) {
+    workers.push(downloadWorker(startTime, duration, (bytes) => {
+      bytesReceived += bytes;
+    }));
   }
   
-  await Promise.all(promises);
-  let t = (performance.now() - s)/1000;
-  result.download = ((totalBytes * 8)/1000000/t).toFixed(2);
-  updateUI('download', result.download, 200);
+  // Update speed every 200ms
+  let interval = setInterval(() => {
+    let elapsed = (performance.now() - startTime) / 1000;
+    let speed = (bytesReceived * 8) / 1000000 / elapsed;
+    currentSpeed = speed;
+    document.getElementById('download').innerText = speed.toFixed(2);
+    moveNeedle(speed, 200);
+  }, 200);
+  
+  await Promise.all(workers);
+  clearInterval(interval);
+  
+  result.download = currentSpeed.toFixed(2);
 }
 
-// GOOGLE JESA 8 CONNECTION UPLOAD
-async function testUploadMulti() {
-  document.getElementById('status').innerText = 'Testing Upload - 8 Connections...';
-  let size = 1024 * 1024; // 1MB per thread
-  let threads = 8;
-  let s = performance.now();
-  let promises = [];
+// GOOGLE STYLE LIVE UPLOAD TEST - 8 SECONDS
+async function testUploadLive() {
+  document.getElementById('status').innerText = 'Testing Upload...';
+  let startTime = performance.now();
+  let duration = 8000;
+  let bytesSent = 0;
+  let workers = [];
   
-  for(let i=0; i<threads; i++) {
-    let data = new Blob([new Uint8Array(size)]);
-    promises.push(fetch("https://httpbin.org/post", {method:'POST', body:data, mode:'no-cors'}));
+  for(let i=0; i<4; i++) {
+    workers.push(uploadWorker(startTime, duration, (bytes) => {
+      bytesSent += bytes;
+    }));
   }
   
-  await Promise.all(promises);
-  let t = (performance.now() - s)/1000;
-  result.upload = ((size * threads * 8)/1000000/t).toFixed(2);
-  updateUI('upload', result.upload, 50);
+  let interval = setInterval(() => {
+    let elapsed = (performance.now() - startTime) / 1000;
+    let speed = (bytesSent * 8) / 1000000 / elapsed;
+    currentSpeed = speed;
+    document.getElementById('upload').innerText = speed.toFixed(2);
+    moveNeedle(speed, 100);
+  }, 200);
+  
+  await Promise.all(workers);
+  clearInterval(interval);
+  
+  result.upload = currentSpeed.toFixed(2);
+}
+
+// Worker for continuous download
+async function downloadWorker(startTime, duration, callback) {
+  while(performance.now() - startTime < duration) {
+    try {
+      let res = await fetch(`https://speed.cloudflare.com/__down?bytes=5000000&${Date.now()}`);
+      let blob = await res.blob();
+      callback(blob.size);
+    } catch(e) {}
+  }
+}
+
+// Worker for continuous upload
+async function uploadWorker(startTime, duration, callback) {
+  let data = new Blob([new Uint8Array(512 * 1024)]); // 512KB chunk
+  while(performance.now() - startTime < duration) {
+    try {
+      await fetch("https://httpbin.org/post", {method:'POST', body:data, mode:'no-cors'});
+      callback(data.size);
+    } catch(e) {}
+  }
 }
 
 async function testLoss() {
@@ -216,24 +257,14 @@ async function testLoss() {
     catch(e){ lost++; }
   }
   result.loss = ((lost/30)*100).toFixed(2);
-  updateUI('loss', result.loss, 100);
-}
-
-function updateUI(type, value, max) {
-  document.getElementById(type).innerText = value;
-  moveNeedle(parseFloat(value), max);
+  document.getElementById('loss').innerText = result.loss;
 }
 
 function moveNeedle(value, max) {
   let deg = (value / max) * 180 - 90;
   deg = Math.max(-90, Math.min(90, deg));
   document.getElementById('needle').style.transform = `translateX(-50%) rotate(${deg}deg)`;
-  let i = 0;
-  let int = setInterval(() => {
-    i += value/20;
-    if(i >= value) { i = value; clearInterval(int); }
-    document.getElementById('speedValue').innerText = parseFloat(i).toFixed(0);
-  }, 20);
+  document.getElementById('speedValue').innerText = parseFloat(value).toFixed(0);
 }
 
 function showPopup() {
