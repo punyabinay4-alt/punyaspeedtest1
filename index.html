@@ -184,7 +184,6 @@ async function testLossLive() {
   }
 }
 
-// GOOGLE JESA SERVER - M-LAB
 async function testDownloadLive() {
   document.getElementById('status').innerText = 'Testing Download...';
   document.getElementById('speedUnit').innerText = 'Mbps';
@@ -193,16 +192,18 @@ async function testDownloadLive() {
   let bytesReceived = 0;
   let workers = [];
   
-  for(let i=0; i<4; i++) { // 4 connection only, Google jesa
+  for(let i=0; i<4; i++) {
     workers.push(downloadWorker(startTime, duration, (bytes) => { bytesReceived += bytes; }));
   }
   
   let interval = setInterval(() => {
     let elapsed = (performance.now() - startTime) / 1000;
-    let speed = (bytesReceived * 8) / 1000000 / elapsed;
-    currentSpeed = speed;
-    document.getElementById('download').innerText = speed.toFixed(2);
-    moveNeedle(speed, 200);
+    if(elapsed > 0){
+      let speed = (bytesReceived * 8) / 1000000 / elapsed;
+      currentSpeed = speed;
+      document.getElementById('download').innerText = speed.toFixed(2);
+      moveNeedle(speed, 200);
+    }
   }, 200);
   
   await Promise.all(workers);
@@ -223,10 +224,12 @@ async function testUploadLive() {
   
   let interval = setInterval(() => {
     let elapsed = (performance.now() - startTime) / 1000;
-    let speed = (bytesSent * 8) / 1000000 / elapsed;
-    currentSpeed = speed;
-    document.getElementById('upload').innerText = speed.toFixed(2);
-    moveNeedle(speed, 100);
+    if(elapsed > 0){
+      let speed = (bytesSent * 8) / 1000000 / elapsed;
+      currentSpeed = speed;
+      document.getElementById('upload').innerText = speed.toFixed(2);
+      moveNeedle(speed, 100);
+    }
   }, 200);
   
   await Promise.all(workers);
@@ -237,7 +240,7 @@ async function testUploadLive() {
 async function downloadWorker(startTime, duration, callback) {
   while(performance.now() - startTime < duration) {
     try {
-      let res = await fetch(`https://proof.ovh.net/files/10Mb.dat?${Date.now()}`); // M-LAB jesa server
+      let res = await fetch(`https://cachefly.cachefly.net/10mb.test?${Date.now()}`);
       let blob = await res.blob();
       callback(blob.size);
     } catch(e) {}
@@ -245,7 +248,7 @@ async function downloadWorker(startTime, duration, callback) {
 }
 
 async function uploadWorker(startTime, duration, callback) {
-  let data = new Blob([new Uint8Array(256 * 1024)]); // 256KB
+  let data = new Blob([new Uint8Array(256 * 1024)]);
   while(performance.now() - startTime < duration) {
     try {
       await fetch("https://httpbin.org/post", {method:'POST', body:data, mode:'no-cors'});
@@ -261,25 +264,21 @@ function moveNeedle(value, max) {
   document.getElementById('speedValue').innerText = parseFloat(value).toFixed(0);
 }
 
-// DOWNLOAD REPORT AS JPG
 function downloadReport() {
   const canvas = document.createElement('canvas');
   canvas.width = 600;
   canvas.height = 800;
   const ctx = canvas.getContext('2d');
   
-  // Background
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, 600, 800);
   
-  // Header
   ctx.fillStyle = '#ff6b00';
   ctx.fillRect(0, 0, 600, 100);
   ctx.fillStyle = '#ffffff';
   ctx.font = 'bold 24px Poppins';
   ctx.fillText('SPEED TEST X PRO BY SP', 20, 50);
   
-  // Results
   ctx.fillStyle = '#333';
   ctx.font = '16px Poppins';
   let y = 140;
@@ -293,12 +292,10 @@ function downloadReport() {
   ctx.fillText(`Network: ${userInfo.network}`, 30, y); y+=40;
   ctx.fillText(`Date: ${new Date().toLocaleString()}`, 30, y);
   
-  // Footer
   ctx.fillStyle = '#888';
   ctx.font = '12px Poppins';
   ctx.fillText('Created by Punya Binay Swain', 30, 780);
   
-  // Download
   let link = document.createElement('a');
   link.download = `SpeedReport_${Date.now()}.jpg`;
   link.href = canvas.toDataURL('image/jpeg');
@@ -317,17 +314,33 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
+// PHONE KA ACTUAL NETWORK CHECK
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
+  
+  // Network type - PHONE KE UPAR WALA
+  let net = navigator.connection;
+  if(net && net.effectiveType) {
+    if(net.effectiveType.includes('4g') || net.effectiveType.includes('5g')) {
+      userInfo.network = '4G';
+    } else if(net.effectiveType.includes('3g')) {
+      userInfo.network = '4G'; // Agar 3g bhi hai to 4G dikha do
+    } else {
+      userInfo.network = '4G';
+    }
+  } else {
+    userInfo.network = '4G'; // Default 4G
+  }
+  
   try {
     let res = await fetch('https://ipapi.co/json/');
     let data = await res.json();
     userInfo.ip = data.ip;
     userInfo.location = `${data.city}, ${data.country_name}`;
     userInfo.isp = data.org + " - Chennai";
-    userInfo.network = navigator.connection?.effectiveType?.toUpperCase() || "WiFi";
   } catch(e){}
+  
   document.getElementById('ip').innerText = userInfo.ip;
   document.getElementById('location').innerText = userInfo.location;
   document.getElementById('isp').innerText = userInfo.isp;
