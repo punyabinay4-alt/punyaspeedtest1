@@ -56,7 +56,7 @@
 <div class="container">
   <div class="header">
     <div class="title">SPEED TEST X PRO BY SP</div>
-    <div class="server-info">Jai Jagannath 🙏 Testing NOW - Jagatsinghpur</div>
+    <div class="server-info">Jai Jagannath 🙏 10-12 Sec Test - Jagatsinghpur</div>
   </div>
 
   <div class="speedo-wrap">
@@ -141,7 +141,7 @@ async function startTest() {
   await testDownloadLive();
   await sleep(200);
 
-  await testUploadLive(); // YEHI REAL TIME HAI
+  await testUploadLive();
 
   document.getElementById('status').innerText = 'Test Complete - Jai Jagannath 🙏';
   showPopup();
@@ -156,28 +156,34 @@ function reset() {
   ['ping','download','upload','loss'].forEach(id => document.getElementById(id).innerText = '0');
   document.getElementById('needle').style.transform = 'translateX(-50%) rotate(-90deg)';
   document.getElementById('speedValue').innerText = '0';
+  document.getElementById('speedUnit').innerText = 'Mbps';
   document.getElementById('startBtn').style.display = 'block';
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// PING 10 SEC + METER PE MS ME
 async function testPingLive() {
   document.getElementById('status').innerText = 'Testing Ping...';
+  document.getElementById('speedUnit').innerText = 'ms';
   let startTime = performance.now();
-  while(performance.now() - startTime < 5000) {
+  while(performance.now() - startTime < 10000) { // 10 sec
     let s = performance.now();
     try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); } catch(e){}
     let ping = Math.round(performance.now() - s);
     pingValues.push(ping);
     result.ping = Math.round(pingValues.reduce((a,b)=>a+b)/pingValues.length);
     document.getElementById('ping').innerText = result.ping;
+    moveNeedle(result.ping, 500); // 500ms max
+    document.getElementById('speedValue').innerText = result.ping;
     await sleep(300);
   }
+  document.getElementById('speedUnit').innerText = 'Mbps';
 }
 
 async function testLossLive() {
   let startTime = performance.now();
-  while(performance.now() - startTime < 5000) {
+  while(performance.now() - startTime < 10000) { // 10 sec
     totalPackets++;
     try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); }
     catch(e){ lossCount++; }
@@ -187,11 +193,12 @@ async function testLossLive() {
   }
 }
 
+// DOWNLOAD 12 SEC
 async function testDownloadLive() {
   document.getElementById('status').innerText = 'Testing Download...';
   document.getElementById('speedUnit').innerText = 'Mbps';
   let startTime = performance.now();
-  let duration = 5000;
+  let duration = 12000; // 12 sec
   let bytesReceived = 0;
   let workers = [];
   
@@ -206,6 +213,7 @@ async function testDownloadLive() {
       currentSpeed = speed;
       document.getElementById('download').innerText = speed.toFixed(2);
       moveNeedle(speed, 100);
+      document.getElementById('speedValue').innerText = speed.toFixed(0);
     }
   }, 300);
   
@@ -214,15 +222,16 @@ async function testDownloadLive() {
   result.download = currentSpeed.toFixed(2);
 }
 
-// REAL TIME UPLOAD TEST - JAGATSINGHPUR
+// UPLOAD 12 SEC
 async function testUploadLive() {
-  document.getElementById('status').innerText = 'Testing Upload NOW...';
+  document.getElementById('status').innerText = 'Testing Upload...';
+  document.getElementById('speedUnit').innerText = 'Mbps';
   let startTime = performance.now();
-  let duration = 10000; // 10 sec for accurate
+  let duration = 12000; // 12 sec
   let bytesSent = 0;
   let workers = [];
   
-  for(let i=0; i<2; i++) { // 2 connection
+  for(let i=0; i<2; i++) {
     workers.push(uploadWorker(startTime, duration, (bytes) => { bytesSent += bytes; }));
   }
   
@@ -233,8 +242,9 @@ async function testUploadLive() {
       currentSpeed = speed;
       document.getElementById('upload').innerText = speed.toFixed(2);
       moveNeedle(speed, 50);
+      document.getElementById('speedValue').innerText = speed.toFixed(0);
     }
-  }, 200); // 200ms me update
+  }, 200);
   
   await Promise.all(workers);
   clearInterval(interval);
@@ -251,9 +261,8 @@ async function downloadWorker(startTime, duration, callback) {
   }
 }
 
-// REAL UPLOAD - NO GUESS
 async function uploadWorker(startTime, duration, callback) {
-  let data = new Blob([new Uint8Array(1024 * 1024)]); // 1MB
+  let data = new Blob([new Uint8Array(1024 * 1024)]);
   while(performance.now() - startTime < duration) {
     try {
       const controller = new AbortController();
@@ -269,9 +278,8 @@ async function uploadWorker(startTime, duration, callback) {
       
       let t2 = performance.now();
       clearTimeout(timeout);
-      if(t2-t1 > 100) callback(data.size); // sirf successful upload gino
+      if(t2-t1 > 100) callback(data.size);
     } catch(e) {
-      // backup
       try {
         let smallData = new Blob([new Uint8Array(256 * 1024)]);
         await fetch("https://cdn.nperf.com/upload", {method:'POST', body:smallData, mode:'no-cors'});
@@ -285,7 +293,6 @@ function moveNeedle(value, max) {
   let deg = (value / max) * 180 - 90;
   deg = Math.max(-90, Math.min(90, deg));
   document.getElementById('needle').style.transform = `translateX(-50%) rotate(${deg}deg)`;
-  document.getElementById('speedValue').innerText = parseFloat(value).toFixed(0);
 }
 
 function downloadReport() {
@@ -318,7 +325,7 @@ function downloadReport() {
   
   ctx.fillStyle = '#888';
   ctx.font = '12px Poppins';
-  ctx.fillText('Real Time Test - Created by Punya Binay Swain', 30, 820);
+  ctx.fillText('Real Time 12Sec Test - Created by Punya Binay Swain', 30, 820);
   
   let link = document.createElement('a');
   link.download = `SpeedReport_Jagatsinghpur_${Date.now()}.jpg`;
