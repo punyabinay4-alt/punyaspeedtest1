@@ -8,93 +8,109 @@
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
+    /* PAKKA CITY BACKGROUND - CSS GRADIENT CITY */
     background: 
-      linear-gradient(180deg, #0D0221 0%, #1A0B3A 100%),
-      url("data:image/svg+xml,%3Csvg xmlns=N/A viewBox='0 0 1440 500'%3E%3Crect fill='%230D0221' width='1440' height='500'/%3E%3Cg fill='%239D4EDD' opacity='0.3'%3E%3Crect x='40' y='250' width='20' height='250'/%3E%3Crect x='80' y='200' width='25' height='300'/%3E%3Crect x='130' y='280' width='15' height='220'/%3E%3Crect x='170' y='150' width='30' height='350'/%3E%3Crect x='220' y='230' width='22' height='270'/%3E%3Crect x='260' y='180' width='28' height='320'/%3E%3Crect x='310' y='260' width='20' height='240'/%3E%3Crect x='350' y='120' width='35' height='380'/%3E%3Crect x='400' y='240' width='18' height='260'/%3E%3Crect x='440' y='160' width='32' height='340'/%3E%3Crect x='490' y='270' width='16' height='230'/%3E%3Crect x='530' y='140' width='30' height='360'/%3E%3Crect x='580' y='220' width='24' height='280'/%3E%3Crect x='620' y='100' width='40' height='400'/%3E%3Crect x='680' y='250' width='20' height='250'/%3E%3Crect x='720' y='170' width='26' height='330'/%3E%3Crect x='770' y='290' width='14' height='210'/%3E%3Crect x='810' y='130' width='34' height='370'/%3E%3Crect x='860' y='200' width='22' height='300'/%3E%3Crect x='900' y='110' width='38' height='390'/%3E%3Crect x='960' y='240' width='20' height='260'/%3E%3Crect x='1000' y='150' width='28' height='350'/%3E%3Crect x='1050' y='280' width='16' height='220'/%3E%3Crect x='1090' y='125' width='32' height='375'/%3E%3Crect x='1140' y='210' width='24' height='290'/%3E%3Crect x='1180' y='90' width='42' height='410'/%3E%3Crect x='1240' y='260' width='18' height='240'/%3E%3Crect x='1280' y='175' width='26' height='325'/%3E%3Crect x='1320' y='230' width='20' height='270'/%3E%3Crect x='1360' y='160' width='30' height='340'/%3E%3C/g%3E%3Ccircle cx='1200' cy='80' r='40' fill='%2300F5FF' opacity='0.4'/%3E%3C/svg%3E") no-repeat bottom;
-    background-size: cover;
+      linear-gradient(to bottom, #000428 0%, #004e92 100%);
+    position: relative;
     color: #E0E0FF; text-align: center; padding: 15px; min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif; overflow-x: hidden;
   }
-.container { max-width: 600px; margin: auto; }
+  /* CITY SILHOUETTE */
+  body::after {
+    content: ''; position: fixed; bottom: 0; left: 0; width: 100%; height: 200px;
+    background: 
+      linear-gradient(transparent 60%, rgba(0,0,0,0.8) 100%),
+      repeating-linear-gradient(90deg, #001f3f 0px, #001f3f 30px, #002b5c 30px, #002b5c 50px);
+    z-index: -1;
+  }
+  /* CITY BUILDINGS */
+  body::before {
+    content: ''; position: fixed; bottom: 0; left: 0; width: 100%; height: 180px;
+    background-image:
+      linear-gradient(#FFD700 2px, transparent 2px),
+      linear-gradient(90deg, #FFD700 2px, transparent 2px);
+    background-size: 50px 20px, 20px 20px;
+    opacity: 0.15;
+    z-index: -1;
+  }
 
-.top-title { font-family: 'Orbitron', sans-serif; font-size: 12px; color: #00F5FF; letter-spacing: 3px; margin-bottom: 8px; }
-.main-title { font-family: 'Orbitron', sans-serif; color: #00F5FF; font-size: 28px; font-weight: 900; text-shadow: 0 0 20px #00F5FF; margin-bottom: 5px; }
-.main-title span { color: #FF00FF; font-size: 17px; }
+.container { max-width: 550px; margin: auto; position: relative; z-index: 2; }
+
+.top-title { font-family: 'Orbitron', sans-serif; font-size: 12px; color: #FFD700; letter-spacing: 3px; margin-bottom: 8px; }
+.main-title { font-family: 'Orbitron', sans-serif; color: #00BFFF; font-size: 28px; font-weight: 900; text-shadow: 0 0 20px #00BFFF; margin-bottom: 5px; }
+.main-title span { color: #FFD700; font-size: 17px; }
 .server-tag { font-size: 11px; color: #A0A0FF; margin-bottom: 20px; }
 
-/* NORMAL SIZE CLOCK - CHOTA KIYA */
+/* CLOCK NORMAL */
 .gauge-container { position: relative; width: 240px; height: 130px; margin: 0 auto 15px; }
 .gauge-bg {
-    width: 240px; height: 120px; border: 16px solid rgba(157,78,221,0.2);
+    width: 240px; height: 120px; border: 16px solid rgba(0,191,255,0.2);
     border-bottom: none; border-radius: 240px 240px 0 0;
   }
 .gauge-arc {
     width: 240px; height: 120px; border: 16px solid transparent;
-    border-top: 16px solid #00F5FF; border-radius: 240px 240px 0 0;
+    border-top: 16px solid #00BFFF; border-radius: 240px 240px 0 0;
     position: absolute; top: 0; left: 0; transform-origin: center bottom;
-    transform: rotate(-90deg); transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-    filter: drop-shadow(0 0 15px #00F5FF);
+    transform: rotate(-90deg); transition: transform 1.5s ease-out;
+    filter: drop-shadow(0 0 15px #00BFFF);
   }
 .gauge-arrow {
     position: absolute; bottom: 0; left: 50%; width: 3px; height: 95px;
-    background: linear-gradient(to top, #FF00FF, #00F5FF); transform-origin: bottom center;
-    transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    background: linear-gradient(to top, #FFD700, #00BFFF); transform-origin: bottom center;
+    transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s ease-out;
     z-index: 10;
   }
 .gauge-center { position: absolute; width: 100%; top: 55px; z-index: 5; }
 .gauge-value { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 0 10px #fff; }
 .gauge-unit { font-size: 12px; color: #A0A0FF; }
-/* CLOCK NUMBERS 0-500 */
-.gauge-mark { position: absolute; font-family: 'Orbitron'; font-size: 9px; color: #00F5FF; font-weight: 700; }
-.mark-0 { bottom: 5px; left: 5px; }
-.mark-100 { bottom: 70px; left: 30px; }
+.gauge-mark { position: absolute; font-family: 'Orbitron'; font-size: 9px; color: #00BFFF; font-weight: 700; }
+.mark-0 { bottom: 5px; left: 5px; } .mark-100 { bottom: 70px; left: 30px; }
 .mark-200 { top: 8px; left: 50%; transform: translateX(-50%); }
-.mark-300 { bottom: 70px; right: 30px; }
-.mark-400 { bottom: 35px; right: 15px; }
-.mark-500 { bottom: 5px; right: 5px; }
+.mark-300 { bottom: 70px; right: 30px; } .mark-400 { bottom: 35px; right: 15px; } .mark-500 { bottom: 5px; right: 5px; }
 
-.test-status { color: #FF00FF; font-weight: 600; height: 18px; margin-bottom: 15px; font-size: 14px; }
+.test-status { color: #FFD700; font-weight: 600; height: 18px; margin-bottom: 15px; font-size: 14px; }
 
 .results { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
 .circle-result {
-    background: rgba(157,78,221,0.2); border: 1px solid #9D4EDD;
+    background: rgba(0,191,255,0.1); border: 1px solid #00BFFF;
     border-radius: 16px; padding: 18px 10px;
-    color: #fff; font-weight: 700; box-shadow: 0 0 15px rgba(157, 78, 221, 0.4);
+    color: #fff; font-weight: 700; box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
     backdrop-filter: blur(10px);
   }
-.circle-result.val { font-family: 'Orbitron'; font-size: 20px; color: #00F5FF; }
+.circle-result.val { font-family: 'Orbitron'; font-size: 20px; color: #00BFFF; }
 .circle-result.label { font-size: 11px; margin-top: 4px; color: #A0A0FF; }
 
 button {
-    background: linear-gradient(90deg, #FF00FF, #00F5FF); border: none; padding: 14px 30px;
-    border-radius: 10px; color: #0D0221; font-weight: 700; font-size: 15px;
+    background: linear-gradient(90deg, #FFD700, #00BFFF); border: none; padding: 14px 30px;
+    border-radius: 10px; color: #000428; font-weight: 700; font-size: 15px;
     cursor: pointer; margin: 8px 0; width: 100%;
-    transition: 0.3s; box-shadow: 0 4px 15px rgba(0,245,255,0.3); font-family: 'Orbitron';
+    transition: 0.3s; box-shadow: 0 4px 15px rgba(0,191,255,0.3); font-family: 'Orbitron';
   }
-.btn-secondary { background: linear-gradient(90deg, #7B2CBF, #9D4EDD); color: #fff; }
-.btn-download { background: linear-gradient(90deg, #00F5FF, #FF00FF); }
+.btn-secondary { background: linear-gradient(90deg, #4B0082, #00BFFF); color: #fff; }
 
 .card {
-    background: rgba(157,78,221,0.1); border: 1px solid rgba(157,78,221,0.3);
+    background: rgba(0,191,255,0.08); border: 1px solid rgba(0,191,255,0.3);
     border-radius: 20px; padding: 20px; margin: 20px auto;
     backdrop-filter: blur(15px);
   }
-.info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(157,78,221,0.2); font-size: 13px; text-align: left; }
+.info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,191,255,0.2); font-size: 13px; text-align: left; }
+
+/* TIRANGA */
+.tiranga { height: 5px; background: linear-gradient(90deg, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%); margin-top: 20px; border-radius: 2px; }
 
 .popup {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(13,2,33,0.9); display: none; align-items: center; justify-content: center;
+    background: rgba(0,4,40,0.9); display: none; align-items: center; justify-content: center;
     z-index: 999; backdrop-filter: blur(8px);
   }
 .popup-content {
-    background: linear-gradient(135deg, #1A0B3A, #2D1B69); padding: 30px; border-radius: 20px; border: 1px solid #00F5FF;
-    text-align: center; box-shadow: 0 0 40px #00F5FF;
+    background: linear-gradient(135deg, #000428, #004e92); padding: 30px; border-radius: 20px; border: 1px solid #00BFFF;
+    text-align: center; box-shadow: 0 0 40px #00BFFF;
   }
-.popup h2 { font-family: 'Orbitron'; color: #00F5FF; margin-bottom: 10px; }
-.popup .from { color: #FF00FF; font-weight: 700; margin-top: 10px; }
-
-.footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(157,78,221,0.3); font-size: 12px; color: #888; }
-.footer.dev { color: #00F5FF; font-weight: 700; }
+.popup h2 { font-family: 'Orbitron'; color: #00BFFF; margin-bottom: 10px; }
+.popup .from { color: #FFD700; font-weight: 700; margin-top: 10px; }
+.footer { margin-top: 20px; font-size: 12px; color: #888; }
+.footer.dev { color: #00BFFF; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -102,9 +118,8 @@ button {
 
   <div class="top-title">DESIGNED BY SP</div>
   <h1 class="main-title">⚡ SPEEDTEST <span>X PRO by SP</span></h1>
-  <div class="server-tag" id="serverTag">Server: Detecting...</div>
+  <div class="server-tag" id="serverTag">Server: Auto Detecting...</div>
 
-  <!-- NORMAL CLOCK -->
   <div class="gauge-container">
     <div class="gauge-bg"></div>
     <div class="gauge-arc" id="gaugeArc"></div>
@@ -131,20 +146,18 @@ button {
 
   <button id="startBtn" onclick="startFullTest()">START TEST</button>
   <button id="testAgainBtn" class="btn-secondary" onclick="startFullTest()" style="display:none;">TEST AGAIN</button>
-  <button id="refreshBtn" class="btn-secondary" onclick="location.reload()" style="display:none;">REFRESH DATA</button>
 
   <div class="card">
-    <button onclick="getDeviceInfo()">📍 GET LOCATION</button>
-    <h3 style="color:#00F5FF; margin: 15px 0; font-size:16px; font-family:Orbitron;">DEVICE INFORMATION</h3>
-    <div class="info-row"><span>📱 DEVICE</span><span id="device">-</span></div>
-    <div class="info-row"><span>📍 LOCATION</span><span id="location">-</span></div>
-    <div class="info-row"><span>🏷️ IP ADDRESS</span><span id="ip">-</span></div>
-    <div class="info-row"><span>📡 ISP / SERVER</span><span id="isp">-</span></div>
-    <div class="info-row"><span>📶 NETWORK TYPE</span><span id="network">-</span></div>
-    <div class="info-row"><span>📊 NETWORK QUALITY</span><span id="quality">-</span></div>
-    <button class="btn-download" onclick="downloadReportJPG()">⬇️ DOWNLOAD REPORT JPG</button>
+    <h3 style="color:#00BFFF; margin: 15px 0; font-size:16px; font-family:Orbitron;">DEVICE INFORMATION</h3>
+    <div class="info-row"><span>📱 DEVICE</span><span id="device">Detecting...</span></div>
+    <div class="info-row"><span>📍 LOCATION</span><span id="location">Detecting...</span></div>
+    <div class="info-row"><span>🏷️ IP ADDRESS</span><span id="ip">Detecting...</span></div>
+    <div class="info-row"><span>📡 ISP / SERVER</span><span id="isp">Detecting...</span></div>
+    <div class="info-row"><span>📶 NETWORK TYPE</span><span id="network">Detecting...</span></div>
+    <div class="info-row"><span>📊 NETWORK QUALITY</span><span id="quality">Detecting...</span></div>
   </div>
 
+  <div class="tiranga"></div>
   <div class="footer">
     Created and Developed by <span class="dev">Punya Binay Swain</span>
   </div>
@@ -161,11 +174,9 @@ button {
   </div>
 </div>
 
-<canvas id="reportCanvas" width="800" height="1000" style="display:none;"></canvas>
-
 <script>
 let testRunning = false;
-const CUSTOM_SERVER = "";
+const CUSTOM_SERVER = ""; // APNA LIBRESPEED SERVER YAHAN DALO FOR 100% ACCURACY
 const WEBSITE_NAME = "SpeedTestX Pro by SP";
 
 async function startFullTest() {
@@ -173,8 +184,7 @@ async function startFullTest() {
   testRunning = true;
   document.getElementById('startBtn').style.display = 'none';
   document.getElementById('testAgainBtn').style.display = 'none';
-  document.getElementById('refreshBtn').style.display = 'none';
-  resetAll();
+  resetAll(); // CLOCK ZERO
 
   await runTestStep('ping', 'Testing Ping...', 'ms', 200);
   await new Promise(r => setTimeout(r, 500));
@@ -186,7 +196,6 @@ async function startFullTest() {
 
   document.getElementById('testStatus').innerText = 'Test Complete ✅';
   document.getElementById('testAgainBtn').style.display = 'block';
-  document.getElementById('refreshBtn').style.display = 'block';
   document.getElementById('thankPopup').style.display = 'flex';
   testRunning = false;
 }
@@ -200,6 +209,7 @@ function resetAll() {
   });
 }
 
+// 8 THREAD ACCURATE TEST
 async function runTestStep(type, statusText, unit, max) {
   document.getElementById('testStatus').innerText = statusText;
   document.getElementById('gaugeUnit').innerText = unit;
@@ -210,19 +220,19 @@ async function runTestStep(type, statusText, unit, max) {
 
   if(type === 'ping') {
     let total = 0;
-    for(let i=0; i<5; i++){
+    for(let i=0; i<8; i++){
       const start = performance.now();
       await fetch(`${server}/cdn-cgi/trace?${Date.now()+i}`, {mode: 'no-cors', cache: 'no-store'});
       total += performance.now() - start;
     }
-    value = Math.round(total/5);
+    value = Math.round(total/8);
   }
 
   if(type === 'download') {
     const start = performance.now();
     const promises = [];
-    for(let i=0; i<6; i++){
-      promises.push(fetch(`${server}/__down?bytes=10000000&cb=${Date.now()+i}`, {cache: 'no-store'}).then(r => r.blob()));
+    for(let i=0; i<8; i++){ // 8 THREADS
+      promises.push(fetch(`${server}/__down?bytes=8000000&cb=${Date.now()+i}`, {cache: 'no-store'}).then(r => r.blob()));
     }
     const blobs = await Promise.all(promises);
     const totalBytes = blobs.reduce((a,b) => a + b.size, 0);
@@ -231,11 +241,15 @@ async function runTestStep(type, statusText, unit, max) {
   }
 
   if(type === 'upload') {
-    const data = new Blob([new ArrayBuffer(5 * 1024 * 1024)]);
+    const data = new Blob([new ArrayBuffer(4 * 1024 * 1024)]);
     const start = performance.now();
-    await fetch(`${server}/post`, {method: 'POST', body: data, mode: 'no-cors', cache: 'no-store'});
+    const promises = [];
+    for(let i=0; i<4; i++){
+      promises.push(fetch(`${server}/post`, {method: 'POST', body: data, mode: 'no-cors', cache: 'no-store'}));
+    }
+    await Promise.all(promises);
     const time = (performance.now() - start) / 1000;
-    value = ((data.size * 8) / 1000000 / time).toFixed(2);
+    value = ((data.size * 8 * 4) / 1000000 / time).toFixed(2);
   }
 
   if(type === 'loss') {
@@ -262,12 +276,13 @@ function animateGauge(value, max, displayVal) {
   
   let i = 0;
   let interval = setInterval(() => {
-    i += value/25;
+    i += value/20;
     if(i >= value) { i = value; clearInterval(interval); }
     val.innerText = parseFloat(i).toFixed(2);
-  }, 30);
+  }, 25);
 }
 
+// AUTO GPS LOCATION
 async function getDeviceInfo() {
   let deviceName = navigator.userAgent.includes("Android")? "Android Phone" : "Windows PC";
   document.getElementById('device').innerText = deviceName;
@@ -275,6 +290,7 @@ async function getDeviceInfo() {
   document.getElementById('network').innerText = net?.effectiveType?.toUpperCase() || 'UNKNOWN';
   document.getElementById('quality').innerText = net?.downlink ? net.downlink + ' Mbps' : '-';
 
+  // IP LOCATION
   try {
     const res = await fetch('https://ipwho.is/');
     const data = await res.json();
@@ -283,56 +299,14 @@ async function getDeviceInfo() {
       document.getElementById('location').innerText = `${data.city}, ${data.country}`;
       document.getElementById('isp').innerText = data.connection.isp;
     }
-  } catch(e) { document.getElementById('ip').innerText = 'Error'; }
-}
-
-function downloadReportJPG() {
-  const canvas = document.getElementById('reportCanvas');
-  const ctx = canvas.getContext('2d');
+  } catch(e) {}
   
-  ctx.fillStyle = '#0D0221';
-  ctx.fillRect(0, 0, 800, 1000);
-  
-  ctx.fillStyle = '#00F5FF';
-  ctx.font = 'bold 40px Orbitron';
-  ctx.textAlign = 'center';
-  ctx.fillText(WEBSITE_NAME, 400, 80);
-  
-  ctx.fillStyle = '#FF00FF';
-  ctx.font = '20px Poppins';
-  ctx.fillText('Designed by: SP', 400, 120);
-  ctx.fillText('Created by: Punya Binay Swain', 400, 150);
-  ctx.fillText(new Date().toLocaleString(), 400, 180);
-  
-  ctx.fillStyle = '#fff';
-  ctx.font = 'bold 28px Orbitron';
-  ctx.fillText('TEST RESULTS', 400, 250);
-  
-  ctx.font = '24px Poppins';
-  ctx.textAlign = 'left';
-  ctx.fillText(`Ping: ${document.getElementById('ping').innerText} ms`, 100, 320);
-  ctx.fillText(`Download: ${document.getElementById('download').innerText} Mbps`, 100, 370);
-  ctx.fillText(`Upload: ${document.getElementById('upload').innerText} Mbps`, 100, 420);
-  ctx.fillText(`Packet Loss: ${document.getElementById('loss').innerText} %`, 100, 470);
-  
-  ctx.font = 'bold 28px Orbitron';
-  ctx.fillText('DEVICE INFO', 400, 550);
-  ctx.font = '20px Poppins';
-  ctx.fillText(`IP: ${document.getElementById('ip').innerText}`, 100, 600);
-  ctx.fillText(`Location: ${document.getElementById('location').innerText}`, 100, 640);
-  ctx.fillText(`ISP: ${document.getElementById('isp').innerText}`, 100, 680);
-  ctx.fillText(`Network: ${document.getElementById('network').innerText}`, 100, 720);
-  
-  ctx.fillStyle = '#FF00FF';
-  ctx.font = '22px Poppins';
-  ctx.textAlign = 'center';
-  ctx.fillText('Thank you for using SpeedTestX Pro!', 400, 850);
-  ctx.fillText('- From Punya Binay Swain', 400, 890);
-  
-  const link = document.createElement('a');
-  link.download = 'SpeedTestX_Report.jpg';
-  link.href = canvas.toDataURL('image/jpeg', 0.9);
-  link.click();
+  // EXACT GPS LOCATION
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(pos => {
+      document.getElementById('location').innerText = `Lat: ${pos.coords.latitude.toFixed(4)}, Lon: ${pos.coords.longitude.toFixed(4)}`;
+    });
+  }
 }
 
 window.onload = getDeviceInfo;
