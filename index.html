@@ -14,6 +14,7 @@
   .container { max-width: 650px; margin: 0 auto; background: rgba(255,255,255,0.97); backdrop-filter: blur(10px); padding: 30px; border-radius: 16px; }
   .header { text-align: center; margin-bottom: 25px; }
   .title { font-size: 26px; font-weight: 700; color: #ff6b00; }
+  .subtitle { font-size: 13px; color: #003366; font-weight: 600; margin-top: 3px; }
   .server-info { font-size: 12px; color: #555; margin-top: 5px; }
   .speedo-wrap { text-align: center; margin: 30px 0; }
   .speedo { width: 300px; height: 150px; margin: 0 auto; position: relative; background: conic-gradient(from 180deg, #ff6b00 0deg, #003366 180deg, #e0e0e0 180deg); border-radius: 300px 300px 0 0; }
@@ -21,6 +22,7 @@
   .needle { width: 4px; height: 120px; background: linear-gradient(to top, #ff0000, #ff6b00); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.2s ease; border-radius: 4px; }
   .speedo-value { font-size: 48px; font-weight: 700; color: #003366; margin-top: 15px; }
   .speedo-unit { font-size: 14px; color: #555; }
+  .process-text { font-size: 12px; color: #ff6b00; font-weight: 600; margin-top: 8px; min-height: 18px; }
   .status { text-align: center; color: #ff6b00; font-weight: 600; margin: 15px 0; }
   .results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
   .card { background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.2); border-radius: 12px; padding: 15px; text-align: center; }
@@ -56,19 +58,21 @@
 <div class="container">
   <div class="header">
     <div class="title">SPEED TEST X PRO BY SP</div>
-    <div class="server-info">Jai Jagannath 🙏 10-12 Sec Test - Jagatsinghpur</div>
+    <div class="subtitle">A Genuine Speed Test Platform</div>
+    <div class="server-info">Jai Jagannath 🙏 20-25 Sec Test</div>
   </div>
 
   <div class="speedo-wrap">
     <div class="speedo"><div class="speedo-inner"></div><div class="needle" id="needle"></div></div>
     <div class="speedo-value" id="speedValue">0</div>
     <div class="speedo-unit" id="speedUnit">Mbps</div>
+    <div class="process-text" id="processText"></div>
   </div>
 
   <div class="status" id="status">Tap RUN TEST to start</div>
 
   <div class="results">
-    <div class="card"><div class="val" id="ping">0</div><div class="label">ms Ping</div></div>
+    <div class="card"><div class="val" id="ping">0</div><div class="label">Ping / Latency</div></div>
     <div class="card"><div class="val" id="download">0</div><div class="label">Mbps Download</div></div>
     <div class="card"><div class="val" id="upload">0</div><div class="label">Mbps Upload</div></div>
     <div class="card"><div class="val" id="loss">0</div><div class="label">% Packet Loss</div></div>
@@ -89,18 +93,18 @@
     <div class="row"><span>Test Time</span><span id="testTime">-</span></div>
   </div>
 
-  <div class="footer">CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</div>
+  <div class="footer">© CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</div>
 </div>
 
 <div class="popup" id="popup">
   <div class="popup-box">
     <div class="popup-header">
       <h2>✅ Speed Test Complete</h2>
-      <div class="msg">Real Time Test - Jagatsinghpur, Odisha<br>-Punya Binay Swain</div>
+      <div class="msg">Thank you, Have a nice day, Jay Jagannath<br>- Punya Binay Swain</div>
     </div>
     <div class="popup-body">
       <div class="result-row"><b>Test Time</b> <span id="p_time">-</span></div>
-      <div class="result-row"><b>Ping</b> <span id="p_ping">0</span> ms</div>
+      <div class="result-row"><b>Ping / Latency</b> <span id="p_ping">0</span> ms</div>
       <div class="result-row"><b>Download</b> <span id="p_download">0</span> Mbps</div>
       <div class="result-row"><b>Upload</b> <span id="p_upload">0</span> Mbps</div>
       <div class="result-row"><b>Packet Loss</b> <span id="p_loss">0</span> %</div>
@@ -114,7 +118,7 @@
         <button class="btn btn-secondary" onclick="document.getElementById('popup').style.display='none'">Close</button>
       </div>
     </div>
-    <div class="popup-footer">CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</div>
+    <div class="popup-footer">© CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</div>
   </div>
 </div>
 
@@ -144,6 +148,7 @@ async function startTest() {
   await testUploadLive();
 
   document.getElementById('status').innerText = 'Test Complete - Jai Jagannath 🙏';
+  document.getElementById('processText').innerText = '';
   showPopup();
   running = false;
 }
@@ -157,52 +162,57 @@ function reset() {
   document.getElementById('needle').style.transform = 'translateX(-50%) rotate(-90deg)';
   document.getElementById('speedValue').innerText = '0';
   document.getElementById('speedUnit').innerText = 'Mbps';
+  document.getElementById('processText').innerText = '';
   document.getElementById('startBtn').style.display = 'block';
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// PING 10 SEC + METER PE MS ME
+// PING 20 SEC + METER PE MS ME
 async function testPingLive() {
   document.getElementById('status').innerText = 'Testing Ping...';
+  document.getElementById('processText').innerText = 'Your test is in process, keep patience until we get result...';
   document.getElementById('speedUnit').innerText = 'ms';
   let startTime = performance.now();
-  while(performance.now() - startTime < 10000) { // 10 sec
+  while(performance.now() - startTime < 20000) { // 20 sec
     let s = performance.now();
     try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); } catch(e){}
     let ping = Math.round(performance.now() - s);
     pingValues.push(ping);
     result.ping = Math.round(pingValues.reduce((a,b)=>a+b)/pingValues.length);
     document.getElementById('ping').innerText = result.ping;
-    moveNeedle(result.ping, 500); // 500ms max
+    moveNeedle(result.ping, 500);
     document.getElementById('speedValue').innerText = result.ping;
     await sleep(300);
   }
   document.getElementById('speedUnit').innerText = 'Mbps';
 }
 
+// PACKET LOSS 20 SEC + METER CHALEGA
 async function testLossLive() {
   let startTime = performance.now();
-  while(performance.now() - startTime < 10000) { // 10 sec
+  while(performance.now() - startTime < 20000) { // 20 sec
     totalPackets++;
     try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors'}); }
     catch(e){ lossCount++; }
     result.loss = ((lossCount/totalPackets)*100).toFixed(2);
     document.getElementById('loss').innerText = result.loss;
+    moveNeedle(parseFloat(result.loss), 100); // meter chalega
     await sleep(150);
   }
 }
 
-// DOWNLOAD 12 SEC
+// DOWNLOAD 25 SEC
 async function testDownloadLive() {
   document.getElementById('status').innerText = 'Testing Download...';
+  document.getElementById('processText').innerText = 'Your test is in process, keep patience until we get result...';
   document.getElementById('speedUnit').innerText = 'Mbps';
   let startTime = performance.now();
-  let duration = 12000; // 12 sec
+  let duration = 25000; // 25 sec
   let bytesReceived = 0;
   let workers = [];
   
-  for(let i=0; i<2; i++) {
+  for(let i=0; i<3; i++) { // 3 connection for more data
     workers.push(downloadWorker(startTime, duration, (bytes) => { bytesReceived += bytes; }));
   }
   
@@ -222,16 +232,17 @@ async function testDownloadLive() {
   result.download = currentSpeed.toFixed(2);
 }
 
-// UPLOAD 12 SEC
+// UPLOAD 25 SEC
 async function testUploadLive() {
   document.getElementById('status').innerText = 'Testing Upload...';
+  document.getElementById('processText').innerText = 'Your test is in process, keep patience until we get result...';
   document.getElementById('speedUnit').innerText = 'Mbps';
   let startTime = performance.now();
-  let duration = 12000; // 12 sec
+  let duration = 25000; // 25 sec
   let bytesSent = 0;
   let workers = [];
   
-  for(let i=0; i<2; i++) {
+  for(let i=0; i<3; i++) { // 3 connection for more data
     workers.push(uploadWorker(startTime, duration, (bytes) => { bytesSent += bytes; }));
   }
   
@@ -254,7 +265,7 @@ async function testUploadLive() {
 async function downloadWorker(startTime, duration, callback) {
   while(performance.now() - startTime < duration) {
     try {
-      let res = await fetch(`https://speed.cloudflare.com/__down?bytes=2000000&${Date.now()}`);
+      let res = await fetch(`https://speed.cloudflare.com/__down?bytes=3000000&${Date.now()}`); // 3MB for more data
       let blob = await res.blob();
       callback(blob.size);
     } catch(e) {}
@@ -262,11 +273,11 @@ async function downloadWorker(startTime, duration, callback) {
 }
 
 async function uploadWorker(startTime, duration, callback) {
-  let data = new Blob([new Uint8Array(1024 * 1024)]);
+  let data = new Blob([new Uint8Array(2 * 1024 * 1024)]); // 2MB for more data
   while(performance.now() - startTime < duration) {
     try {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
+      const timeout = setTimeout(() => controller.abort(), 10000);
       let t1 = performance.now();
       
       await fetch("https://speed.cloudflare.com/__up", {
@@ -281,7 +292,7 @@ async function uploadWorker(startTime, duration, callback) {
       if(t2-t1 > 100) callback(data.size);
     } catch(e) {
       try {
-        let smallData = new Blob([new Uint8Array(256 * 1024)]);
+        let smallData = new Blob([new Uint8Array(512 * 1024)]);
         await fetch("https://cdn.nperf.com/upload", {method:'POST', body:smallData, mode:'no-cors'});
         callback(smallData.size);
       } catch(e2) {}
@@ -315,7 +326,7 @@ function downloadReport() {
   let y = 140;
   ctx.fillText(`Test Time: ${new Date().toLocaleString()}`, 30, y); y+=40;
   ctx.fillText(`Location: ${userInfo.location}`, 30, y); y+=40;
-  ctx.fillText(`Ping: ${result.ping} ms`, 30, y); y+=40;
+  ctx.fillText(`Ping / Latency: ${result.ping} ms`, 30, y); y+=40;
   ctx.fillText(`Download: ${result.download} Mbps`, 30, y); y+=40;
   ctx.fillText(`Upload: ${result.upload} Mbps`, 30, y); y+=40;
   ctx.fillText(`Packet Loss: ${result.loss} %`, 30, y); y+=40;
@@ -325,10 +336,10 @@ function downloadReport() {
   
   ctx.fillStyle = '#888';
   ctx.font = '12px Poppins';
-  ctx.fillText('Real Time 12Sec Test - Created by Punya Binay Swain', 30, 820);
+  ctx.fillText('© CREATED AND DEVELOPED BY PUNYA BINAY SWAIN', 30, 820);
   
   let link = document.createElement('a');
-  link.download = `SpeedReport_Jagatsinghpur_${Date.now()}.jpg`;
+  link.download = `SpeedReport_${Date.now()}.jpg`;
   link.href = canvas.toDataURL('image/jpeg');
   link.click();
 }
@@ -340,12 +351,13 @@ function showPopup() {
   document.getElementById('p_upload').innerText = result.upload;
   document.getElementById('p_loss').innerText = result.loss;
   document.getElementById('p_device').innerText = userInfo.device;
-  document.getElementById('p_location').innerText = userInfo.location;
+  document.getElementById('p_location').innerText = userInfo.location; // EXACT LOCATION
   document.getElementById('p_isp').innerText = userInfo.isp;
   document.getElementById('p_network').innerText = userInfo.network;
   document.getElementById('popup').style.display = 'flex';
 }
 
+// EXACT LOCATION - INDIA MEIN KAHIN BHI
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
@@ -358,7 +370,8 @@ async function getInfo() {
       try {
         let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
         let data = await res.json();
-        userInfo.location = `${data.address.district || 'Jagatsinghpur'}, ${data.address.state || 'Odisha'}`;
+        // EXACT ADDRESS
+        userInfo.location = `${data.address.village || data.address.town || data.address.city || 'India'}, ${data.address.state || 'India'}`;
         document.getElementById('location').innerText = userInfo.location;
       } catch(e){}
     });
@@ -368,13 +381,13 @@ async function getInfo() {
     let res = await fetch('https://ipapi.co/json/');
     let data = await res.json();
     userInfo.ip = data.ip;
-    if(!userInfo.location) userInfo.location = 'Jagatsinghpur, Odisha';
+    if(!userInfo.location) userInfo.location = `${data.city}, ${data.region}, India`;
     userInfo.isp = data.org;
   } catch(e){}
   
   document.getElementById('ip').innerText = userInfo.ip;
-  document.getElementById('location').innerText = userInfo.location || 'Jagatsinghpur, Odisha';
-  document.getElementById('isp').innerText = userInfo.isp + " - Kolkata";
+  document.getElementById('location').innerText = userInfo.location || 'Detecting...';
+  document.getElementById('isp').innerText = userInfo.isp + " - India";
   document.getElementById('network').innerText = userInfo.network;
 }
 window.onload = getInfo;
