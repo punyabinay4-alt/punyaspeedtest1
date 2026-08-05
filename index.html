@@ -42,8 +42,7 @@
   .popup-body { padding: 20px; }
   .popup .result-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
   .popup .result-row span { color: #ff6b00; font-weight: 600; }
-  .popup-chart { width: 100%; margin: 15px 0; border-radius: 10px; }
-  .popup-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+  .popup-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 15px; }
   .popup-footer { background: #f8f9fa; padding: 12px; text-align: center; font-size: 11px; color: #888; font-weight: 600; }
 </style>
 </head>
@@ -99,7 +98,6 @@
       <div class="msg">Thank you for using speed text X pro by sp<br>-Punya Binay Swain</div>
     </div>
     <div class="popup-body">
-      <canvas id="speedChart" class="popup-chart" width="400" height="200"></canvas>
       <div class="result-row"><b>Ping</b> <span id="p_ping">0</span> ms</div>
       <div class="result-row"><b>Download</b> <span id="p_download">0</span> Mbps</div>
       <div class="result-row"><b>Upload</b> <span id="p_upload">0</span> Mbps</div>
@@ -109,6 +107,7 @@
       <div class="result-row"><b>ISP / Server</b> <span id="p_isp">-</span></div>
       <div class="result-row"><b>Network</b> <span id="p_network">-</span></div>
       <div class="popup-btns">
+        <button class="btn" onclick="downloadReport()">Download Report</button>
         <button class="btn" onclick="startTest()">Test Again</button>
         <button class="btn btn-secondary" onclick="document.getElementById('popup').style.display='none'">Close</button>
       </div>
@@ -126,7 +125,6 @@ let pingValues = [];
 let lossCount = 0;
 let totalPackets = 0;
 
-// LIVE TEST LIKE GOOGLE
 async function startTest() {
   if(running) return;
   running = true;
@@ -134,7 +132,7 @@ async function startTest() {
   document.getElementById('popup').style.display = 'none';
   reset();
 
-  await Promise.all([testPingLive(), testLossLive()]); // Ping + Loss together
+  await Promise.all([testPingLive(), testLossLive()]);
   await sleep(200);
 
   await testDownloadLive();
@@ -143,7 +141,6 @@ async function startTest() {
   await testUploadLive();
 
   document.getElementById('status').innerText = 'Test Complete - Jai Jagannath 🙏';
-  generateChart();
   showPopup();
   running = false;
 }
@@ -161,7 +158,6 @@ function reset() {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// CONTINUOUS PING TEST - 5 SECONDS
 async function testPingLive() {
   document.getElementById('status').innerText = 'Testing Ping Continuously...';
   let startTime = performance.now();
@@ -176,7 +172,6 @@ async function testPingLive() {
   }
 }
 
-// CONTINUOUS PACKET LOSS TEST
 async function testLossLive() {
   let startTime = performance.now();
   while(performance.now() - startTime < 5000) {
@@ -189,6 +184,7 @@ async function testLossLive() {
   }
 }
 
+// GOOGLE JESA SERVER - M-LAB
 async function testDownloadLive() {
   document.getElementById('status').innerText = 'Testing Download...';
   document.getElementById('speedUnit').innerText = 'Mbps';
@@ -197,7 +193,7 @@ async function testDownloadLive() {
   let bytesReceived = 0;
   let workers = [];
   
-  for(let i=0; i<8; i++) {
+  for(let i=0; i<4; i++) { // 4 connection only, Google jesa
     workers.push(downloadWorker(startTime, duration, (bytes) => { bytesReceived += bytes; }));
   }
   
@@ -241,7 +237,7 @@ async function testUploadLive() {
 async function downloadWorker(startTime, duration, callback) {
   while(performance.now() - startTime < duration) {
     try {
-      let res = await fetch(`https://speed.cloudflare.com/__down?bytes=5000000&${Date.now()}`);
+      let res = await fetch(`https://proof.ovh.net/files/10Mb.dat?${Date.now()}`); // M-LAB jesa server
       let blob = await res.blob();
       callback(blob.size);
     } catch(e) {}
@@ -249,7 +245,7 @@ async function downloadWorker(startTime, duration, callback) {
 }
 
 async function uploadWorker(startTime, duration, callback) {
-  let data = new Blob([new Uint8Array(512 * 1024)]);
+  let data = new Blob([new Uint8Array(256 * 1024)]); // 256KB
   while(performance.now() - startTime < duration) {
     try {
       await fetch("https://httpbin.org/post", {method:'POST', body:data, mode:'no-cors'});
@@ -265,22 +261,48 @@ function moveNeedle(value, max) {
   document.getElementById('speedValue').innerText = parseFloat(value).toFixed(0);
 }
 
-// GENERATE CHART FOR POPUP
-function generateChart() {
-  const canvas = document.getElementById('speedChart');
+// DOWNLOAD REPORT AS JPG
+function downloadReport() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 600;
+  canvas.height = 800;
   const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-  // Simple bar chart
+  // Background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, 600, 800);
+  
+  // Header
   ctx.fillStyle = '#ff6b00';
-  ctx.fillRect(50, 150 - result.download*3, 80, result.download*3);
-  ctx.fillStyle = '#003366';
-  ctx.fillRect(150, 150 - result.upload*6, 80, result.upload*6);
+  ctx.fillRect(0, 0, 600, 100);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 24px Poppins';
+  ctx.fillText('SPEED TEST X PRO BY SP', 20, 50);
   
+  // Results
   ctx.fillStyle = '#333';
+  ctx.font = '16px Poppins';
+  let y = 140;
+  ctx.fillText(`Ping: ${result.ping} ms`, 30, y); y+=40;
+  ctx.fillText(`Download: ${result.download} Mbps`, 30, y); y+=40;
+  ctx.fillText(`Upload: ${result.upload} Mbps`, 30, y); y+=40;
+  ctx.fillText(`Packet Loss: ${result.loss} %`, 30, y); y+=40;
+  ctx.fillText(`Device: ${userInfo.device}`, 30, y); y+=40;
+  ctx.fillText(`Location: ${userInfo.location}`, 30, y); y+=40;
+  ctx.fillText(`ISP: ${userInfo.isp}`, 30, y); y+=40;
+  ctx.fillText(`Network: ${userInfo.network}`, 30, y); y+=40;
+  ctx.fillText(`Date: ${new Date().toLocaleString()}`, 30, y);
+  
+  // Footer
+  ctx.fillStyle = '#888';
   ctx.font = '12px Poppins';
-  ctx.fillText('Download: ' + result.download + ' Mbps', 50, 170);
-  ctx.fillText('Upload: ' + result.upload + ' Mbps', 150, 170);
+  ctx.fillText('Created by Punya Binay Swain', 30, 780);
+  
+  // Download
+  let link = document.createElement('a');
+  link.download = `SpeedReport_${Date.now()}.jpg`;
+  link.href = canvas.toDataURL('image/jpeg');
+  link.click();
 }
 
 function showPopup() {
@@ -295,29 +317,17 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
-// ACCURATE LOCATION - DOUBLE API CHECK
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
-  
   try {
     let res = await fetch('https://ipapi.co/json/');
     let data = await res.json();
     userInfo.ip = data.ip;
-    userInfo.location = `${data.city}, ${data.country_name}`; // Sambalpur sahi aayega
+    userInfo.location = `${data.city}, ${data.country_name}`;
     userInfo.isp = data.org + " - Chennai";
     userInfo.network = navigator.connection?.effectiveType?.toUpperCase() || "WiFi";
-  } catch(e){
-    try {
-      let res = await fetch('https://ipinfo.io/json');
-      let data = await res.json();
-      userInfo.ip = data.ip;
-      userInfo.location = `${data.city}, ${data.country}`;
-      userInfo.isp = data.org + " - Chennai";
-      userInfo.network = navigator.connection?.effectiveType?.toUpperCase() || "WiFi";
-    } catch(e){}
-  }
-  
+  } catch(e){}
   document.getElementById('ip').innerText = userInfo.ip;
   document.getElementById('location').innerText = userInfo.location;
   document.getElementById('isp').innerText = userInfo.isp;
