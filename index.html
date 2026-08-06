@@ -144,7 +144,8 @@ async function startTest() {
   document.getElementById('testTime').innerText = new Date().toLocaleTimeString();
   reset();
 
-  await Promise.all([testPingLive(), testLossLive()]);
+  await testPingLive();  // pehle ping
+  await testLossLive();  // phir loss - FIXED
   await sleep(200);
 
   await testDownloadLive();
@@ -195,16 +196,32 @@ async function testPingLive() {
   document.getElementById('speedUnit').innerText = 'Mbps';
 }
 
+// FIXED PACKET LOSS TEST
 async function testLossLive() {
-  let startTime = performance.now();
-  while(performance.now() - startTime < 10000) {
-    totalPackets++;
-    try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors', cache:'no-store'}); }
-    catch(e){ lossCount++; }
-    result.loss = totalPackets>0 ? ((lossCount/totalPackets)*100).toFixed(2) : 0;
+  document.getElementById('status').innerText = 'Testing Packet Loss...';
+  document.getElementById('processText').innerText = 'Your test is in process';
+  document.getElementById('processText').classList.add('dots');
+  lossCount = 0;
+  totalPackets = 100; // 100 baar test karenge
+  
+  for(let i = 0; i < totalPackets; i++) {
+    try { 
+      let controller = new AbortController();
+      setTimeout(() => controller.abort(), 1000); // 1 sec timeout
+      
+      await fetch("https://speed.cloudflare.com/__ping?"+Date.now(), {
+        mode: 'no-cors', 
+        cache: 'no-store',
+        signal: controller.signal
+      });
+    }
+    catch(e){ 
+      lossCount++; // fail ho gaya = packet loss
+    }
+    result.loss = ((lossCount/totalPackets)*100).toFixed(2);
     document.getElementById('loss').innerText = result.loss;
     moveNeedle(parseFloat(result.loss), 100);
-    await sleep(150);
+    await sleep(50); // 50ms gap
   }
 }
 
@@ -354,15 +371,12 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
-// FIXED: NETWORK HAMESHA 5G/4G
+// NETWORK HAMESHA 5G/4G
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android") ? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
   
-  // SEEDHA 5G/4G LIKH DO
   let networkType = '5G/4G';
-  
-  // Agar PC hai to WiFi tag bhi laga do
   if(userInfo.device === "Windows PC"){
     networkType = 'WiFi / 5G/4G';
   }
@@ -371,7 +385,6 @@ async function getInfo() {
   document.getElementById('network').innerText = userInfo.network;
   document.getElementById('p_network').innerText = userInfo.network;
 
-  // GPS + IPAPI
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       let lat = pos.coords.latitude;
