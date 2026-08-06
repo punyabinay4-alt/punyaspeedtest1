@@ -371,14 +371,25 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
-// NETWORK DETECTION - SPEED SE NAHI, PHONE SE
+// FIXED NETWORK DETECTION
 async function getInfo() {
-  userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
+  userInfo.device = navigator.userAgent.includes("Android") ? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
   
   let networkType = 'Mobile Data';
-  let ua = navigator.userAgent;
-  
+  let ua = navigator.userAgent.toLowerCase();
+  let is5GPhone = false;
+
+  // 1. CHECK IF PHONE IS 5G SUPPORTED
+  const fiveGKeywords = ['5g', 'nr', 'snapdragon 8', 'dimensity 1', 'exynos 2', 'a14', 'a15', 'a16', 'a17', 'tensor'];
+  for(let kw of fiveGKeywords){
+    if(ua.includes(kw)){
+      is5GPhone = true;
+      break;
+    }
+  }
+
+  // 2. DETECT NETWORK TYPE
   if (navigator.connection) {
     let conn = navigator.connection;
     let effective = conn.effectiveType; // 4g, 3g, 2g
@@ -386,18 +397,28 @@ async function getInfo() {
     if(effective === '4g') networkType = '4G';
     else if(effective === '3g') networkType = '3G';
     else if(effective === '2g') networkType = '2G';
+    else networkType = 'Unknown';
     
-    // Kuch phone me UA me 5G/NR likha hota hai
-    if(ua.includes('5G') || ua.includes('NR')){
-      networkType = '5G';
+    // 3. IF 5G PHONE BUT SHOWING 4G, MARK AS 5G SUPPORTED
+    if(is5GPhone && (effective === '4g' || effective === 'unknown')){
+      networkType = '5G Supported Phone';
+    }
+  } else {
+    if(ua.includes('5g') || ua.includes('nr')){
+      networkType = '5G Supported Phone';
     }
   }
   
+  // FINAL TAG
+  if(is5GPhone && networkType !== '5G Supported Phone'){
+    networkType = networkType + ' | 5G Supported Phone';
+  }
+
   userInfo.network = networkType;
   document.getElementById('network').innerText = userInfo.network;
   document.getElementById('p_network').innerText = userInfo.network;
 
-  // EXACT GPS LOCATION
+  // GPS LOCATION
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       let lat = pos.coords.latitude;
@@ -418,10 +439,12 @@ async function getInfo() {
     let data = await res.json();
     userInfo.ip = data.ip;
     userInfo.isp = data.org;
-  } catch(e){}
-  
-  document.getElementById('ip').innerText = userInfo.ip;
-  document.getElementById('isp').innerText = userInfo.isp + " - India";
+    document.getElementById('ip').innerText = userInfo.ip;
+    document.getElementById('isp').innerText = userInfo.isp + " - India";
+  } catch(e){
+    document.getElementById('ip').innerText = 'Not Found';
+    document.getElementById('isp').innerText = 'Not Found';
+  }
 }
 window.onload = getInfo;
 </script>
