@@ -150,7 +150,7 @@ async function startTest() {
   await testDownloadLive();
   await sleep(200);
 
-  await testUploadLive(); // FIXED
+  await testUploadLive();
 
   document.getElementById('status').innerText = 'Test Complete';
   document.getElementById('processText').innerText = '';
@@ -235,7 +235,6 @@ async function testDownloadLive() {
   result.download = currentSpeed.toFixed(2);
 }
 
-// FIXED UPLOAD TEST
 async function testUploadLive() {
   document.getElementById('status').innerText = 'Testing Upload...';
   document.getElementById('processText').innerText = 'Your test is in process';
@@ -273,9 +272,8 @@ async function downloadWorker(startTime, duration, callback) {
   }
 }
 
-// NEW: CLOUDFLARE UPLOAD - CORS FREE
 async function uploadWorker(startTime, duration, callback) {
-  let data = new Blob([new Uint8Array(512 * 1024)]); // 512KB instead of 2MB
+  let data = new Blob([new Uint8Array(512 * 1024)]);
   
   while(performance.now() - startTime < duration) {
     try {
@@ -356,26 +354,24 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
-// FIXED NETWORK + LOCATION FOR BHUBANESWAR
+// FIXED: NETWORK HAMESHA 5G/4G
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android") ? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
   
-  let networkType = 'Mobile Data';
-  let ua = navigator.userAgent.toLowerCase();
-  let is5GPhone = ['5g','nr','snapdragon 8','dimensity 1'].some(k=>ua.includes(k));
-
-  if (navigator.connection) {
-    let effective = navigator.connection.effectiveType;
-    if(effective === '4g') networkType = '4G';
-    else if(effective === '3g') networkType = '3G';
-    if(is5GPhone && effective === '4g') networkType = '5G Supported Phone';
+  // SEEDHA 5G/4G LIKH DO
+  let networkType = '5G/4G';
+  
+  // Agar PC hai to WiFi tag bhi laga do
+  if(userInfo.device === "Windows PC"){
+    networkType = 'WiFi / 5G/4G';
   }
+
   userInfo.network = networkType;
   document.getElementById('network').innerText = userInfo.network;
   document.getElementById('p_network').innerText = userInfo.network;
 
-  // GPS + IPAPI for actual Bhubaneswar data
+  // GPS + IPAPI
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       let lat = pos.coords.latitude;
