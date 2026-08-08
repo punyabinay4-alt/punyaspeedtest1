@@ -304,10 +304,26 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
+function getNetworkType() {
+  if(navigator.connection) {
+    let type = navigator.connection.effectiveType;
+    if(type === '4g') return '4G';
+    if(type === '5g') return '5G';
+    if(type === '3g') return '3G';
+    if(type === '2g') return '2G';
+  }
+  // WiFi check
+  if(navigator.userAgent.includes('WiFi') || window.matchMedia('(display-mode: standalone)').matches) {
+    return 'WiFi';
+  }
+  return 'Broadband';
+}
+
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
-  userInfo.network = navigator.connection? navigator.connection.effectiveType : '4G';
+
+  userInfo.network = getNetworkType();
   document.getElementById('network').innerText = userInfo.network;
   document.getElementById('p_network').innerText = userInfo.network;
 
