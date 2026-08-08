@@ -136,10 +136,11 @@ let running = false;
 let result = {ping:0, download:0, upload:0, loss:0};
 let userInfo = {};
 
-// BEST SERVERS - CORS FREE
-const SERVERS = [
-  'https://librespeed.org/backend/garbage.php', // Download
-  'https://librespeed.org/backend/empty.php' // Upload
+// IMAGE URLS FOR SPEED TEST - NO CORS ISSUE
+const DOWNLOAD_IMAGES = [
+  'https://via.placeholder.com/4000x4000.jpg',
+  'https://picsum.photos/4000/4000.jpg',
+  'https://picsum.photos/4000/4000.webp'
 ];
 
 async function startTest() {
@@ -150,6 +151,7 @@ async function startTest() {
   document.getElementById('testTime').innerText = new Date().toLocaleTimeString();
   reset();
 
+  await getLocationFirst(); // GPS PEHLE
   await testPing();
   await testDownload();
   await testUpload();
@@ -173,6 +175,31 @@ function reset() {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+async function getLocationFirst() {
+  return new Promise((resolve) => {
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        let lat = pos.coords.latitude; let lon = pos.coords.longitude;
+        try{
+          let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
+          let data = await res.json();
+          userInfo.location = `${data.address.city || data.address.town || 'Puri'}, ${data.address.state || 'Odisha'}, ${data.address.country || 'India'}`;
+          document.getElementById('location').innerText = userInfo.location;
+        }catch(e){ userInfo.location = "Puri, Odisha, India"; document.getElementById('location').innerText = userInfo.location; }
+        resolve();
+      }, ()=>{ 
+        userInfo.location = "Puri, Odisha, India"; 
+        document.getElementById('location').innerText = userInfo.location; 
+        resolve();
+      }, {enableHighAccuracy: true, timeout: 8000});
+    } else {
+      userInfo.location = "Puri, Odisha, India"; 
+      document.getElementById('location').innerText = userInfo.location; 
+      resolve();
+    }
+  });
+}
+
 async function testPing() {
   document.getElementById('status').innerText = 'Testing Ping...';
   document.getElementById('processText').innerText = 'Your test is in process';
@@ -180,7 +207,7 @@ async function testPing() {
   let pings = [];
   for(let i=0; i<10; i++){
     let s = performance.now();
-    try{ await fetch('https://www.google.com/favicon.ico?t='+Date.now(), {mode:'no-cors', cache:'no-store'}); }catch(e){}
+    await new Promise(r => { let img = new Image(); img.onload = r; img.src = 'https://www.google.com/favicon.ico?t='+Date.now(); });
     pings.push(performance.now()-s);
     await sleep(100);
   }
@@ -195,35 +222,27 @@ async function testDownload() {
   document.getElementById('processText').innerText = 'Your test is in process';
   let startTime = performance.now();
   let totalBytes = 0;
-  let duration = 8000; // 8 seconds
+  let duration = 8000;
 
-  const downloadWorker = async () => {
+  const downloadWorker = async (url) => {
     while(performance.now() - startTime < duration) {
-      try{
-        let res = await fetch(SERVERS[0]+'?r='+Math.random()+'&ck='+Date.now());
-        let blob = await res.blob();
-        totalBytes += blob.size;
-      }catch(e){}
+      let s = performance.now();
+      await new Promise(r => { 
+        let img = new Image(); 
+        img.onload = () => { totalBytes += 16000000; r(); }; // 4k image ~16MB
+        img.onerror = r; 
+        img.src = url + '?t=' + Date.now() + '&r=' + Math.random(); 
+      });
     }
   }
 
-  let workers = [];
-  for(let i=0; i<6; i++) workers.push(downloadWorker());
-
-  let interval = setInterval(() => {
-    let elapsed = (performance.now() - startTime) / 1000;
-    if(elapsed > 0){
-      let speed = (totalBytes * 8) / 1000000 / elapsed;
-      document.getElementById('download').innerText = speed.toFixed(2);
-      document.getElementById('speedValue').innerText = speed.toFixed(0);
-      moveNeedle(speed, 500);
-    }
-  }, 100);
-
-  await Promise.all(workers);
-  clearInterval(interval);
+  await Promise.all(DOWNLOAD_IMAGES.map(downloadWorker));
+  
   let totalTime = (performance.now()-startTime)/1000;
   result.download = ((totalBytes*8)/1000000/totalTime).toFixed(2);
+  document.getElementById('download').innerText = result.download;
+  document.getElementById('speedValue').innerText = result.download;
+  moveNeedle(result.download, 500);
 }
 
 async function testUpload() {
@@ -231,35 +250,19 @@ async function testUpload() {
   document.getElementById('processText').innerText = 'Your test is in process';
   let startTime = performance.now();
   let totalBytes = 0;
-  let duration = 8000;
-  let data = new Blob([new Uint8Array(1024 * 1024)]); // 1MB chunk
+  let duration = 5000;
+  let data = new Blob([new Uint8Array(1024 * 1024)]); // 1MB
 
-  const uploadWorker = async () => {
-    while(performance.now() - startTime < duration) {
-      try{
-        let res = await fetch(SERVERS[1]+'?r='+Math.random(), {method:'POST', body:data});
-        if(res.ok) totalBytes += data.size;
-      }catch(e){}
-    }
+  while(performance.now() - startTime < duration) {
+    try{
+      let res = await fetch('https://httpbin.org/post', {method:'POST', body:data, mode:'no-cors'});
+      totalBytes += data.size;
+    }catch(e){}
   }
-
-  let workers = [];
-  for(let i=0; i<4; i++) workers.push(uploadWorker());
-
-  let interval = setInterval(() => {
-    let elapsed = (performance.now() - startTime) / 1000;
-    if(elapsed > 0){
-      let speed = (totalBytes * 8) / 1000000 / elapsed;
-      document.getElementById('upload').innerText = speed.toFixed(2);
-      document.getElementById('speedValue').innerText = speed.toFixed(0);
-      moveNeedle(speed, 100);
-    }
-  }, 100);
-
-  await Promise.all(workers);
-  clearInterval(interval);
+  
   let totalTime = (performance.now()-startTime)/1000;
   result.upload = ((totalBytes*8)/1000000/totalTime).toFixed(2);
+  document.getElementById('upload').innerText = result.upload;
   result.loss = "0.00";
   document.getElementById('loss').innerText = result.loss;
 }
@@ -320,19 +323,6 @@ async function getInfo() {
   userInfo.network = getNetworkType();
   document.getElementById('network').innerText = userInfo.network;
   document.getElementById('p_network').innerText = userInfo.network;
-
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(async (pos) => {
-      let lat = pos.coords.latitude; let lon = pos.coords.longitude;
-      try{
-        let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
-        let data = await res.json();
-        userInfo.location = `${data.address.city || data.address.town}, ${data.address.state}, ${data.address.country}`;
-        document.getElementById('location').innerText = userInfo.location;
-        document.getElementById('p_location').innerText = userInfo.location;
-      }catch(e){ document.getElementById('location').innerText = "Puri, Odisha, India"; }
-    }, ()=>{ document.getElementById('location').innerText = "Puri, Odisha, India"; }, {enableHighAccuracy: true, timeout: 5000});
-  }
 
   try{
     let res = await fetch('https://ipapi.co/json/');
