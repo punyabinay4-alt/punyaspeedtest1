@@ -20,7 +20,7 @@
 .speedo-wrap { text-align: center; margin: 30px 0; }
 .speedo { width: 300px; height: 150px; margin: 0 auto; position: relative; background: conic-gradient(from 180deg, #ff6b00 0deg, #003366 180deg, #e0e0e0 180deg); border-radius: 300px 300px 0 0; }
 .speedo-inner { width: 260px; height: 130px; background: rgba(255,255,255,0.97); border-radius: 260px 260px 0 0; position: absolute; bottom: 0; left: 20px; }
-.needle { width: 4px; height: 120px; background: linear-gradient(to top, #ff0000, #ff6b00); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.1s linear; border-radius: 4px; }
+.needle { width: 4px; height: 120px; background: linear-gradient(to top, #ff0000, #ff6b00); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.05s linear; border-radius: 4px; }
 .speedo-value { font-size: 48px; font-weight: 700; color: #003366; margin-top: 15px; }
 .speedo-unit { font-size: 14px; color: #555; }
 .process-text { font-size: 12px; color: #ff6b00; font-weight: 600; margin-top: 8px; min-height: 18px; }
@@ -148,28 +148,15 @@ let running = false;
 let result = {ping:0, download:0, upload:0, loss:0};
 let userInfo = {};
 let selectedServer = "chennai";
+let needleInterval = null;
 
 const SERVERS = {
-  chennai: {
-    name: "Chennai, India",
-    download: "https://speed.cloudflare.com/__down?bytes=10000000",
-    upload: "https://speed.cloudflare.com/__up"
-  },
-  mumbai: {
-    name: "Mumbai, India",
-    download: "https://speed.cloudflare.com/__down?bytes=10000000",
-    upload: "https://speed.cloudflare.com/__up"
-  },
-  delhi: {
-    name: "Delhi, India",
-    download: "https://speed.cloudflare.com/__down?bytes=10000000",
-    upload: "https://speed.cloudflare.com/__up"
-  }
+  chennai: { name: "Chennai, India", download: "https://speed.cloudflare.com/__down?bytes=10000000", upload: "https://speed.cloudflare.com/__up" },
+  mumbai: { name: "Mumbai, India", download: "https://speed.cloudflare.com/__down?bytes=10000000", upload: "https://speed.cloudflare.com/__up" },
+  delhi: { name: "Delhi, India", download: "https://speed.cloudflare.com/__down?bytes=10000000", upload: "https://speed.cloudflare.com/__up" }
 };
 
-function changeServer() {
-  selectedServer = document.getElementById('serverSelect').value;
-}
+function changeServer() { selectedServer = document.getElementById('serverSelect').value; }
 
 async function startTest() {
   if(running) return;
@@ -177,7 +164,8 @@ async function startTest() {
   document.getElementById('startBtn').disabled = true;
   document.getElementById('popup').style.display = 'none';
   document.getElementById('testTime').innerText = new Date().toLocaleTimeString();
-  reset();
+
+  resetInstant(); // INSTANT RESET
 
   await getGPSLocation();
   await testPing();
@@ -187,14 +175,17 @@ async function startTest() {
   document.getElementById('status').innerText = 'Test Complete';
   document.getElementById('processText').innerText = '';
   document.getElementById('processText').classList.remove('dots');
+  clearInterval(needleInterval);
   showPopup();
   running = false;
   document.getElementById('startBtn').disabled = false;
 }
 
-function reset() {
+function resetInstant() {
+  clearInterval(needleInterval);
   result = {ping:0, download:0, upload:0, loss:0};
   ['ping','download','upload','loss'].forEach(id => document.getElementById(id).innerText = '0');
+  document.getElementById('needle').style.transition = 'transform 0.1s linear';
   document.getElementById('needle').style.transform = 'translateX(-50%) rotate(-90deg)';
   document.getElementById('speedValue').innerText = '0';
   document.getElementById('processText').innerText = '';
@@ -218,6 +209,13 @@ async function getGPSLocation() {
   });
 }
 
+function updateNeedle(value, max) {
+  let percent = Math.min(value / max, 1);
+  let deg = (percent * 180) - 90;
+  document.getElementById('needle').style.transform = `translateX(-50%) rotate(${deg}deg)`;
+  document.getElementById('speedValue').innerText = Math.round(value);
+}
+
 async function testPing() {
   document.getElementById('status').innerText = 'Testing Ping to ' + SERVERS[selectedServer].name + '...';
   document.getElementById('processText').innerText = 'Your test is in process';
@@ -226,7 +224,7 @@ async function testPing() {
   await fetch(SERVERS[selectedServer].download + '&t=' + Date.now(), {mode:'no-cors'});
   result.ping = Math.round(performance.now()-s);
   document.getElementById('ping').innerText = result.ping;
-  moveNeedle(result.ping, 200);
+  updateNeedle(result.ping, 200);
   document.getElementById('speedUnit').innerText = 'Mbps';
 }
 
@@ -235,6 +233,15 @@ async function testDownload() {
   let startTime = performance.now();
   let totalBytes = 0;
   let duration = 8000;
+
+  needleInterval = setInterval(() => {
+    let elapsed = (performance.now() - startTime) / 1000;
+    if(elapsed > 0){
+      let speed = (totalBytes * 8) / 1000000 / elapsed;
+      document.getElementById('download').innerText = speed.toFixed(2);
+      updateNeedle(speed, 500);
+    }
+  }, 50);
 
   const downloadWorker = async () => {
     while(performance.now() - startTime < duration) {
@@ -250,12 +257,10 @@ async function testDownload() {
     }
   }
   await Promise.all([downloadWorker(), downloadWorker(), downloadWorker()]);
+  clearInterval(needleInterval);
 
   let totalTime = (performance.now()-startTime)/1000;
   result.download = ((totalBytes*8)/1000000/totalTime).toFixed(2);
-  document.getElementById('download').innerText = result.download;
-  document.getElementById('speedValue').innerText = result.download;
-  moveNeedle(result.download, 500);
 }
 
 async function testUpload() {
@@ -265,24 +270,27 @@ async function testUpload() {
   let duration = 5000;
   let data = new Blob([new Uint8Array(1024 * 1024)]);
 
+  needleInterval = setInterval(() => {
+    let elapsed = (performance.now() - startTime) / 1000;
+    if(elapsed > 0){
+      let speed = (totalBytes * 8) / 1000000 / elapsed;
+      document.getElementById('upload').innerText = speed.toFixed(2);
+      updateNeedle(speed, 100);
+    }
+  }, 50);
+
   while(performance.now() - startTime < duration) {
     try{
       await fetch(SERVERS[selectedServer].upload + '?t=' + Date.now(), {method:'POST', body:data, mode:'no-cors'});
       totalBytes += data.size;
     }catch(e){}
   }
+  clearInterval(needleInterval);
 
   let totalTime = (performance.now()-startTime)/1000;
   result.upload = ((totalBytes*8)/1000000/totalTime).toFixed(2);
-  document.getElementById('upload').innerText = result.upload;
   result.loss = "0.00";
   document.getElementById('loss').innerText = result.loss;
-}
-
-function moveNeedle(value, max) {
-  let deg = (value / max) * 180 - 90;
-  deg = Math.max(-90, Math.min(90, deg));
-  document.getElementById('needle').style.transform = `translateX(-50%) rotate(${deg}deg)`;
 }
 
 function downloadReport() {
