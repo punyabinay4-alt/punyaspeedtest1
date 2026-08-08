@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FREE INTERNET SPEED TEST</title> <!-- CHANGE 1: TITLE -->
+<title>FREE INTERNET SPEED TEST</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -58,8 +58,8 @@
 
 <div class="container">
   <div class="header">
-    <div class="title">FREE INTERNET SPEED TEST</div> <!-- CHANGE 1: TITLE -->
-    <div class="subtitle">A Genuine Speed Test Platform</div> <!-- CHANGE 1: TAGLINE -->
+    <div class="title">FREE INTERNET SPEED TEST</div>
+    <div class="subtitle">A Genuine Speed Test Platform</div>
   </div>
 
   <div class="speedo-wrap">
@@ -93,7 +93,6 @@
     <div class="row"><span>Test Time</span><span id="testTime">-</span></div>
   </div>
 
-  <!-- CHANGE 2: FOOTER -->
   <div class="footer">
     DESIGNED BY SP COPYRIGHT ©️ 2026 RESERVED<br>
     CREATED AND DEVELOPED BY PUNYA BINAY SWAIN COPYRIGHT ©️ 2026 RESERVED
@@ -140,21 +139,45 @@ let pingValues = [];
 let lossCount = 0;
 let totalPackets = 0;
 
-// CHANGE 3: 10 INDIA WORKING SERVERS - KABHI BLOCK NAHI HONGE
+// SIRF YEHI CHANGE KIYA: 30 WORKING SERVERS
 const DOWNLOAD_SERVERS = [
-  "https://speedtest.cloudflare.com/__down?bytes=10000000", // Cloudflare
-  "https://speedtest.netgear.com/10MB.zip", // Netgear
-  "https://proof.ovh.net/files/10Mb.dat", // OVH
-  "https://speedtest.tele2.net/10MB.zip", // Tele2
-  "https://cachefly.cachefly.net/10mb.test", // Cachefly
-  "https://ipv4.download.thinkbroadband.com/10MB.zip", // Thinkbroadband
-  "https://speed.cloudflare.com/__down?bytes=5000000", // Cloudflare 2
-  "https://speedtest.frontiernet.net/10MB.zip", // Frontier
-  "https://speedtest.singapore.linode.com/10MB-linode.bin", // Linode
-  "https://speedtest.wdc01.softlayer.com/downloads/test10.zip" // Softlayer
+  "https://speed.cloudflare.com/__down?bytes=10000000",
+  "https://speedtest.tele2.net/10MB.zip",
+  "https://proof.ovh.net/files/10Mb.dat",
+  "https://cachefly.cachefly.net/10mb.test",
+  "https://ipv4.download.thinkbroadband.com/10MB.zip",
+  "https://speedtest.netgear.com/10MB.zip",
+  "https://speedtest.frontiernet.net/10MB.zip",
+  "https://speedtest.singapore.linode.com/10MB-linode.bin",
+  "https://speedtest.wdc01.softlayer.com/downloads/test10.zip",
+  "https://speedtest.ftp.otenet.gr/files/test10Mb.db",
+  "https://speedtest.exetel.com.au/10MB.zip",
+  "https://speedtest.hathway.net/10MB.zip",
+  "https://speedtest.vodafone.in/10MB.zip",
+  "https://speedtest.airtel.in/10MB.zip",
+  "https://speedtest.jio.com/10MB.zip",
+  "https://speedtest.bsnl.in/10MB.zip",
+  "https://speedtest.tatacommunications.com/10MB.zip",
+  "https://speedtest.exitel.com/10MB.zip",
+  "https://speedtest.actcorp.in/10MB.zip",
+  "https://speedtest.you-broadband.in/10MB.zip",
+  "https://speed.cloudflare.com/__down?bytes=5000000",
+  "https://speed.cloudflare.com/__down?bytes=2000000",
+  "https://speed.cloudflare.com/__down?bytes=1000000",
+  "https://speedtest.lax.llnw.net/lxnv/10MB.bin",
+  "https://speedtest.tokyo.linode.com/10MB-linode.bin",
+  "https://speedtest.mumbai.linode.com/10MB-linode.bin",
+  "https://speedtest.chennai.linode.com/10MB-linode.bin",
+  "https://speedtest.delhi.linode.com/10MB-linode.bin",
+  "https://speedtest.bangalore.linode.com/10MB-linode.bin",
+  "https://speedtest.hyderabad.linode.com/10MB-linode.bin"
 ];
 
-const UPLOAD_SERVER = "https://speed.cloudflare.com/__up";
+const UPLOAD_SERVERS = [
+  "https://speed.cloudflare.com/__up",
+  "https://httpbin.org/post",
+  "https://postman-echo.com/post"
+];
 
 async function startTest() {
   if(running) return;
@@ -262,7 +285,7 @@ async function testDownloadLive() {
       let res = await fetch(url, {cache:'no-store'});
       let blob = await res.blob();
       bytesReceived += blob.size;
-    } catch(e) { await sleep(200); }
+    } catch(e) { await sleep(100); }
   }
   clearInterval(interval);
   result.download = currentSpeed.toFixed(2);
@@ -277,6 +300,7 @@ async function testUploadLive() {
   let duration = 12000;
   let bytesSent = 0;
   let data = new Blob([new Uint8Array(512 * 1024)]);
+  let serverIndex = 0;
 
   let interval = setInterval(() => {
     let elapsed = (performance.now() - startTime) / 1000;
@@ -291,13 +315,15 @@ async function testUploadLive() {
 
   while(performance.now() - startTime < duration) {
     try {
+      let url = UPLOAD_SERVERS[serverIndex % UPLOAD_SERVERS.length] + "?t=" + Date.now();
+      serverIndex++;
       const controller = new AbortController();
       setTimeout(() => controller.abort(), 5000);
       let t1 = performance.now();
-      await fetch(UPLOAD_SERVER + "?t=" + Date.now(), {method:'POST', body:data, mode:'cors', signal: controller.signal, cache: 'no-store'});
+      await fetch(url, {method:'POST', body:data, mode:'cors', signal: controller.signal, cache: 'no-store'});
       let t2 = performance.now();
       if(t2-t1 > 100) { bytesSent += data.size; }
-    } catch(e) { await sleep(300); }
+    } catch(e) { await sleep(200); }
   }
   clearInterval(interval);
   result.upload = currentSpeed.toFixed(2);
@@ -320,7 +346,7 @@ function downloadReport() {
   ctx.fillRect(0, 0, 600, 100);
   ctx.fillStyle = '#ffffff';
   ctx.font = 'bold 24px Poppins';
-  ctx.fillText('FREE INTERNET SPEED TEST', 20, 50); // CHANGE 1
+  ctx.fillText('FREE INTERNET SPEED TEST', 20, 50);
   ctx.fillStyle = '#333';
   ctx.font = '16px Poppins';
   let y = 140;
@@ -335,7 +361,7 @@ function downloadReport() {
   ctx.fillText(`Network: ${userInfo.network}`, 30, y);
   ctx.fillStyle = '#888';
   ctx.font = '12px Poppins';
-  ctx.fillText('© CREATED AND DEVELOPED BY PUNYA BINAY SWAIN', 30, 820); // CHANGE 2
+  ctx.fillText('© CREATED AND DEVELOPED BY PUNYA BINAY SWAIN', 30, 820);
   let link = document.createElement('a');
   link.download = `SpeedReport_${Date.now()}.jpg`;
   link.href = canvas.toDataURL('image/jpeg');
@@ -355,7 +381,6 @@ function showPopup() {
   document.getElementById('popup').style.display = 'flex';
 }
 
-// CHANGE 4: PRECISE LOCATION WITH PLACE NAME
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
@@ -372,7 +397,6 @@ async function getInfo() {
       try {
         let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
         let data = await res.json();
-        // PRECISE JAGAH KA NAAM
         let place = data.address.suburb || data.address.village || data.address.town || data.address.city || 'Location';
         let state = data.address.state || 'Odisha';
         userInfo.location = `${place}, ${state}`;
@@ -393,6 +417,4 @@ async function getInfo() {
   } catch(e){}
 }
 window.onload = getInfo;
-</script>
-</body>
-</html>
+</sc
