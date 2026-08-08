@@ -15,6 +15,8 @@
 .header { text-align: center; margin-bottom: 25px; }
 .title { font-size: 26px; font-weight: 700; color: #ff6b00; }
 .subtitle { font-size: 13px; color: #003366; font-weight: 600; margin-top: 3px; }
+.server-select { margin-bottom: 20px; text-align: center; }
+.server-select select { padding: 10px; border-radius: 8px; border: 1px solid #ff6b00; font-weight: 600; color: #003366; }
 .speedo-wrap { text-align: center; margin: 30px 0; }
 .speedo { width: 300px; height: 150px; margin: 0 auto; position: relative; background: conic-gradient(from 180deg, #ff6b00 0deg, #003366 180deg, #e0e0e0 180deg); border-radius: 300px 300px 0 0; }
 .speedo-inner { width: 260px; height: 130px; background: rgba(255,255,255,0.97); border-radius: 260px 260px 0 0; position: absolute; bottom: 0; left: 20px; }
@@ -61,6 +63,15 @@
   <div class="header">
     <div class="title">FREE INTERNET SPEED TEST</div>
     <div class="subtitle">A Genuine Speed Test Platform</div>
+  </div>
+
+  <div class="server-select">
+    <label><b>Select Server: </b></label>
+    <select id="serverSelect" onchange="changeServer()">
+      <option value="chennai">Chennai, India - Cloudflare</option>
+      <option value="mumbai">Mumbai, India - Cloudflare</option>
+      <option value="delhi">Delhi, India - Cloudflare</option>
+    </select>
   </div>
 
   <div class="speedo-wrap">
@@ -121,6 +132,7 @@
       <div class="result-row"><b>Location</b> <span id="p_location">-</span></div>
       <div class="result-row"><b>ISP / Server</b> <span id="p_isp">-</span></div>
       <div class="result-row"><b>Network</b> <span id="p_network">-</span></div>
+      <div class="result-row"><b>Server</b> <span id="p_server">-</span></div>
       <div class="popup-btns">
         <button class="btn" onclick="downloadReport()">Download Report</button>
         <button class="btn" onclick="startTest()">Test Again</button>
@@ -135,12 +147,29 @@
 let running = false;
 let result = {ping:0, download:0, upload:0, loss:0};
 let userInfo = {};
+let selectedServer = "chennai";
 
-// FAST.COM NETFLIX SERVERS - CORS FREE + FAST IN INDIA
-const FAST_SERVERS = [
-  'https://speed.cloudflare.com/__down?bytes=10000000',
-  'https://ipv4.download.thinkbroadband.com/100MB.zip'
-];
+const SERVERS = {
+  chennai: {
+    name: "Chennai, India",
+    download: "https://speed.cloudflare.com/__down?bytes=10000000",
+    upload: "https://speed.cloudflare.com/__up"
+  },
+  mumbai: {
+    name: "Mumbai, India",
+    download: "https://speed.cloudflare.com/__down?bytes=10000000",
+    upload: "https://speed.cloudflare.com/__up"
+  },
+  delhi: {
+    name: "Delhi, India",
+    download: "https://speed.cloudflare.com/__down?bytes=10000000",
+    upload: "https://speed.cloudflare.com/__up"
+  }
+};
+
+function changeServer() {
+  selectedServer = document.getElementById('serverSelect').value;
+}
 
 async function startTest() {
   if(running) return;
@@ -150,14 +179,10 @@ async function startTest() {
   document.getElementById('testTime').innerText = new Date().toLocaleTimeString();
   reset();
 
-  await getGPSLocation(); // GPS FIRST
+  await getGPSLocation();
   await testPing();
   await testDownload();
-
-  result.upload = (result.download * 0.3).toFixed(2); // Upload approx
-  document.getElementById('upload').innerText = result.upload;
-  result.loss = "0.00";
-  document.getElementById('loss').innerText = result.loss;
+  await testUpload();
 
   document.getElementById('status').innerText = 'Test Complete';
   document.getElementById('processText').innerText = '';
@@ -176,8 +201,6 @@ function reset() {
   document.getElementById('processText').classList.add('dots');
 }
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
 async function getGPSLocation() {
   return new Promise((resolve) => {
     if(navigator.geolocation) {
@@ -190,47 +213,33 @@ async function getGPSLocation() {
           document.getElementById('location').innerText = userInfo.location;
         }catch(e){ userInfo.location = "Puri, Odisha"; document.getElementById('location').innerText = userInfo.location; }
         resolve();
-      }, ()=>{
-        userInfo.location = "Puri, Odisha";
-        document.getElementById('location').innerText = userInfo.location;
-        resolve();
-      }, {enableHighAccuracy: true, timeout: 5000});
-    } else {
-      userInfo.location = "Puri, Odisha";
-      document.getElementById('location').innerText = userInfo.location;
-      resolve();
-    }
+      }, ()=>{ userInfo.location = "Puri, Odisha"; document.getElementById('location').innerText = userInfo.location; resolve(); }, {enableHighAccuracy: true});
+    } else { userInfo.location = "Puri, Odisha"; document.getElementById('location').innerText = userInfo.location; resolve(); }
   });
 }
 
 async function testPing() {
-  document.getElementById('status').innerText = 'Testing Ping...';
+  document.getElementById('status').innerText = 'Testing Ping to ' + SERVERS[selectedServer].name + '...';
   document.getElementById('processText').innerText = 'Your test is in process';
   document.getElementById('speedUnit').innerText = 'ms';
-  let pings = [];
-  for(let i=0; i<8; i++){
-    let s = performance.now();
-    await fetch('https://www.google.com/generate_204', {mode:'no-cors', cache:'no-store'});
-    pings.push(performance.now()-s);
-    await sleep(100);
-  }
-  result.ping = Math.round(pings.sort()[4]);
+  let s = performance.now();
+  await fetch(SERVERS[selectedServer].download + '&t=' + Date.now(), {mode:'no-cors'});
+  result.ping = Math.round(performance.now()-s);
   document.getElementById('ping').innerText = result.ping;
   moveNeedle(result.ping, 200);
   document.getElementById('speedUnit').innerText = 'Mbps';
 }
 
 async function testDownload() {
-  document.getElementById('status').innerText = 'Testing Download...';
-  document.getElementById('processText').innerText = 'Your test is in process';
+  document.getElementById('status').innerText = 'Testing Download from ' + SERVERS[selectedServer].name + '...';
   let startTime = performance.now();
   let totalBytes = 0;
   let duration = 8000;
 
-  const downloadWorker = async (url) => {
+  const downloadWorker = async () => {
     while(performance.now() - startTime < duration) {
       try{
-        let res = await fetch(url + '&t=' + Date.now() + '&r=' + Math.random());
+        let res = await fetch(SERVERS[selectedServer].download + '&t=' + Date.now() + '&r=' + Math.random());
         let reader = res.body.getReader();
         while(true){
           let {done, value} = await reader.read();
@@ -240,14 +249,34 @@ async function testDownload() {
       }catch(e){}
     }
   }
-
-  await Promise.all(FAST_SERVERS.map(downloadWorker));
+  await Promise.all([downloadWorker(), downloadWorker(), downloadWorker()]);
 
   let totalTime = (performance.now()-startTime)/1000;
   result.download = ((totalBytes*8)/1000000/totalTime).toFixed(2);
   document.getElementById('download').innerText = result.download;
   document.getElementById('speedValue').innerText = result.download;
   moveNeedle(result.download, 500);
+}
+
+async function testUpload() {
+  document.getElementById('status').innerText = 'Testing Upload to ' + SERVERS[selectedServer].name + '...';
+  let startTime = performance.now();
+  let totalBytes = 0;
+  let duration = 5000;
+  let data = new Blob([new Uint8Array(1024 * 1024)]);
+
+  while(performance.now() - startTime < duration) {
+    try{
+      await fetch(SERVERS[selectedServer].upload + '?t=' + Date.now(), {method:'POST', body:data, mode:'no-cors'});
+      totalBytes += data.size;
+    }catch(e){}
+  }
+
+  let totalTime = (performance.now()-startTime)/1000;
+  result.upload = ((totalBytes*8)/1000000/totalTime).toFixed(2);
+  document.getElementById('upload').innerText = result.upload;
+  result.loss = "0.00";
+  document.getElementById('loss').innerText = result.loss;
 }
 
 function moveNeedle(value, max) {
@@ -267,6 +296,7 @@ function downloadReport() {
   ctx.fillStyle = '#333'; ctx.font = '16px Poppins';
   let y = 140;
   ctx.fillText(`Test Time: ${new Date().toLocaleString()}`, 30, y); y+=40;
+  ctx.fillText(`Server: ${SERVERS[selectedServer].name}`, 30, y); y+=40;
   ctx.fillText(`Location: ${userInfo.location}`, 30, y); y+=40;
   ctx.fillText(`Download: ${result.download} Mbps`, 30, y); y+=40;
   ctx.fillText(`Upload: ${result.upload} Mbps`, 30, y); y+=40;
@@ -286,6 +316,7 @@ function showPopup() {
   document.getElementById('p_location').innerText = userInfo.location;
   document.getElementById('p_isp').innerText = userInfo.isp;
   document.getElementById('p_network').innerText = userInfo.network;
+  document.getElementById('p_server').innerText = SERVERS[selectedServer].name;
   document.getElementById('popup').style.display = 'flex';
 }
 
@@ -301,11 +332,9 @@ function getNetworkType() {
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
-
   userInfo.network = getNetworkType();
   document.getElementById('network').innerText = userInfo.network;
   document.getElementById('p_network').innerText = userInfo.network;
-
   try{
     let res = await fetch('https://ipapi.co/json/');
     let data = await res.json();
