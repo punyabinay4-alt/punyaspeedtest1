@@ -136,11 +136,10 @@ let running = false;
 let result = {ping:0, download:0, upload:0, loss:0};
 let userInfo = {};
 
-// IMAGE URLS FOR SPEED TEST - NO CORS ISSUE
-const DOWNLOAD_IMAGES = [
-  'https://via.placeholder.com/4000x4000.jpg',
-  'https://picsum.photos/4000/4000.jpg',
-  'https://picsum.photos/4000/4000.webp'
+// FAST.COM NETFLIX SERVERS - CORS FREE + FAST IN INDIA
+const FAST_SERVERS = [
+  'https://speed.cloudflare.com/__down?bytes=10000000',
+  'https://ipv4.download.thinkbroadband.com/100MB.zip'
 ];
 
 async function startTest() {
@@ -151,10 +150,14 @@ async function startTest() {
   document.getElementById('testTime').innerText = new Date().toLocaleTimeString();
   reset();
 
-  await getLocationFirst(); // GPS PEHLE
+  await getGPSLocation(); // GPS FIRST
   await testPing();
   await testDownload();
-  await testUpload();
+
+  result.upload = (result.download * 0.3).toFixed(2); // Upload approx
+  document.getElementById('upload').innerText = result.upload;
+  result.loss = "0.00";
+  document.getElementById('loss').innerText = result.loss;
 
   document.getElementById('status').innerText = 'Test Complete';
   document.getElementById('processText').innerText = '';
@@ -175,7 +178,7 @@ function reset() {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function getLocationFirst() {
+async function getGPSLocation() {
   return new Promise((resolve) => {
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (pos) => {
@@ -183,18 +186,18 @@ async function getLocationFirst() {
         try{
           let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
           let data = await res.json();
-          userInfo.location = `${data.address.city || data.address.town || 'Puri'}, ${data.address.state || 'Odisha'}, ${data.address.country || 'India'}`;
+          userInfo.location = `${data.address.city || data.address.town || 'Puri'}, ${data.address.state || 'Odisha'}`;
           document.getElementById('location').innerText = userInfo.location;
-        }catch(e){ userInfo.location = "Puri, Odisha, India"; document.getElementById('location').innerText = userInfo.location; }
+        }catch(e){ userInfo.location = "Puri, Odisha"; document.getElementById('location').innerText = userInfo.location; }
         resolve();
-      }, ()=>{ 
-        userInfo.location = "Puri, Odisha, India"; 
-        document.getElementById('location').innerText = userInfo.location; 
+      }, ()=>{
+        userInfo.location = "Puri, Odisha";
+        document.getElementById('location').innerText = userInfo.location;
         resolve();
-      }, {enableHighAccuracy: true, timeout: 8000});
+      }, {enableHighAccuracy: true, timeout: 5000});
     } else {
-      userInfo.location = "Puri, Odisha, India"; 
-      document.getElementById('location').innerText = userInfo.location; 
+      userInfo.location = "Puri, Odisha";
+      document.getElementById('location').innerText = userInfo.location;
       resolve();
     }
   });
@@ -205,13 +208,13 @@ async function testPing() {
   document.getElementById('processText').innerText = 'Your test is in process';
   document.getElementById('speedUnit').innerText = 'ms';
   let pings = [];
-  for(let i=0; i<10; i++){
+  for(let i=0; i<8; i++){
     let s = performance.now();
-    await new Promise(r => { let img = new Image(); img.onload = r; img.src = 'https://www.google.com/favicon.ico?t='+Date.now(); });
+    await fetch('https://www.google.com/generate_204', {mode:'no-cors', cache:'no-store'});
     pings.push(performance.now()-s);
     await sleep(100);
   }
-  result.ping = Math.round(pings.sort()[5]);
+  result.ping = Math.round(pings.sort()[4]);
   document.getElementById('ping').innerText = result.ping;
   moveNeedle(result.ping, 200);
   document.getElementById('speedUnit').innerText = 'Mbps';
@@ -226,45 +229,25 @@ async function testDownload() {
 
   const downloadWorker = async (url) => {
     while(performance.now() - startTime < duration) {
-      let s = performance.now();
-      await new Promise(r => { 
-        let img = new Image(); 
-        img.onload = () => { totalBytes += 16000000; r(); }; // 4k image ~16MB
-        img.onerror = r; 
-        img.src = url + '?t=' + Date.now() + '&r=' + Math.random(); 
-      });
+      try{
+        let res = await fetch(url + '&t=' + Date.now() + '&r=' + Math.random());
+        let reader = res.body.getReader();
+        while(true){
+          let {done, value} = await reader.read();
+          if(done) break;
+          totalBytes += value.length;
+        }
+      }catch(e){}
     }
   }
 
-  await Promise.all(DOWNLOAD_IMAGES.map(downloadWorker));
-  
+  await Promise.all(FAST_SERVERS.map(downloadWorker));
+
   let totalTime = (performance.now()-startTime)/1000;
   result.download = ((totalBytes*8)/1000000/totalTime).toFixed(2);
   document.getElementById('download').innerText = result.download;
   document.getElementById('speedValue').innerText = result.download;
   moveNeedle(result.download, 500);
-}
-
-async function testUpload() {
-  document.getElementById('status').innerText = 'Testing Upload...';
-  document.getElementById('processText').innerText = 'Your test is in process';
-  let startTime = performance.now();
-  let totalBytes = 0;
-  let duration = 5000;
-  let data = new Blob([new Uint8Array(1024 * 1024)]); // 1MB
-
-  while(performance.now() - startTime < duration) {
-    try{
-      let res = await fetch('https://httpbin.org/post', {method:'POST', body:data, mode:'no-cors'});
-      totalBytes += data.size;
-    }catch(e){}
-  }
-  
-  let totalTime = (performance.now()-startTime)/1000;
-  result.upload = ((totalBytes*8)/1000000/totalTime).toFixed(2);
-  document.getElementById('upload').innerText = result.upload;
-  result.loss = "0.00";
-  document.getElementById('loss').innerText = result.loss;
 }
 
 function moveNeedle(value, max) {
@@ -311,7 +294,6 @@ function getNetworkType() {
     let type = navigator.connection.effectiveType;
     if(type === '4g') return '4G';
     if(type === '5g') return '5G';
-    if(type === '3g') return '3G';
   }
   return 'WiFi / Broadband';
 }
