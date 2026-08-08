@@ -117,6 +117,7 @@
       <div class="result-row"><b>Packet Loss</b> <span id="p_loss">0</span> %</div>
       <div class="result-row"><b>Device</b> <span id="p_device">-</span></div>
       <div class="result-row"><b>Location</b> <span id="p_location">-</span></div>
+      <div class="result-row"><b>IP Address</b> <span id="p_ip">-</span></div>
       <div class="result-row"><b>ISP / Server</b> <span id="p_isp">-</span></div>
       <div class="result-row"><b>Network</b> <span id="p_network">-</span></div>
       <div class="result-row"><b>Server</b> <span id="p_server">-</span></div>
@@ -137,10 +138,13 @@ let userInfo = {};
 let autoServer = "Chennai, India";
 let needleInterval = null;
 
+// HIGH SPEED DATA SERVERS - 100MB DOWN / 50MB UP
 const SERVERS = [
-  { name: "Chennai, India", download: "https://speed.cloudflare.com/__down?bytes=10000000", upload: "https://speed.cloudflare.com/__up" },
-  { name: "Mumbai, India", download: "https://speed.cloudflare.com/__down?bytes=10000000", upload: "https://speed.cloudflare.com/__up" },
-  { name: "Delhi, India", download: "https://speed.cloudflare.com/__down?bytes=10000000", upload: "https://speed.cloudflare.com/__up" }
+  { name: "Chennai, India", download: "https://speed.cloudflare.com/__down?bytes=100000000", upload: "https://speed.cloudflare.com/__up" },
+  { name: "Mumbai, India", download: "https://speed.cloudflare.com/__down?bytes=100000000", upload: "https://speed.cloudflare.com/__up" },
+  { name: "Delhi, India", download: "https://speed.cloudflare.com/__down?bytes=100000000", upload: "https://speed.cloudflare.com/__up" },
+  { name: "Bangalore, India", download: "https://speed.cloudflare.com/__down?bytes=100000000", upload: "https://speed.cloudflare.com/__up" },
+  { name: "Kolkata, India", download: "https://speed.cloudflare.com/__down?bytes=100000000", upload: "https://speed.cloudflare.com/__up" }
 ];
 
 async function startTest() {
@@ -153,6 +157,7 @@ async function startTest() {
   resetInstant();
   autoServer = SERVERS[Math.floor(Math.random() * SERVERS.length)];
 
+  await getInfo();
   await getLocation();
   await testPing();
   await testDownload();
@@ -180,11 +185,11 @@ function resetInstant() {
 
 async function getLocation() {
   try{
-    let res = await fetch('https://ipapi.co/json/');
+    let res = await fetch('https://ipwho.is/');
     let data = await res.json();
-    userInfo.location = `${data.city}, ${data.region}`;
+    if(data.city) userInfo.location = `${data.city}, ${data.region}`;
     document.getElementById('location').innerText = userInfo.location;
-  }catch(e){ userInfo.location = "Puri, Odisha"; document.getElementById('location').innerText = userInfo.location; }
+  }catch(e){}
   
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async (pos) => {
@@ -192,10 +197,10 @@ async function getLocation() {
       try{
         let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
         let data = await res.json();
-        userInfo.location = `${data.address.city || data.address.town}, ${data.address.state}`;
+        if(data.address) userInfo.location = `${data.address.city || data.address.town}, ${data.address.state}`;
         document.getElementById('location').innerText = userInfo.location;
       }catch(e){}
-    });
+    },()=>{}, {timeout: 5000});
   }
 }
 
@@ -218,17 +223,18 @@ async function testDownload() {
   document.getElementById('status').innerText = 'Testing Download from ' + autoServer.name + '...';
   let startTime = performance.now();
   let totalBytes = 0;
-  let duration = 15000; // 15 SEC DOWNLOAD
+  let duration = 15000; // 15 SEC
 
   needleInterval = setInterval(() => {
     let elapsed = (performance.now() - startTime) / 1000;
-    if(elapsed > 0){
+    if(elapsed > 1){
       let speed = (totalBytes * 8) / 1000000 / elapsed;
       document.getElementById('download').innerText = speed.toFixed(2);
       updateNeedle(speed, 500);
     }
-  }, 50);
+  }, 100);
 
+  // HIGH SPEED: 5 parallel connections for heavy data
   const downloadWorker = async () => {
     while(performance.now() - startTime < duration) {
       try{
@@ -242,7 +248,7 @@ async function testDownload() {
       }catch(e){}
     }
   }
-  await Promise.all([downloadWorker(), downloadWorker()]);
+  await Promise.all([downloadWorker(), downloadWorker(), downloadWorker(), downloadWorker(), downloadWorker()]);
   clearInterval(needleInterval);
   let totalTime = (performance.now()-startTime)/1000;
   result.download = ((totalBytes*8)/1000000/totalTime).toFixed(2);
@@ -252,24 +258,28 @@ async function testUpload() {
   document.getElementById('status').innerText = 'Testing Upload to ' + autoServer.name + '...';
   let startTime = performance.now();
   let totalBytes = 0;
-  let duration = 12000; // 12 SEC UPLOAD
-  let data = new Blob([new Uint8Array(1024 * 1024)]);
+  let duration = 12000; // 12 SEC
+  let data = new Blob([new Uint8Array(2 * 1024 * 1024)]); // 2MB chunks = high speed
 
   needleInterval = setInterval(() => {
     let elapsed = (performance.now() - startTime) / 1000;
-    if(elapsed > 0){
+    if(elapsed > 1){
       let speed = (totalBytes * 8) / 1000000 / elapsed;
       document.getElementById('upload').innerText = speed.toFixed(2);
       updateNeedle(speed, 100);
     }
-  }, 50);
+  }, 100);
 
-  while(performance.now() - startTime < duration) {
-    try{
-      await fetch(autoServer.upload + '?t=' + Date.now(), {method:'POST', body:data, mode:'no-cors'});
-      totalBytes += data.size;
-    }catch(e){}
+  // HIGH SPEED: 5 parallel uploads
+  const uploadWorker = async () => {
+    while(performance.now() - startTime < duration) {
+      try{
+        await fetch(autoServer.upload + '?t=' + Date.now(), {method:'POST', body:data, mode:'no-cors'});
+        totalBytes += data.size;
+      }catch(e){}
+    }
   }
+  await Promise.all([uploadWorker(), uploadWorker(), uploadWorker(), uploadWorker(), uploadWorker()]);
   clearInterval(needleInterval);
   let totalTime = (performance.now()-startTime)/1000;
   result.upload = ((totalBytes*8)/1000000/totalTime).toFixed(2);
@@ -277,9 +287,9 @@ async function testUpload() {
 
 function downloadReport() {
   const canvas = document.createElement('canvas');
-  canvas.width = 600; canvas.height = 850;
+  canvas.width = 600; canvas.height = 900;
   const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, 600, 850);
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, 600, 900);
   ctx.fillStyle = '#ff6b00'; ctx.fillRect(0, 0, 600, 100);
   ctx.fillStyle = '#ffffff'; ctx.font = 'bold 24px Poppins';
   ctx.fillText('FREE INTERNET SPEED TEST', 20, 50);
@@ -288,6 +298,7 @@ function downloadReport() {
   ctx.fillText(`Test Time: ${new Date().toLocaleString()}`, 30, y); y+=40;
   ctx.fillText(`Server: ${autoServer.name}`, 30, y); y+=40;
   ctx.fillText(`Location: ${userInfo.location}`, 30, y); y+=40;
+  ctx.fillText(`IP: ${userInfo.ip}`, 30, y); y+=40;
   ctx.fillText(`Download: ${result.download} Mbps`, 30, y); y+=40;
   ctx.fillText(`Upload: ${result.upload} Mbps`, 30, y); y+=40;
   ctx.fillText(`Ping: ${result.ping} ms`, 30, y);
@@ -304,6 +315,7 @@ function showPopup() {
   document.getElementById('p_loss').innerText = result.loss;
   document.getElementById('p_device').innerText = userInfo.device;
   document.getElementById('p_location').innerText = userInfo.location;
+  document.getElementById('p_ip').innerText = userInfo.ip;
   document.getElementById('p_isp').innerText = userInfo.isp;
   document.getElementById('p_network').innerText = userInfo.network;
   document.getElementById('p_server').innerText = autoServer.name;
@@ -325,15 +337,24 @@ async function getInfo() {
   document.getElementById('device').innerText = userInfo.device;
   userInfo.network = getNetworkType();
   document.getElementById('network').innerText = userInfo.network;
-  document.getElementById('p_network').innerText = userInfo.network;
+  
   try{
-    let res = await fetch('https://ipapi.co/json/');
+    let res = await fetch('https://ipwho.is/');
     let data = await res.json();
-    userInfo.ip = data.ip; userInfo.isp = data.org;
-    document.getElementById('ip').innerText = userInfo.ip;
-    document.getElementById('isp').innerText = userInfo.isp + " - India";
-    document.getElementById('p_isp').innerText = userInfo.isp + " - India";
-  }catch(e){}
+    userInfo.ip = data.ip || "N/A"; 
+    userInfo.isp = data.connection?.isp || data.org || "N/A";
+  }catch(e){
+    try{
+      let res = await fetch('https://api.ipify.org?format=json');
+      let data = await res.json();
+      userInfo.ip = data.ip;
+      userInfo.isp = "ISP Not Found";
+    }catch(e2){ userInfo.ip = "N/A"; userInfo.isp = "N/A"; }
+  }
+  document.getElementById('ip').innerText = userInfo.ip;
+  document.getElementById('isp').innerText = userInfo.isp + " - India";
+  document.getElementById('p_ip').innerText = userInfo.ip;
+  document.getElementById('p_isp').innerText = userInfo.isp + " - India";
 }
 window.onload = getInfo;
 </script>
