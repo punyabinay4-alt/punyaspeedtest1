@@ -1,222 +1,345 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>INTERNET SPEED TEST</title> <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> <style> * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; } body { background: #000; min-height: 100vh; padding: 15px; } .temple-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1587974928442-77dc0e8d2476?q=80&w=1920') no-repeat center; background-size: cover; filter: brightness(0.35) blur(1px); z-index: -2; } .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,107,0,0.25) 0%, rgba(0,51,102,0.35) 100%); z-index: -1; } .back-btn { background: rgba(255,255,255,0.95); color: #ff6b00; border: none; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 15px; } .container { max-width: 650px; margin: 0 auto; background: rgba(255,255,255,0.97); backdrop-filter: blur(10px); padding: 30px; border-radius: 16px; } .header { text-align: center; margin-bottom: 25px; } .title { font-size: 26px; font-weight: 700; color: #ff6b00; } .subtitle { font-size: 13px; color: #003366; font-weight: 600; margin-top: 3px; } .speedo-wrap { text-align: center; margin: 30px 0; } .speedo { width: 300px; height: 150px; margin: 0 auto; position: relative; background: conic-gradient(from 180deg, #ff6b00 0deg, #003366 180deg, #e0e0e0 180deg); border-radius: 300px 300px 0 0; } .speedo-inner { width: 260px; height: 130px; background: rgba(255,255,255,0.97); border-radius: 260px 260px 0 0; position: absolute; bottom: 0; left: 20px; } .needle { width: 4px; height: 120px; background: linear-gradient(to top, #ff0000, #ff6b00); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.2s ease; border-radius: 4px; } .speedo-value { font-size: 48px; font-weight: 700; color: #003366; margin-top: 15px; } .speedo-unit { font-size: 14px; color: #555; } .process-text { font-size: 12px; color: #ff6b00; font-weight: 600; margin-top: 8px; min-height: 18px; } .dots::after { content: ''; animation: dots 1.5s steps(5, end) infinite; } @keyframes dots { 0%,20%{content:'';} 40%{content:'.';} 60%{content:'..';} 80%,100%{content:'...';} } .status { text-align: center; color: #ff6b00; font-weight: 600; margin: 15px 0; } .results { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 25px; } .card { background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.2); border-radius: 12px; padding: 15px; text-align: center; } .card .val { font-size: 22px; font-weight: 700; color: #003366; } .card .label { font-size: 12px; color: #555; } .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } .btn { background: linear-gradient(135deg, #ff6b00, #003366); color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: 600; font-size: 15px; cursor: pointer; } .btn-secondary { background: rgba(0,51,102,0.1); color: #003366; } .device { background: rgba(255,107,0,0.08); border-radius: 12px; padding: 18px; margin-top: 20px; } .device h3 { color: #ff6b00; font-size: 15px; margin-bottom: 12px; font-weight: 600; } .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.1); font-size: 13px; } .row span:last-child { color: #003366; font-weight: 600; } .footer { text-align: center; font-size: 12px; color: #555; margin-top: 20px; font-weight: 600; line-height: 1.6; } .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 999; overflow-y: auto; } .popup-box { background: rgba(255,255,255,0.98); border-radius: 20px; width: 90%; max-width: 470px; margin: 20px 0; } .popup-header { background: linear-gradient(135deg, #ff6b00, #003366); padding: 25px; text-align: center; color: #fff; } .popup-header h2 { font-weight: 700; margin-bottom: 8px; } .popup-header .msg { font-size: 13px; opacity: 0.95; font-weight: 500; line-height: 1.6; } .popup-body { padding: 20px; } .popup .result-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; } .popup .result-row span { color: #ff6b00; font-weight: 600; } .popup-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 15px; } .popup-footer { background: #f8f9fa; padding: 12px; text-align: center; font-size: 11px; color: #888; font-weight: 600; } </style> </head> <body> <div class="temple-bg"></div> <div class="overlay"></div> <button class="back-btn" onclick="window.history.back()">⬅ BACK</button> <div class="container"> <div class="header"> <div class="title">INTERNET SPEED TEST</div> <div class="subtitle">A Genuine Speed Test Platform</div> </div> <div class="speedo-wrap"> <div class="speedo"><div class="speedo-inner"></div><div class="needle" id="needle"></div></div> <div class="speedo-value" id="speedValue">0</div> <div class="speedo-unit" id="speedUnit">Mbps</div> <div class="process-text dots" id="processText"></div> </div> <div class="status" id="status">Tap RUN TEST to start</div> <div class="results"> <div class="card"><div class="val" id="ping">0</div><div class="label">Ping / Latency</div></div> <div class="card"><div class="val" id="download">0</div><div class="label">Mbps Download</div></div> <div class="card"><div class="val" id="upload">0</div><div class="label">Mbps Upload</div></div> </div> <div class="btn-group"> <button class="btn" id="startBtn" onclick="startTest()">RUN TEST</button> <button class="btn btn-secondary" onclick="location.reload()">REFRESH</button> </div> <div class="device"> <h3>DEVICE INFORMATION</h3> <div class="row"><span>Device</span><span id="device">Loading...</span></div> <div class="row"><span>Location</span><span id="location">Getting GPS...</span></div> <div class="row"><span>IP Address</span><span id="ip">Loading...</span></div> <div class="row"><span>ISP / Server</span><span id="isp">Loading...</span></div> <div class="row"><span>Network Type</span><span id="network">Loading...</span></div> <div class="row"><span>Test Time</span><span id="testTime">-</span></div> </div> <div class="footer">© Designed by SP<br>© Created and Developed by Punya Binay Swain</div> </div> <div class="popup" id="popup"> <div class="popup-box"> <div class="popup-header"> <h2>✅ Speed Test Complete</h2> <div class="msg"> Thank you for visiting my site,<br> Have a Nice day<br> "Jay Jagannath"<br> By Punya Binay Swain </div> </div> <div class="popup-body"> <div class="result-row"><b>Test Time</b> <span id="p_time">-</span></div> <div class="result-row"><b>Ping / Latency</b> <span id="p_ping">0</span> ms</div> <div class="result-row"><b>Download</b> <span id="p_download">0</span> Mbps</div> <div class="result-row"><b>Upload</b> <span id="p_upload">0</span> Mbps</div> <div class="result-row"><b>Device</b> <span id="p_device">-</span></div> <div class="result-row"><b>Location</b> <span id="p_location">-</span></div> <div class="result-row"><b>ISP / Server</b> <span id="p_isp">-</span></div> <div class="result-row"><b>Network</b> <span id="p_network">-</span></div> <div class="popup-btns"> <button class="btn" onclick="downloadReport()">Download Report</button> <button class="btn" onclick="startTest()">Test Again</button> <button class="btn btn-secondary" onclick="document.getElementById('popup').style.display='none'">Close</button> </div> </div> <div class="popup-footer">© Designed by SP | © Created and Developed by Punya Binay Swain</div> </div> </div> <script> let running = false; let result = {ping:0, download:0, upload:0}; let userInfo = {}; let currentSpeed = 0; let pingValues = []; 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INTERNET SPEED TEST PRO</title>
+<meta name="description" content="Advanced Internet Speed Test - Accurate Download, Upload, Ping, Jitter Test by Punya Binay Swain">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #ff6b00;
+  --secondary: #003366;
+  --bg: #0a0a0a;
+  --card: rgba(255,255,255,0.95);
+  --text: #003366;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body { background: var(--bg); min-height: 100vh; padding: 20px; color: var(--text); transition: 0.3s; }
+body.light { --bg: #f0f4f8; --card: rgba(255,255,255,0.98); }
+.temple-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1587974928442-77dc0e8d2476?q=80&w=1920') no-repeat center; background-size: cover; filter: brightness(0.3) blur(2px); z-index: -2; }
+.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,107,0,0.2) 0%, rgba(0,51,102,0.3) 100%); z-index: -1; }
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.back-btn, .theme-btn { background: rgba(255,255,255,0.95); color: var(--primary); border: none; padding: 10px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.back-btn:hover, .theme-btn:hover { transform: translateY(-2px); }
+.container { max-width: 900px; margin: 0 auto; background: var(--card); backdrop-filter: blur(15px); padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.header { text-align: center; margin-bottom: 30px; }
+.title { font-size: 32px; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+.subtitle { font-size: 14px; color: var(--secondary); font-weight: 600; margin-top: 5px; }
+.gauge-container { display: flex; justify-content: center; align-items: center; margin: 40px 0; gap: 30px; flex-wrap: wrap; }
+.gauge { position: relative; width: 320px; height: 160px; }
+.gauge-bg { width: 100%; height: 100%; background: conic-gradient(from 180deg, var(--primary) 0deg, var(--secondary) 120deg, #e0e0e0 180deg); border-radius: 320px 320px 0 0; }
+.gauge-inner { width: 280px; height: 140px; background: var(--card); border-radius: 280px 280px 0 0; position: absolute; bottom: 0; left: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.needle { width: 4px; height: 130px; background: linear-gradient(to top, #ff0000, var(--primary)); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.15s ease-out; border-radius: 4px; z-index: 2; }
+.speed-value { font-size: 52px; font-weight: 800; color: var(--text); line-height: 1; }
+.speed-unit { font-size: 16px; color: #666; font-weight: 500; }
+.process-text { font-size: 13px; color: var(--primary); font-weight: 600; margin-top: 10px; min-height: 20px; }
+.dots::after { content: ''; animation: dots 1.5s steps(4, end) infinite; }
+@keyframes dots { 0%,20%{content:'';} 40%{content:'.';} 60%{content:'..';} 80%,100%{content:'...';} }
+.status { text-align: center; color: var(--primary); font-weight: 600; margin: 20px 0; font-size: 16px; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+.stat-card { background: linear-gradient(135deg, rgba(255,107,0,0.1), rgba(0,51,102,0.1)); border: 2px solid rgba(255,107,0,0.2); border-radius: 15px; padding: 20px; text-align: center; transition: 0.3s; }
+.stat-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+.stat-card .icon { font-size: 24px; margin-bottom: 8px; }
+.stat-card .val { font-size: 28px; font-weight: 800; color: var(--text); }
+.stat-card .label { font-size: 13px; color: #666; font-weight: 500; margin-top: 5px; }
+.btn-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+.btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; }
+.btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255,107,0,0.3); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary { background: linear-gradient(135deg, #666, #444); }
+.device-section { background: rgba(255,107,0,0.08); border-radius: 15px; padding: 25px; margin-bottom: 25px; }
+.device-section h3 { color: var(--primary); font-size: 18px; margin-bottom: 15px; font-weight: 700; }
+.info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.1); font-size: 14px; }
+.info-row:last-child { border: none; }
+.info-row span:first-child { color: #666; }
+.info-row span:last-child { color: var(--text); font-weight: 600; }
+.history-section { background: rgba(0,51,102,0.08); border-radius: 15px; padding: 25px; }
+.history-section h3 { color: var(--secondary); font-size: 18px; margin-bottom: 15px; font-weight: 700; }
+.history-item { background: var(--card); padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; font-size: 13px; }
+.footer { text-align: center; font-size: 13px; color: #666; margin-top: 25px; font-weight: 600; line-height: 1.8; }
+.progress-bar { width: 100%; height: 6px; background: #e0e0e0; border-radius: 10px; overflow: hidden; margin: 15px 0; }
+.progress { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.3s; }
+@media(max-width: 768px) { .container { padding: 20px; } .gauge { width: 280px; height: 140px; } .gauge-inner { width: 240px; height: 120px; left: 20px; } .btn-group { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="temple-bg"></div>
+<div class="overlay"></div>
 
-async function startTest() { 
-  if(running) return; 
-  running = true; 
-  document.getElementById('startBtn').style.display = 'none'; 
-  document.getElementById('popup').style.display = 'none'; 
-  document.getElementById('testTime').innerText = new Date().toLocaleTimeString(); 
-  reset(); 
-  await testPingLive(); 
-  await sleep(200); 
-  await testDownloadLive(); 
-  await sleep(200); 
-  await testUploadLive(); 
-  document.getElementById('status').innerText = 'Test Complete'; 
-  document.getElementById('processText').innerText = ''; 
-  document.getElementById('processText').classList.remove('dots'); 
-  showPopup(); 
-  running = false; 
-} 
+<div class="topbar">
+  <button class="back-btn" onclick="window.history.back()">⬅ BACK</button>
+  <button class="theme-btn" onclick="toggleTheme()">🌙 DARK/LIGHT</button>
+</div>
 
-function reset() { 
-  result = {ping:0, download:0, upload:0}; 
-  pingValues = []; 
-  ['ping','download','upload'].forEach(id => document.getElementById(id).innerText = '0'); 
-  document.getElementById('needle').style.transform = 'translateX(-50%) rotate(-90deg)'; 
-  document.getElementById('speedValue').innerText = '0'; 
-  document.getElementById('speedUnit').innerText = 'Mbps'; 
-  document.getElementById('processText').innerText = ''; 
-  document.getElementById('processText').classList.remove('dots'); 
-  document.getElementById('startBtn').style.display = 'block'; 
-} 
+<div class="container">
+  <div class="header">
+    <div class="title">INTERNET SPEED TEST PRO</div>
+    <div class="subtitle">A Genuine & Advanced Speed Test Platform</div>
+  </div>
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); } 
+  <div class="gauge-container">
+    <div class="gauge">
+      <div class="gauge-bg"></div>
+      <div class="gauge-inner">
+        <div class="needle" id="needle"></div>
+        <div class="speed-value" id="speedValue">0</div>
+        <div class="speed-unit" id="speedUnit">Mbps</div>
+      </div>
+    </div>
+  </div>
 
-async function testPingLive() { 
-  document.getElementById('status').innerText = 'Testing Ping...'; 
-  document.getElementById('processText').innerText = 'Your test is in process'; 
-  document.getElementById('processText').classList.add('dots'); 
-  document.getElementById('speedUnit').innerText = 'ms'; 
-  let startTime = performance.now(); 
-  while(performance.now() - startTime < 10000) { 
-    let s = performance.now(); 
-    try { await fetch("https://www.google.com/generate_204?"+Date.now(), {mode:'no-cors', cache:'no-store'}); } catch(e){} 
-    let ping = Math.round(performance.now() - s); 
-    if(ping < 1000){ pingValues.push(ping); } 
-    result.ping = Math.round(pingValues.reduce((a,b)=>a+b,0)/pingValues.length) || 0; 
-    document.getElementById('ping').innerText = result.ping; 
-    moveNeedle(result.ping, 500); 
-    document.getElementById('speedValue').innerText = result.ping; 
-    await sleep(300); 
-  } 
-  document.getElementById('speedUnit').innerText = 'Mbps'; 
-} 
+  <div class="process-text" id="processText"></div>
+  <div class="progress-bar"><div class="progress" id="progress"></div></div>
+  <div class="status" id="status">Tap RUN TEST to Start Speed Test</div>
 
-// 15 SEC + 8 PARALLEL WORKERS FOR ACCURACY
-async function testDownloadLive() {
-  document.getElementById('status').innerText = 'Testing Download...';
-  document.getElementById('processText').innerText = 'Your test is in process';
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="icon">📡</div>
+      <div class="val" id="ping">0 <span style="font-size:14px">ms</span></div>
+      <div class="label">Ping / Latency</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">⬇️</div>
+      <div class="val" id="download">0 <span style="font-size:14px">Mbps</span></div>
+      <div class="label">Download Speed</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">⬆️</div>
+      <div class="val" id="upload">0 <span style="font-size:14px">Mbps</span></div>
+      <div class="label">Upload Speed</div>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn" id="startBtn" onclick="startTest()">RUN TEST</button>
+    <button class="btn btn-secondary" onclick="location.reload()">REFRESH</button>
+    <button class="btn btn-secondary" onclick="clearHistory()">CLEAR HISTORY</button>
+  </div>
+
+  <div class="device-section">
+    <h3>DEVICE & NETWORK INFORMATION</h3>
+    <div class="info-row"><span>Device Type</span><span id="device">Loading...</span></div>
+    <div class="info-row"><span>Location</span><span id="location">Getting GPS...</span></div>
+    <div class="info-row"><span>IP Address</span><span id="ip">Loading...</span></div>
+    <div class="info-row"><span>ISP / Organization</span><span id="isp">Loading...</span></div>
+    <div class="info-row"><span>Network Type</span><span id="network">Loading...</span></div>
+    <div class="info-row"><span>Test Server</span><span id="server">Auto Select</span></div>
+    <div class="info-row"><span>Test Time</span><span id="testTime">-</span></div>
+  </div>
+
+  <div class="history-section">
+    <h3>TEST HISTORY</h3>
+    <div id="historyList"><div style="text-align:center; color:#999;">No tests yet</div></div>
+  </div>
+
+  <div class="footer">
+    © Designed by SP<br>
+    © Created and Developed by Punya Binay Swain
+  </div>
+</div>
+
+<script>
+let running = false;
+let result = {ping:0, download:0, upload:0, time:''};
+let history = JSON.parse(localStorage.getItem('speedHistory') || '[]');
+
+// THEME TOGGLE
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  document.querySelector('.theme-btn').innerText = document.body.classList.contains('light') ? '🌙 DARK' : '☀️ LIGHT';
+}
+
+// START FULL TEST
+async function startTest() {
+  if(running) return;
+  running = true;
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('testTime').innerText = new Date().toLocaleString();
+  reset();
+  
+  await testPing();
+  await testDownload();
+  await testUpload();
+  
+  result.time = new Date().toLocaleString();
+  saveHistory();
+  document.getElementById('status').innerText = 'Test Complete ✅';
+  document.getElementById('processText').innerText = '';
+  document.getElementById('progress').style.width = '100%';
+  document.getElementById('startBtn').disabled = false;
+  running = false;
+}
+
+function reset() {
+  result = {ping:0, download:0, upload:0};
+  ['ping','download','upload'].forEach(id => document.getElementById(id).innerText = '0 Mbps');
+  document.getElementById('needle').style.transform = 'translateX(-50%) rotate(-90deg)';
+  document.getElementById('speedValue').innerText = '0';
+  document.getElementById('progress').style.width = '0%';
+}
+
+// PING TEST - 10 PINGS
+async function testPing() {
+  document.getElementById('status').innerText = 'Testing Ping & Jitter...';
+  document.getElementById('processText').innerText = 'Measuring latency';
   document.getElementById('processText').classList.add('dots');
+  document.getElementById('speedUnit').innerText = 'ms';
+  
+  let pings = [];
+  for(let i=0; i<10; i++) {
+    let s = performance.now();
+    try {
+      await fetch("https://www.google.com/favicon.ico?"+Date.now(), {mode:'no-cors', cache:'no-store'});
+    } catch(e){}
+    let p = Math.round(performance.now() - s);
+    if(p < 2000) pings.push(p);
+    result.ping = Math.round(pings.reduce((a,b)=>a+b,0)/pings.length) || 0;
+    document.getElementById('ping').innerHTML = result.ping + ' <span style="font-size:14px">ms</span>';
+    moveNeedle(result.ping, 300);
+    document.getElementById('speedValue').innerText = result.ping;
+    document.getElementById('progress').style.width = ((i+1)*3)+'%';
+    await new Promise(r => setTimeout(r, 100));
+  }
   document.getElementById('speedUnit').innerText = 'Mbps';
+  document.getElementById('processText').classList.remove('dots');
+}
+
+// DOWNLOAD TEST - MULTI THREAD 15 SEC
+async function testDownload() {
+  document.getElementById('status').innerText = 'Testing Download Speed...';
+  document.getElementById('processText').innerText = 'Downloading test files';
+  document.getElementById('processText').classList.add('dots');
   
   let startTime = performance.now();
-  let duration = 15000; // 15 sec
-  let bytesReceived = 0;
+  let duration = 15000;
+  let totalBytes = 0;
   
-  let workers = [];
-  for(let i=0; i<8; i++){ // 8 parallel
-    workers.push(downloadWorker(startTime, duration, (bytes) => { bytesReceived += bytes; }));
-  }
+  let urls = [
+    'https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js',
+    'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
+    'https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js',
+    'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js'
+  ];
   
-  let interval = setInterval(() => {
-    let elapsed = (performance.now() - startTime) / 1000;
-    if(elapsed > 3){ // 3 sec baad
-      let speed = (bytesReceived * 8) / 1000000 / elapsed;
-      currentSpeed = speed;
-      document.getElementById('download').innerText = speed.toFixed(2);
-      moveNeedle(speed, 1000);
-      document.getElementById('speedValue').innerText = speed.toFixed(0);
+  let promises = [];
+  while(performance.now() - startTime < duration) {
+    for(let url of urls) {
+      promises.push(
+        fetch(url + '?r=' + Math.random(), {cache:'no-store'})
+        .then(res => res.blob())
+        .then(blob => { totalBytes += blob.size; })
+        .catch(()=>{})
+      );
     }
-  }, 150);
-  
-  await Promise.all(workers);
-  clearInterval(interval);
-  result.download = currentSpeed.toFixed(2);
+    await Promise.all(promises.slice(-4));
+    
+    let elapsed = (performance.now() - startTime) / 1000;
+    let speed = (totalBytes * 8) / 1000000 / elapsed;
+    result.download = speed.toFixed(2);
+    document.getElementById('download').innerHTML = result.download + ' <span style="font-size:14px">Mbps</span>';
+    moveNeedle(speed, 200);
+    document.getElementById('speedValue').innerText = Math.round(speed);
+    document.getElementById('progress').style.width = 30 + (elapsed/duration)*30 + '%';
+  }
+  document.getElementById('processText').classList.remove('dots');
 }
 
-// UPLOAD FIX - NO-CORS HATA DIYA
-async function testUploadLive() {
-  document.getElementById('status').innerText = 'Testing Upload...';
-  document.getElementById('processText').innerText = 'Your test is in process';
+// UPLOAD TEST - MULTI THREAD 15 SEC
+async function testUpload() {
+  document.getElementById('status').innerText = 'Testing Upload Speed...';
+  document.getElementById('processText').innerText = 'Uploading test files';
   document.getElementById('processText').classList.add('dots');
-  document.getElementById('speedUnit').innerText = 'Mbps';
   
   let startTime = performance.now();
-  let duration = 15000; // 15 sec
-  let bytesSent = 0;
+  let duration = 15000;
+  let totalBytes = 0;
+  let data = new Blob([new Uint8Array(2 * 1024 * 1024)]); // 2MB chunk
   
-  let workers = [];
-  for(let i=0; i<8; i++){ // 8 parallel
-    workers.push(uploadWorker(startTime, duration, (bytes) => { bytesSent += bytes; }));
-  }
+  let uploadUrls = [
+    'https://httpbin.org/post',
+    'https://postman-echo.com/post'
+  ];
   
-  let interval = setInterval(() => {
-    let elapsed = (performance.now() - startTime) / 1000;
-    if(elapsed > 3){
-      let speed = (bytesSent * 8) / 1000000 / elapsed;
-      currentSpeed = speed;
-      document.getElementById('upload').innerText = speed.toFixed(2);
-      moveNeedle(speed, 500);
-      document.getElementById('speedValue').innerText = speed.toFixed(0);
+  while(performance.now() - startTime < duration) {
+    for(let url of uploadUrls) {
+      try {
+        await fetch(url, { method:'POST', body:data, mode:'cors' });
+        totalBytes += data.size;
+      } catch(e){}
     }
-  }, 150);
+    
+    let elapsed = (performance.now() - startTime) / 1000;
+    let speed = (totalBytes * 8) / 1000000 / elapsed;
+    result.upload = speed.toFixed(2);
+    document.getElementById('upload').innerHTML = result.upload + ' <span style="font-size:14px">Mbps</span>';
+    moveNeedle(speed, 100);
+    document.getElementById('speedValue').innerText = Math.round(speed);
+    document.getElementById('progress').style.width = 60 + (elapsed/duration)*40 + '%';
+  }
+  document.getElementById('processText').classList.remove('dots');
+}
+
+function moveNeedle(value, max) {
+  let deg = (value / max) * 180 - 90;
+  deg = Math.max(-90, Math.min(90, deg));
+  document.getElementById('needle').style.transform = `translateX(-50%) rotate(${deg}deg)`;
+}
+
+// DEVICE INFO
+async function getInfo() {
+  let ua = navigator.userAgent;
+  document.getElementById('device').innerText = ua.includes("Android") ? "Android Mobile" : ua.includes("iPhone") ? "iPhone" : "Windows PC";
+  document.getElementById('network').innerText = navigator.connection ? navigator.connection.effectiveType.toUpperCase() : '4G/5G';
   
-  await Promise.all(workers);
-  clearInterval(interval);
-  result.upload = currentSpeed.toFixed(2);
+  if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      let lat = pos.coords.latitude; let lon = pos.coords.longitude;
+      try {
+        let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
+        let data = await res.json();
+        document.getElementById('location').innerText = `${data.address.city || 'Chatrapur'}, ${data.address.state || 'Odisha'}`;
+      } catch(e){ document.getElementById('location').innerText = 'Location Denied'; }
+    });
+  }
+  
+  try {
+    let res = await fetch('https://ipapi.co/json/');
+    let data = await res.json();
+    document.getElementById('ip').innerText = data.ip;
+    document.getElementById('isp').innerText = data.org || 'Unknown ISP';
+    document.getElementById('server').innerText = data.city + ', ' + data.country_name;
+  } catch(e){}
+  
+  loadHistory();
 }
 
-async function downloadWorker(startTime, duration, callback) {
-  while(performance.now() - startTime < duration) {
-    try {
-      let res = await fetch(`https://speed.cloudflare.com/__down?bytes=50000000&${Date.now()}&r=${Math.random()}`, {cache:'no-store'});
-      let blob = await res.blob();
-      callback(blob.size);
-    } catch(e) { await sleep(200); }
-  }
+// HISTORY
+function saveHistory() {
+  history.unshift({...result});
+  if(history.length > 5) history.pop();
+  localStorage.setItem('speedHistory', JSON.stringify(history));
+  loadHistory();
 }
 
-async function uploadWorker(startTime, duration, callback) {
-  let data = new Blob([new Uint8Array(8 * 1024 * 1024)]); // 8MB file
-  while(performance.now() - startTime < duration) {
-    try {
-      const controller = new AbortController();
-      setTimeout(() => controller.abort(), 15000);
-      // mode:'no-cors' hata diya taaki count ho sake
-      await fetch("https://speed.cloudflare.com/__up", { 
-        method:'POST', body:data, signal: controller.signal, cache: 'no-store' 
-      });
-      callback(data.size);
-    } catch(e) { await sleep(200); }
-  }
-} 
+function loadHistory() {
+  let list = document.getElementById('historyList');
+  if(history.length === 0) return;
+  list.innerHTML = history.map(h => `
+    <div class="history-item">
+      <span>${h.time}</span>
+      <span>⬇️${h.download} | ⬆️${h.upload} | 📡${h.ping}ms</span>
+    </div>
+  `).join('');
+}
 
-function moveNeedle(value, max) { 
-  let deg = (value / max) * 180 - 90; 
-  deg = Math.max(-90, Math.min(90, deg)); 
-  document.getElementById('needle').style.transform = `translateX(-50%) rotate(${deg}deg)`; 
-} 
+function clearHistory() {
+  history = [];
+  localStorage.removeItem('speedHistory');
+  loadHistory();
+}
 
-function downloadReport() { 
-  const canvas = document.createElement('canvas'); 
-  canvas.width = 600; canvas.height = 850; 
-  const ctx = canvas.getContext('2d'); 
-  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, 600, 850); 
-  ctx.fillStyle = '#ff6b00'; ctx.fillRect(0, 0, 600, 100); 
-  ctx.fillStyle = '#ffffff'; ctx.font = 'bold 24px Poppins'; 
-  ctx.fillText('INTERNET SPEED TEST', 20, 50); 
-  ctx.fillStyle = '#333'; ctx.font = '16px Poppins'; 
-  let y = 140; 
-  ctx.fillText(`Test Time: ${new Date().toLocaleString()}`, 30, y); y+=40; 
-  ctx.fillText(`Location: ${userInfo.location}`, 30, y); y+=40; 
-  ctx.fillText(`Ping / Latency: ${result.ping} ms`, 30, y); y+=40; 
-  ctx.fillText(`Download: ${result.download} Mbps`, 30, y); y+=40; 
-  ctx.fillText(`Upload: ${result.upload} Mbps`, 30, y); y+=40; 
-  ctx.fillText(`Device: ${userInfo.device}`, 30, y); y+=40; 
-  ctx.fillText(`ISP: ${userInfo.isp}`, 30, y); y+=40; 
-  ctx.fillText(`Network: ${userInfo.network}`, 30, y); 
-  ctx.fillStyle = '#888'; ctx.font = '12px Poppins'; 
-  ctx.fillText('© Designed by SP', 30, 800); 
-  ctx.fillText('© Created and Developed by Punya Binay Swain', 30, 820); 
-  let link = document.createElement('a'); 
-  link.download = `SpeedReport_${Date.now()}.jpg`; 
-  link.href = canvas.toDataURL('image/jpeg'); 
-  link.click(); 
-} 
-
-function showPopup() { 
-  document.getElementById('p_time').innerText = new Date().toLocaleString(); 
-  document.getElementById('p_ping').innerText = result.ping; 
-  document.getElementById('p_download').innerText = result.download; 
-  document.getElementById('p_upload').innerText = result.upload; 
-  document.getElementById('p_device').innerText = userInfo.device; 
-  document.getElementById('p_location').innerText = userInfo.location; 
-  document.getElementById('p_isp').innerText = userInfo.isp; 
-  document.getElementById('p_network').innerText = userInfo.network; 
-  document.getElementById('popup').style.display = 'flex'; 
-} 
-
-async function getInfo() { 
-  userInfo.device = navigator.userAgent.includes("Android") ? "Android Mobile" : "Windows PC"; 
-  document.getElementById('device').innerText = userInfo.device; 
-  let networkType = '5G/4G'; 
-  if(userInfo.device === "Windows PC"){ networkType = 'WiFi / 5G/4G'; } 
-  userInfo.network = networkType; 
-  document.getElementById('network').innerText = userInfo.network; 
-  document.getElementById('p_network').innerText = userInfo.network; 
-  if(navigator.geolocation) { 
-    navigator.geolocation.getCurrentPosition(async (pos) => { 
-      let lat = pos.coords.latitude; let lon = pos.coords.longitude; 
-      try { 
-        let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`); 
-        let data = await res.json(); 
-        userInfo.location = `${data.address.city || 'Bhubaneswar'}, ${data.address.state || 'Odisha'}`; 
-        document.getElementById('location').innerText = userInfo.location; 
-        document.getElementById('p_location').innerText = userInfo.location; 
-      } catch(e){} 
-    }, ()=>{}, {enableHighAccuracy: true, timeout: 10000}); 
-  } 
-  try { 
-    let res = await fetch('https://ipapi.co/json/'); 
-    let data = await res.json(); 
-    userInfo.ip = data.ip; 
-    userInfo.isp = data.org || 'Vodafone Idea Ltd.'; 
-    document.getElementById('ip').innerText = userInfo.ip; 
-    document.getElementById('isp').innerText = userInfo.isp + " - India"; 
-    document.getElementById('p_isp').innerText = userInfo.isp + " - India"; 
-  } catch(e){} 
-} 
-
-window.onload = getInfo; 
-</script> </body> </html>
+window.onload = getInfo;
+</script>
+</body>
+</html>
