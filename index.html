@@ -18,7 +18,7 @@
 .speedo-wrap { text-align: center; margin: 30px 0; }
 .speedo { width: 300px; height: 150px; margin: 0 auto; position: relative; background: conic-gradient(from 180deg, #ff6b00 0deg, #003366 180deg, #e0e0e0 180deg); border-radius: 300px 300px 0 0; }
 .speedo-inner { width: 260px; height: 130px; background: rgba(255,255,255,0.97); border-radius: 260px 260px 0 0; position: absolute; bottom: 0; left: 20px; }
-.needle { width: 4px; height: 120px; background: linear-gradient(to top, #ff0000, #ff6b00); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.2s ease; border-radius: 4px; }
+.needle { width: 4px; height: 120px; background: linear-gradient(to top, #ff0000, #ff6b00); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 0.1s linear; border-radius: 4px; }
 .speedo-value { font-size: 48px; font-weight: 700; color: #003366; margin-top: 15px; }
 .speedo-unit { font-size: 14px; color: #555; }
 .process-text { font-size: 12px; color: #ff6b00; font-weight: 600; margin-top: 8px; min-height: 18px; }
@@ -32,6 +32,7 @@
 .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .btn { background: linear-gradient(135deg, #ff6b00, #003366); color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: 600; font-size: 15px; cursor: pointer; }
 .btn-secondary { background: rgba(0,51,102,0.1); color: #003366; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .device { background: rgba(255,107,0,0.08); border-radius: 12px; padding: 18px; margin-top: 20px; }
 .device h3 { color: #ff6b00; font-size: 15px; margin-bottom: 12px; font-weight: 600; }
 .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.1); font-size: 13px; }
@@ -134,15 +135,16 @@
 let running = false;
 let result = {ping:0, download:0, upload:0, loss:0};
 let userInfo = {};
-let currentSpeed = 0;
 
-const DOWNLOAD_URL = "https://speed.cloudflare.com/__down?bytes=25000000"; // 25MB for accuracy
-const UPLOAD_URL = "https://speed.cloudflare.com/__up";
+// 8 PARALLEL CONNECTIONS FOR ACCURATE SPEED
+const DOWNLOAD_THREADS = 8;
+const UPLOAD_THREADS = 4;
+const TEST_TIME = 10000; // 10 seconds
 
 async function startTest() {
   if(running) return;
   running = true;
-  document.getElementById('startBtn').style.display = 'none';
+  document.getElementById('startBtn').disabled = true;
   document.getElementById('popup').style.display = 'none';
   document.getElementById('testTime').innerText = new Date().toLocaleTimeString();
   reset();
@@ -156,6 +158,7 @@ async function startTest() {
   document.getElementById('processText').classList.remove('dots');
   showPopup();
   running = false;
+  document.getElementById('startBtn').disabled = false;
 }
 
 function reset() {
@@ -163,7 +166,8 @@ function reset() {
   ['ping','download','upload','loss'].forEach(id => document.getElementById(id).innerText = '0');
   document.getElementById('needle').style.transform = 'translateX(-50%) rotate(-90deg)';
   document.getElementById('speedValue').innerText = '0';
-  document.getElementById('startBtn').style.display = 'block';
+  document.getElementById('processText').innerText = '';
+  document.getElementById('processText').classList.add('dots');
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -171,61 +175,93 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 async function testPing() {
   document.getElementById('status').innerText = 'Testing Ping...';
   document.getElementById('processText').innerText = 'Your test is in process';
-  document.getElementById('processText').classList.add('dots');
+  document.getElementById('speedUnit').innerText = 'ms';
   let pings = [];
-  for(let i=0; i<10; i++){
+  for(let i=0; i<8; i++){
     let s = performance.now();
-    try{ await fetch(DOWNLOAD_URL+"&ping="+i, {cache:'no-store'}); }catch(e){}
+    try{ await fetch('https://1.1.1.1/cdn-cgi/trace?t='+Date.now(), {mode:'no-cors', cache:'no-store'}); }catch(e){}
     pings.push(performance.now()-s);
-    await sleep(200);
+    await sleep(100);
   }
-  result.ping = Math.round(pings.sort()[5]);
+  result.ping = Math.round(pings.sort()[3]);
   document.getElementById('ping').innerText = result.ping;
   moveNeedle(result.ping, 200);
+  document.getElementById('speedUnit').innerText = 'Mbps';
 }
 
 async function testDownload() {
   document.getElementById('status').innerText = 'Testing Download...';
-  document.getElementById('speedUnit').innerText = 'Mbps';
+  document.getElementById('processText').innerText = 'Your test is in process';
   let startTime = performance.now();
-  let bytes = 0;
+  let totalBytes = 0;
+  let workers = [];
 
-  try{
-    let res = await fetch(DOWNLOAD_URL+"&t="+Date.now());
-    let reader = res.body.getReader();
-    while(true){
-      let {done, value} = await reader.read();
-      if(done) break;
-      bytes += value.length;
-      let elapsed = (performance.now()-startTime)/1000;
-      let speed = (bytes*8)/1000000/elapsed;
+  const worker = async () => {
+    while(performance.now() - startTime < TEST_TIME) {
+      try{
+        let res = await fetch(`https://speed.cloudflare.com/__down?bytes=10000000&t=${Date.now()}&r=${Math.random()}`);
+        let reader = res.body.getReader();
+        while(true){
+          let {done, value} = await reader.read();
+          if(done) break;
+          totalBytes += value.length;
+        }
+      }catch(e){}
+    }
+  }
+
+  for(let i=0; i<DOWNLOAD_THREADS; i++) workers.push(worker());
+
+  let interval = setInterval(() => {
+    let elapsed = (performance.now() - startTime) / 1000;
+    if(elapsed > 0){
+      let speed = (totalBytes * 8) / 1000000 / elapsed;
       document.getElementById('download').innerText = speed.toFixed(2);
       document.getElementById('speedValue').innerText = speed.toFixed(0);
-      moveNeedle(speed, 200);
+      moveNeedle(speed, 300);
     }
-  }catch(e){}
+  }, 200);
 
+  await Promise.all(workers);
+  clearInterval(interval);
   let totalTime = (performance.now()-startTime)/1000;
-  result.download = ((bytes*8)/1000000/totalTime).toFixed(2);
+  result.download = ((totalBytes*8)/1000000/totalTime).toFixed(2);
 }
 
 async function testUpload() {
   document.getElementById('status').innerText = 'Testing Upload...';
+  document.getElementById('processText').innerText = 'Your test is in process';
   let startTime = performance.now();
-  let bytes = 0;
-  let data = new Blob([new Uint8Array(5 * 1024 * 1024)]); // 5MB chunk
+  let totalBytes = 0;
+  let workers = [];
+  let data = new Blob([new Uint8Array(2 * 1024 * 1024)]); // 2MB
 
-  try{
-    let res = await fetch(UPLOAD_URL+"?t="+Date.now(), {method:'POST', body:data});
-    if(res.ok) bytes = data.size;
-    let totalTime = (performance.now()-startTime)/1000;
-    result.upload = ((bytes*8)/1000000/totalTime).toFixed(2);
-    document.getElementById('upload').innerText = result.upload;
-    moveNeedle(result.upload, 100);
-    document.getElementById('speedValue').innerText = result.upload;
-  }catch(e){}
+  const worker = async () => {
+    while(performance.now() - startTime < TEST_TIME) {
+      try{
+        let res = await fetch(`https://speed.cloudflare.com/__up?t=${Date.now()}&r=${Math.random()}`, {method:'POST', body:data});
+        if(res.ok) totalBytes += data.size;
+      }catch(e){}
+    }
+  }
 
-  result.loss = "0.00"; // Cloudflare pe loss nahi hota
+  for(let i=0; i<UPLOAD_THREADS; i++) workers.push(worker());
+
+  let interval = setInterval(() => {
+    let elapsed = (performance.now() - startTime) / 1000;
+    if(elapsed > 0){
+      let speed = (totalBytes * 8) / 1000000 / elapsed;
+      document.getElementById('upload').innerText = speed.toFixed(2);
+      document.getElementById('speedValue').innerText = speed.toFixed(0);
+      moveNeedle(speed, 100);
+    }
+  }, 200);
+
+  await Promise.all(workers);
+  clearInterval(interval);
+  let totalTime = (performance.now()-startTime)/1000;
+  result.upload = ((totalBytes*8)/1000000/totalTime).toFixed(2);
+  result.loss = "0.00";
   document.getElementById('loss').innerText = result.loss;
 }
 
@@ -271,24 +307,31 @@ function showPopup() {
 async function getInfo() {
   userInfo.device = navigator.userAgent.includes("Android")? "Android Mobile" : "Windows PC";
   document.getElementById('device').innerText = userInfo.device;
+  userInfo.network = navigator.connection? navigator.connection.effectiveType : '4G';
+  document.getElementById('network').innerText = userInfo.network;
+  document.getElementById('p_network').innerText = userInfo.network;
 
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       let lat = pos.coords.latitude; let lon = pos.coords.longitude;
-      let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
-      let data = await res.json();
-      userInfo.location = `${data.address.suburb || data.address.city}, ${data.address.state}`;
-      document.getElementById('location').innerText = userInfo.location;
-      document.getElementById('p_location').innerText = userInfo.location;
+      try{
+        let res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
+        let data = await res.json();
+        userInfo.location = `${data.address.suburb || data.address.city}, ${data.address.state}`;
+        document.getElementById('location').innerText = userInfo.location;
+        document.getElementById('p_location').innerText = userInfo.location;
+      }catch(e){}
     }, ()=>{}, {enableHighAccuracy: true});
   }
 
-  let res = await fetch('https://ipapi.co/json/');
-  let data = await res.json();
-  userInfo.ip = data.ip; userInfo.isp = data.org;
-  document.getElementById('ip').innerText = userInfo.ip;
-  document.getElementById('isp').innerText = userInfo.isp + " - India";
-  document.getElementById('p_isp').innerText = userInfo.isp + " - India";
+  try{
+    let res = await fetch('https://ipapi.co/json/');
+    let data = await res.json();
+    userInfo.ip = data.ip; userInfo.isp = data.org;
+    document.getElementById('ip').innerText = userInfo.ip;
+    document.getElementById('isp').innerText = userInfo.isp + " - India";
+    document.getElementById('p_isp').innerText = userInfo.isp + " - India";
+  }catch(e){}
 }
 window.onload = getInfo;
 </script>
