@@ -1,209 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Genuine Internet Speed Test Platform By SP</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700;900&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif}
-body{background:#061224;display:flex;flex-direction:column;align-items:center;min-height:100vh;color:#E5E7EB}
-.header{width:100%;background:#0B1A33;padding:18px;text-align:center}
-.header h1{font-size:22px;font-weight:900;color:#F97316}
-.box{width:95%;max-width:520px;background:#0B1A33;margin:25px 0;border-radius:16px;padding:25px;border:1px solid #1E3A5F}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif}
+body{background:#0B0F1A;display:flex;flex-direction:column;align-items:center;color:#fff}
+.header{width:100%;background:#111827;padding:20px;text-align:center;border-bottom:3px solid #F97316}
+.header h1{font-size:24px;font-weight:900;color:#F97316}
+.wrap{width:95%;max-width:500px;background:#111827;margin:30px 0;border-radius:16px;padding:25px}
 .gauge{width:100%;height:220px;position:relative}
 .gauge svg{width:100%;height:100%}
-.track{fill:none;stroke:#1E3A5F;stroke-width:28;stroke-linecap:round}
-.progress{fill:none;stroke:#F97316;stroke-width:28;stroke-linecap:round;stroke-dasharray:628;stroke-dashoffset:628;transition:stroke-dashoffset .08s linear}
-.needle{stroke:#fff;stroke-width:5;stroke-linecap:round;transform-origin:250px 250px;transition:transform .08s linear}
-.center{fill:#F97316}
-.read{position:absolute;top:62%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.read .num{font-size:52px;font-weight:900;color:#fff}
-.read .unit{font-size:14px;color:#94A3B8;font-weight:700}
-.status{text-align:center;color:#F97316;font-weight:800;margin:12px 0;font-size:15px;min-height:20px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
-.stat{background:#122942;border-radius:12px;padding:16px;text-align:center}
-.stat .v{font-size:26px;font-weight:900;color:#fff}
-.stat .l{font-size:12px;color:#94A3B8;margin-top:2px}
-.btns{display:flex;gap:10px}
-.btn{flex:1;background:#F97316;color:#061224;border:none;padding:14px;border-radius:10px;font-weight:900;font-size:16px;cursor:pointer}
-.btn.sec{background:#1E3A5F;color:#fff}
-.btn:disabled{opacity:.5}
-.info{background:#122942;border-radius:12px;padding:16px;margin-top:18px}
-.info h3{color:#F97316;font-size:13px;margin-bottom:10px;font-weight:800}
-.row{display:flex;justify-content:space-between;padding:9px 0;font-size:13px;border-bottom:1px solid #1E3A5F}
-.row:last-child{border:0}
-.footer{width:100%;background:#0B1A33;text-align:center;padding:18px;font-size:12px;color:#94A3B8;margin-top:auto;border-top:1px solid #1E3A5F}
-.footer b{color:#fff}
-.popup{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}
-.pbox{background:#0B1A33;border:1px solid #1E3A5F;border-radius:16px;width:90%;max-width:480px;padding:20px}
-.pbox h2{text-align:center;color:#F97316;margin-bottom:15px}
+.track{fill:none;stroke:#1F2937;stroke-width:30;stroke-linecap:round}
+.bar{fill:none;stroke:#F97316;stroke-width:30;stroke-linecap:round;stroke-dasharray:628;stroke-dashoffset:628;transition:stroke-dashoffset .05s linear}
+.needle{stroke:#fff;stroke-width:5;transform-origin:250px 250px;transition:transform .05s linear}
+.read{position:absolute;top:65%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.read .n{font-size:56px;font-weight:900}
+.status{text-align:center;color:#F97316;font-weight:800;margin:15px 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{background:#1F2937;border-radius:12px;padding:18px;text-align:center}
+.stat .v{font-size:28px;font-weight:900}
+.btns{display:flex;gap:10px;margin-top:20px}
+.btn{flex:1;background:#F97316;color:#000;border:none;padding:15px;border-radius:10px;font-weight:900;font-size:16px;cursor:pointer}
+.btn.sec{background:#374151;color:#fff}
+.info{margin-top:20px;background:#1F2937;border-radius:12px;padding:18px}
+.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #374151;font-size:14px}
+.footer{width:100%;background:#111827;text-align:center;padding:20px;margin-top:auto;border-top:3px solid #F97316}
+.popup{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center}
+.pbox{background:#111827;border-radius:16px;width:90%;max-width:480px;padding:20px;border:1px solid #374151}
 </style>
 </head>
 <body>
-
 <div class="header"><h1>GENUINE INTERNET SPEED TEST PLATFORM BY SP</h1></div>
-
-<div class="box">
+<div class="wrap">
   <div class="gauge">
-    <svg viewBox="0 0 500 300">
-      <path class="track" d="M 50 250 A 200 200 0 0 1 450 250"/>
-      <path class="progress" id="progress" d="M 50 250 A 200 200 0 0 1 450 250"/>
-      <line id="needle" x1="250" y1="250" x2="250" y2="70" class="needle"/>
-      <circle cx="250" cy="250" r="9" class="center"/>
-    </svg>
-    <div class="read"><div class="num" id="speed">0.00</div><div class="unit">Mbps</div></div>
+    <svg viewBox="0 0 500 300"><path class="track" d="M 50 250 A 200 200 0 0 1 450 250"/><path class="bar" id="bar"/><line id="needle" x1="250" y1="250" x2="250" y2="60"/><circle cx="250" cy="250" r="10"/></svg>
+    <div class="read"><div class="n" id="speed">0.00</div><div>Mbps</div></div>
   </div>
-
-  <div class="status" id="status">Press START TEST</div>
-
+  <div class="status" id="status">READY</div>
   <div class="stats">
-    <div class="stat"><div class="v" id="down">0.00</div><div class="l">DOWNLOAD</div></div>
-    <div class="stat"><div class="v" id="up">0.00</div><div class="l">UPLOAD</div></div>
+    <div class="stat"><div class="v" id="down">0.00</div><div>DOWNLOAD</div></div>
+    <div class="stat"><div class="v" id="up">0.00</div><div>UPLOAD</div></div>
   </div>
-
-  <div class="btns">
-    <button class="btn" id="start">START TEST</button>
-    <button class="btn sec" id="reset">RESET</button>
-  </div>
-
+  <div class="btns"><button class="btn" id="start">START TEST</button><button class="btn sec" onclick="location.reload()">RESET</button></div>
   <div class="info">
-    <h3>CONNECTION DETAILS</h3>
     <div class="row"><span>Device</span><span id="device">-</span></div>
-    <div class="row"><span>Exact Location</span><span id="loc">Waiting...</span></div>
-    <div class="row"><span>IP Address</span><span id="ip">-</span></div>
+    <div class="row"><span>Location</span><span id="loc">Allow Permission</span></div>
+    <div class="row"><span>IP</span><span id="ip">-</span></div>
     <div class="row"><span>ISP</span><span id="isp">-</span></div>
-    <div class="row"><span>Network Type</span><span id="net">-</span></div>
+    <div class="row"><span>Network</span><span id="net">-</span></div>
   </div>
 </div>
-
-<div class="footer">
-COPYRIGHT ©️ 2026 RESERVED<br>
-<b>CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</b>
-</div>
-
-<div class="popup" id="popup">
-  <div class="pbox">
-    <h2>TEST RESULT</h2>
-    <div id="pdata"></div>
-    <button class="btn" style="margin-top:15px;width:100%" onclick="popup.style.display='none'">CLOSE</button>
-  </div>
-</div>
-
+<div class="footer">COPYRIGHT © 2026 RESERVED<br><b>CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</b></div>
+<div class="popup" id="popup"><div class="pbox"><h2 style="color:#F97316;text-align:center">TEST RESULT</h2><div id="pdata"></div><button class="btn" style="width:100%;margin-top:15px" onclick="popup.style.display='none'">CLOSE</button></div></div>
 <script>
-let running=false;
-const start=document.getElementById('start'), reset=document.getElementById('reset');
-start.onclick=startTest; reset.onclick=()=>location.reload();
+let run=false;
+start.onclick=runTest;
 
-function setGauge(val,max=1000){
-  let p=Math.min(val/max,1);
-  document.getElementById('progress').style.strokeDashoffset=628-(628*p);
-  document.getElementById('needle').style.transform=`rotate(${(p*180)-90}deg)`;
-  document.getElementById('speed').innerText=val.toFixed(2);
-}
+function gauge(v,max=1000){let p=Math.min(v/max,1);bar.style.strokeDashoffset=628-(628*p);needle.style.transform=`rotate(${(p*180)-90}deg)`;speed.innerText=v.toFixed(2)}
 
-async function startTest(){
-  if(running)return; running=true; start.disabled=true;
-  down.innerText=up.innerText='0.00'; setGauge(0); status.innerText='Preparing...';
+async function runTest(){
+  if(run)return; run=true; start.disabled=true;
+  down.innerText=up.innerText='0.00'; gauge(0); // FIX: RESET TO 0
+  status.innerText='Loading...';
   
-  await loadDetails();
-  await getExactLocation();
-  let ping=await testPing();
-  let d=await testSpeed('download');
-  setGauge(0,200);
-  let u=await testSpeed('upload');
+  await info(); await locat();
+  let d=await test('dl'); gauge(0,200); // FIX: RESET BEFORE UPLOAD
+  let u=await test('ul');
   
-  status.innerText='Test Complete'; showPopup(d,u,ping);
-  running=false; start.disabled=false;
+  status.innerText='DONE'; show(d,u); run=false; start.disabled=false;
 }
 
-// FIX 1: PROPER UPLOAD + DOWNLOAD USING MULTIPLE SMALL REQUESTS
-async function testSpeed(type){
-  status.innerText=`Testing ${type}...`;
-  let totalBytes=0, startTime=performance.now(), testTime=25000; // 25 seconds
-  let update=setInterval(()=>{let t=(performance.now()-startTime)/1000;if(t>1){let s=(totalBytes*8)/1000000/t;document.getElementById(type==='download'?'down':'up').innerText=s.toFixed(2);setGauge(s,type==='download'?500:100)}},100);
-  
-  const promises=[];
-  for(let i=0;i<12;i++){ // 12 parallel connections like TRAI
-    promises.push((async()=>{
-      while(performance.now()-startTime<testTime){
-        try{
-          if(type==='download'){
-            let res=await fetch(`https://speed.cloudflare.com/__down?bytes=100000&cache=${Math.random()}`,{cache:'no-store'});
-            let reader=res.body.getReader();
-            while(true){let {done,value}=await reader.read();if(done)break;totalBytes+=value.length}
-          }else{
-            let data=new Blob([crypto.getRandomValues(new Uint8Array(2*1024*1024))]);
-            await fetch(`https://speed.cloudflare.com/__up`,{method:'POST',body:data,mode:'cors'});
-            totalBytes+=data.size;
-          }
-        }catch(e){}
-      }
-    })());
-  }
-  await Promise.all(promises); clearInterval(update);
-  return ((totalBytes*8)/1000000/((performance.now()-startTime)/1000)).toFixed(2);
+async function test(t){
+  status.innerText='Testing '+t+'...';
+  let b=0,s=performance.now(),time=20000;
+  let iv=setInterval(()=>{let tt=(performance.now()-s)/1000;if(tt>1){let sp=(b*8)/1000000/tt;document.getElementById(t==='dl'?'down':'up').innerText=sp.toFixed(2);gauge(sp,t==='dl'?500:100)}},100);
+  let arr=Array(16).fill().map(async()=>{while(performance.now()-s<time){try{ // 16 threads
+    if(t==='dl'){let r=await fetch('https://speed.cloudflare.com/__down?bytes=200000&r='+Math.random());let rd=r.body.getReader();while(true){let {done,val}=await rd.read();if(done)break;b+=val.length}}
+    else{await fetch('https://httpbin.org/post',{method:'POST',body:new Blob([new Uint8Array(1024*1024)])});b+=1024*1024} // httpbin for upload
+  }catch(e){}}});
+  await Promise.all(arr); clearInterval(iv);
+  return ((b*8)/1000000/((performance.now()-s)/1000)).toFixed(2);
 }
 
-async function testPing(){
-  status.innerText='Testing Ping & Jitter...';
-  let times=[]; for(let i=0;i<8;i++){let t=performance.now();await fetch('https://www.google.com/generate_204?r='+Math.random(),{mode:'no-cors'});times.push(performance.now()-t)}
-  return Math.round(times.sort()[3]); // median
+async function locat(){
+  if(!navigator.geolocation){loc.innerText='Denied';return}
+  navigator.geolocation.getCurrentPosition(async p=>{
+    try{let r=await fetch(`https://geolocation-db.com/json/`);let d=await r.json();loc.innerText=`${d.city}, ${d.state} - ${d.postal}`}catch(e){}
+  },{enableHighAccuracy:true});
 }
 
-// FIX 2: BETTER LOCATION - CITY + AREA
-async function getExactLocation(){
-  return new Promise(r=>{
-    if(!navigator.geolocation){loc.innerText='Not Allowed';return r()}
-    navigator.geolocation.getCurrentPosition(async pos=>{
-      try{
-        let res=await fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&apiKey=demo`);
-        let d=await res.json(); let f=d.features[0].properties;
-        loc.innerText=`${f.village||f.town||f.city}, ${f.state} - ${f.postcode}`;
-      }catch(e){
-        try{ // Fallback API
-          let res2=await fetch(`https://ipapi.co/json/`);
-          let d2=await res2.json(); loc.innerText=`${d2.city}, ${d2.region} - ${d2.postal}`;
-        }catch(e2){loc.innerText='Unavailable'}
-      } r();
-    },()=>{loc.innerText='Permission Denied'}, {enableHighAccuracy:true,timeout:12000});
-  });
+async function info(){
+  device.innerText=/Mobile/.test(navigator.userAgent)?'Mobile':'Desktop';
+  try{let r=await fetch('https://api.ipify.org?format=json');let d=await r.json();ip.innerText=d.ip;let r2=await fetch('https://ipapi.co/'+d.ip+'/json/');let d2=await r2.json();isp.innerText=d2.org}catch(e){}
+  let c=navigator.connection; net.innerText=c?c.type==='wifi'?'WiFi':'Mobile':(navigator.onLine?'Broadband':'Offline');
 }
 
-// FIX 3: CORRECT IPV4 + ISP + NETWORK
-async function loadDetails(){
-  device.innerText=/Mobi|Android/i.test(navigator.userAgent)?'Mobile':'Desktop';
-  try{
-    let r=await fetch('https://api.ipify.org?format=json'); // Force IPv4
-    let d=await r.json(); ip.innerText=d.ip;
-    let r2=await fetch(`https://ipapi.co/${d.ip}/json/`);
-    let d2=await r2.json(); isp.innerText=d2.org;
-  }catch(e){}
-  
-  let c=navigator.connection;
-  if(c && c.type){
-    if(c.type==='wifi')net.innerText='WiFi';
-    else if(c.effectiveType==='5g')net.innerText='5G';
-    else if(c.effectiveType==='4g')net.innerText='4G LTE';
-    else net.innerText=c.effectiveType.toUpperCase();
-  }else{
-    net.innerText=navigator.onLine?'Broadband':'Offline';
-  }
-}
-
-function showPopup(d,u,p){
-  pdata.innerHTML=`
-  <div class="row"><span>Download Speed</span><b>${d} Mbps</b></div>
-  <div class="row"><span>Upload Speed</span><b>${u} Mbps</b></div>
-  <div class="row"><span>Ping</span><b>${p} ms</b></div>
-  <div class="row"><span>Location</span><b>${loc.innerText}</b></div>
-  <div class="row"><span>IP Address</span><b>${ip.innerText}</b></div>
-  <div class="row"><span>ISP</span><b>${isp.innerText}</b></div>
-  <div class="row"><span>Network</span><b>${net.innerText}</b></div>`;
+function show(d,u){
+  pdata.innerHTML=`<div class="row"><span>Download</span><b>${d} Mbps</b></div><div class="row"><span>Upload</span><b>${u} Mbps</b></div><div class="row"><span>Location</span><b>${loc.innerText}</b></div>`;
   popup.style.display='flex';
 }
-
-loadDetails(); // Load on start
-</script>
-</body>
-</html>
+</script></body></html>
