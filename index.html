@@ -4,76 +4,79 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Genuine Internet Speed Test By SP</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-  body { background: #000; min-height: 100vh; padding: 15px; background-image: url('https://images.unsplash.com/photo-1587974928442-77dc0e8d2476?q=80&w=1920'); background-size: cover; background-attachment: fixed; }
-.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,107,0,0.85) 0%, rgba(0,51,102,0.9) 100%); z-index: -1; }
-.container { max-width: 650px; margin: 20px auto; background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); padding: 30px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-.header { text-align: center; margin-bottom: 25px; }
-.title { font-size: 26px; font-weight: 800; background: linear-gradient(135deg, #ff6b00, #003366); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.subtitle { font-size: 12px; color: #003366; font-weight: 600; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif}
+body{background:#f5f5f5;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:15px}
+.container{width:100%;max-width:420px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);padding:25px}
+.header{text-align:center;margin-bottom:20px}
+.header h1{font-size:20px;font-weight:900;color:#333}
+.header p{font-size:11px;color:#777}
 
-/* TRAI STYLE SPEEDOMETER */
-.speedo { width: 320px; height: 180px; margin: 30px auto; position: relative; }
-.speedo svg { width: 100%; height: 100%; }
-.track { fill: none; stroke: #e0e0e0; stroke-width: 25; stroke-linecap: round; }
-.progress { fill: none; stroke: url(#grad); stroke-width: 25; stroke-linecap: round; stroke-dasharray: 565; stroke-dashoffset: 565; transition: stroke-dashoffset 0.2s linear; }
-.needle { stroke: #ff0000; stroke-width: 5; stroke-linecap: round; transform-origin: 160px 160px; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); filter: drop-shadow(0 0 5px red); }
-.center { fill: #ff6b00; }
-.read { position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-.read .val { font-size: 52px; font-weight: 800; color: #003366; }
-.read .unit { font-size: 14px; color: #555; font-weight: 700; }
+/* TRAI EXACT GAUGE */
+.gauge{position:relative;width:280px;height:160px;margin:0 auto 20px}
+.gauge svg{width:100%;height:100%}
+.gauge-bg{fill:none;stroke:#E0E0E0;stroke-width:20;stroke-linecap:round}
+.gauge-progress{fill:none;stroke:url(#grad);stroke-width:20;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset .15s linear}
+.needle{stroke:#FF3B30;stroke-width:5;stroke-linecap:round;transform-origin:140px 140px;transition:transform .15s ease-out}
+.center-dot{fill:#FF3B30}
+.readout{position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.readout .val{font-size:42px;font-weight:900;color:#333}
+.readout .unit{font-size:12px;color:#777;font-weight:700}
 
-.status { text-align: center; color: #ff6b00; font-weight: 700; margin: 15px 0; font-size: 15px; }
-.results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-.card { background: linear-gradient(135deg, rgba(255,107,0,0.1), rgba(0,51,102,0.05)); border: 2px solid rgba(255,107,0,0.2); border-radius: 14px; padding: 18px; text-align: center; }
-.card .v { font-size: 24px; font-weight: 800; color: #003366; }
-.card .l { font-size: 12px; color: #555; font-weight: 600; }
-.btn { width: 100%; background: linear-gradient(135deg, #ff6b00, #003366); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; }
-.btn:disabled { opacity: 0.5; }
-.device { background: rgba(255,107,0,0.08); border-radius: 14px; padding: 18px; margin-top: 20px; }
-.device h3 { color: #ff6b00; font-size: 15px; margin-bottom: 12px; font-weight: 800; }
-.row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.1); font-size: 13px; }
-.row span:last-child { color: #003366; font-weight: 700; }
+.status{text-align:center;color:#FF6B00;font-weight:700;font-size:14px;margin-bottom:15px;min-height:20px}
 
-.popup { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 999; }
-.popup-box { background: #fff; border-radius: 20px; width: 90%; max-width: 470px; overflow: hidden; }
-.popup-header { background: linear-gradient(135deg, #ff6b00, #003366); padding: 25px; text-align: center; color: #fff; }
-.popup-body { padding: 20px; }
-.popup .r { display: flex; justify-content: space-between; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
-.popup .r span { color: #ff6b00; font-weight: 700; }
+.stats{display:flex;gap:10px;margin-bottom:20px}
+.stat{flex:1;background:#F8F8F8;border:1px solid #E0E0E0;border-radius:10px;padding:15px;text-align:center}
+.stat .v{font-size:20px;font-weight:900;color:#333}
+.stat .l{font-size:11px;color:#777;margin-top:3px}
+
+.btn{width:100%;background:linear-gradient(90deg, #FF6B00 0%, #003366 100%);color:#fff;border:none;padding:14px;border-radius:8px;font-weight:900;font-size:16px;cursor:pointer;letter-spacing:0.5px}
+.btn:disabled{opacity:.5}
+
+.info{background:#F8F8F8;border-radius:10px;padding:15px;margin-top:20px}
+.info h3{font-size:12px;color:#FF6B00;font-weight:900;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #E0E0E0}
+.row:last-child{border:0}
+.row span:first-child{color:#555}
+.row span:last-child{color:#333;font-weight:700}
+
+.popup{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:999}
+.popup-box{background:#fff;border-radius:12px;width:90%;max-width:400px;padding:20px}
+.popup-box h2{text-align:center;color:#FF6B00;margin-bottom:15px}
 </style>
 </head>
 <body>
-<div class="overlay"></div>
 <div class="container">
   <div class="header">
-    <div class="title">GENUINE INTERNET SPEED TEST</div>
-    <div class="subtitle">BY SP | BY PUNYA BINAY SWAIN</div>
+    <h1>GENUINE INTERNET SPEED TEST</h1>
+    <p>BY SP | BY PUNYA BINAY SWAIN</p>
   </div>
 
-  <div class="speedo">
-    <svg viewBox="0 0 320 180">
-      <defs><linearGradient id="grad"><stop offset="0%" stop-color="#00ff88"/><stop offset="50%" stop-color="#ff6b00"/><stop offset="100%" stop-color="#ff0000"/></linearGradient></defs>
-      <path class="track" d="M 20 160 A 140 140 0 0 1 300 160"/>
-      <path class="progress" id="progress" d="M 20 160 A 140 140 0 0 1 300 160"/>
-      <line id="needle" x1="160" y1="160" x2="160" y2="40" class="needle"/>
-      <circle cx="160" cy="160" r="8" class="center"/>
+  <div class="gauge">
+    <svg viewBox="0 0 280 160">
+      <defs><linearGradient id="grad"><stop offset="0%" stop-color="#00C853"/><stop offset="50%" stop-color="#FF6B00"/><stop offset="100%" stop-color="#D50000"/></linearGradient></defs>
+      <path class="gauge-bg" d="M 30 140 A 110 110 0 0 1 250 140"/>
+      <path class="gauge-progress" id="progress" d="M 30 140 A 110 110 0 0 1 250 140"/>
+      <line id="needle" x1="140" y1="140" x2="140" y2="40" class="needle"/>
+      <circle cx="140" cy="140" r="6" class="center-dot"/>
     </svg>
-    <div class="read"><div class="val" id="speed">0</div><div class="unit">Mbps</div></div>
+    <div class="readout">
+      <div class="val" id="speed">0</div>
+      <div class="unit">Mbps</div>
+    </div>
   </div>
 
   <div class="status" id="status">Tap RUN TEST to start</div>
 
-  <div class="results">
-    <div class="card"><div class="v" id="download">0.00</div><div class="l">Mbps Download</div></div>
-    <div class="card"><div class="v" id="upload">0.00</div><div class="l">Mbps Upload</div></div>
+  <div class="stats">
+    <div class="stat"><div class="v" id="download">0.00</div><div class="l">Mbps Download</div></div>
+    <div class="stat"><div class="v" id="upload">0.00</div><div class="l">Mbps Upload</div></div>
   </div>
 
-  <button class="btn" id="startBtn" onclick="startTest()">RUN TEST</button>
+  <button class="btn" id="startBtn">RUN TEST</button>
 
-  <div class="device">
+  <div class="info">
     <h3>DEVICE INFORMATION</h3>
     <div class="row"><span>Device</span><span id="device">-</span></div>
     <div class="row"><span>Exact Location</span><span id="location">Allow GPS</span></div>
@@ -83,100 +86,100 @@
   </div>
 </div>
 
-<!-- POPUP -->
 <div class="popup" id="popup">
   <div class="popup-box">
-    <div class="popup-header"><h2>✅ Speed Test Complete</h2><div>Thank you for visiting<br>"Jay Jagannath"<br>By Punya Binay Swain</div></div>
-    <div class="popup-body" id="popupBody"></div>
-    <div style="padding:15px;display:grid;grid-template-columns:1fr 1fr;gap:10px"><button class="btn" onclick="startTest()">Test Again</button><button class="btn" style="background:#555" onclick="popup.style.display='none'">Close</button></div>
+    <h2>✅ Test Complete</h2>
+    <div id="popupData"></div>
+    <button class="btn" style="margin-top:15px" onclick="popup.style.display='none'">Close</button>
   </div>
 </div>
 
 <script>
-let running=false; let result={};
-const SERVERS = [
-    'https://speedtest.tele2.net', // TRAI/Google use similar
-    'https://proof.ovh.net',
-    'https://speed.cloudflare.com'
-];
+const startBtn = document.getElementById('startBtn');
+let running = false;
 
-function updateGauge(val,max=1000){
-    let p=Math.min(val/max,1);
-    document.getElementById('progress').style.strokeDashoffset=565-(565*p);
-    document.getElementById('needle').style.transform=`rotate(${(p*180)-90}deg)`;
-    document.getElementById('speed').innerText=val.toFixed(2);
+startBtn.addEventListener('click', startTest); // FIXED BUTTON
+
+function updateGauge(val, max=1000){
+  let p = Math.min(val/max, 1);
+  document.getElementById('progress').style.strokeDashoffset = 440 - (440*p);
+  document.getElementById('needle').style.transform = `rotate(${(p*180)-90}deg)`;
+  document.getElementById('speed').innerText = val.toFixed(2);
 }
 
 async function startTest(){
-    if(running)return; running=true; startBtn.disabled=true; popup.style.display='none';
-    ['download','upload'].forEach(i=>document.getElementById(i).innerText='0.00');
-    document.getElementById('ping').innerText='0'; updateGauge(0);
-    
-    await getInfo(); await getLocation();
-    result.ping = await testPing();
-    result.download = await testSpeed('download');
-    updateGauge(0,200);
-    result.upload = await testSpeed('upload');
-    
-    document.getElementById('status').innerText='Test Complete';
-    showPopup(); running=false; startBtn.disabled=false;
+  if(running) return; running = true; startBtn.disabled = true;
+  document.getElementById('download').innerText='0.00';
+  document.getElementById('upload').innerText='0.00';
+  updateGauge(0);
+
+  await loadInfo();
+  await loadLocation();
+  await testPing();
+  let down = await testSpeed('download');
+  updateGauge(0,200);
+  let up = await testSpeed('upload');
+
+  document.getElementById('status').innerText='Test Complete';
+  showPopup(down, up);
+  running=false; startBtn.disabled=false;
 }
 
 async function testSpeed(type){
-    status.innerText='Testing '+type+'...';
-    let bytes=0,start=performance.now(),duration=25000; // 25 sec for accuracy
-    let iv=setInterval(()=>{let t=(performance.now()-start)/1000;if(t>1){let s=(bytes*8)/1000000/t;document.getElementById(type).innerText=s.toFixed(2);updateGauge(s,type==='download'?1000:200)}},100);
-    
-    let workers=Array(8).fill().map(async()=>{ // 8 threads like Ookla
-        while(performance.now()-start<duration){
-            try{
-                let url=`${SERVERS[Math.floor(Math.random()*SERVERS.length)]}/__${type==='download'?'down?bytes=100000':'up'}&t=${Date.now()}`;
-                let res=await fetch(url,{method:type==='download'?'GET':'POST',body:type==='upload'?new Blob([new Uint8Array(10*1024*1024)]):null});
-                if(type==='download'){let r=res.body.getReader();while(true){let {done,value}=await r.read();if(done)break;bytes+=value.length}}else bytes+=10*1024*1024;
-            }catch(e){}
-        }
-    });
-    await Promise.all(workers); clearInterval(iv);
-    return ((bytes*8)/1000000/((performance.now()-start)/1000)).toFixed(2);
+  status.innerText = 'Testing ' + type + '...';
+  let bytes=0, start=performance.now(), duration=20000;
+  let iv = setInterval(()=>{
+    let t=(performance.now()-start)/1000;
+    if(t>1){let s=(bytes*8)/1000000/t;document.getElementById(type).innerText=s.toFixed(2);updateGauge(s,type==='download'?1000:200)}
+  },100);
+
+  let workers = Array(6).fill().map(async()=>{
+    while(performance.now()-start<duration){
+      try{
+        let url = `https://speed.cloudflare.com/__${type==='download'?'down?bytes=100000':'up'}&t=${Date.now()}`;
+        let res = await fetch(url,{method:type==='download'?'GET':'POST',body:type==='upload'?new Blob([new Uint8Array(5*1024*1024)]):null});
+        if(type==='download'){let r=res.body.getReader();while(true){let {done,value}=await r.read();if(done)break;bytes+=value.length}}else bytes+=5*1024*1024;
+      }catch(e){}
+    }
+  });
+  await Promise.all(workers); clearInterval(iv);
+  return ((bytes*8)/1000000/((performance.now()-start)/1000)).toFixed(2);
 }
 
 async function testPing(){
-    status.innerText='Testing Ping...';
-    let pings=[]; for(let i=0;i<5;i++){let s=performance.now();await fetch('https://www.google.com/generate_204?t='+Date.now(),{mode:'no-cors'});pings.push(performance.now()-s)}
-    return Math.round(pings.reduce((a,b)=>a+b)/pings.length);
+  status.innerText='Testing Ping...';
+  let s=performance.now(); await fetch('https://www.google.com/favicon.ico?t='+Date.now(),{mode:'no-cors'});
+  document.getElementById('ping')?0:0;
 }
 
-async function getLocation(){ // EXACT VILLAGE + PINCODE
-    return new Promise(res=>{
-        if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(async p=>{
-                try{
-                    let r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.coords.latitude}&lon=${p.coords.longitude}&zoom=18`);
-                    let d=await r.json(); 
-                    location.innerText=`${d.address.village||d.address.town}, ${d.address.district} - ${d.address.postcode}`;
-                }catch(e){location.innerText='Location Error'} res();
-            },()=>{location.innerText='Permission Denied';res()},{enableHighAccuracy:true,timeout:10000})
-        }else res();
-    })
+async function loadLocation(){ // EXACT VILLAGE + PINCODE
+  return new Promise(res=>{
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(async p=>{
+        try{
+          let r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.coords.latitude}&lon=${p.coords.longitude}&zoom=18`);
+          let d=await r.json();
+          location.innerText=`${d.address.village||d.address.suburb||d.address.town}, ${d.address.state} - ${d.address.postcode}`;
+        }catch(e){location.innerText='Error'} res();
+      },()=>{location.innerText='Permission Denied';res()},{enableHighAccuracy:true})
+    }else res();
+  })
 }
 
-async function getInfo(){
-    device.innerText=navigator.userAgent.includes('Android')?'Android Mobile':'PC';
-    let c=navigator.connection; 
-    network.innerText=c?c.effectiveType==='5g'||c.downlink>50?'5G':c.effectiveType==='4g'?'4G':'WiFi':'WiFi';
-    try{let r=await fetch('https://ipapi.co/json/');let d=await r.json();ip.innerText=d.ip;isp.innerText=d.org}catch(e){}
+async function loadInfo(){
+  device.innerText=navigator.userAgent.includes('Android')?'Android Mobile':'Desktop';
+  let c=navigator.connection; 
+  network.innerText=c?c.downlink>50?'5G':c.downlink>15?'4G':'WiFi':'WiFi';
+  try{let r=await fetch('https://ipapi.co/json/');let d=await r.json();ip.innerText=d.ip;isp.innerText=d.org}catch(e){}
 }
 
-function showPopup(){
-    popupBody.innerHTML=`
-    <div class="r"><b>Download</b><span>${result.download} Mbps</span></div>
-    <div class="r"><b>Upload</b><span>${result.upload} Mbps</span></div>
-    <div class="r"><b>Ping</b><span>${result.ping} ms</span></div>
-    <div class="r"><b>Location</b><span>${location.innerText}</span></div>
-    <div class="r"><b>IP</b><span>${ip.innerText}</span></div>
-    <div class="r"><b>ISP</b><span>${isp.innerText}</span></div>
-    <div class="r"><b>Network</b><span>${network.innerText}</span></div>`;
-    popup.style.display='flex';
+function showPopup(down,up){
+  popupData.innerHTML=`
+  <div class="row"><span>Download</span><span>${down} Mbps</span></div>
+  <div class="row"><span>Upload</span><span>${up} Mbps</span></div>
+  <div class="row"><span>Location</span><span>${location.innerText}</span></div>
+  <div class="row"><span>IP</span><span>${ip.innerText}</span></div>`;
+  popup.style.display='flex';
 }
 </script>
 </body>
