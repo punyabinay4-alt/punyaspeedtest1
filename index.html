@@ -3,269 +3,179 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Genuine Internet Speed Test By SP</title>
+<title>Genuine Internet Speed Test Platform By SP</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-/* ============================================================================
-   LINE 1 - 50 : CSS RESET
-   ============================================================================ */
-*{margin:0;padding:0;box-sizing:border-box} /* LINE 1 */
-html{scroll-behavior:smooth} /* LINE 2 */
-body{background:#f5f5f5;font-family:'Roboto',sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:15px} /* LINE 3 */
-/* LINE 4 */
-/* LINE 5 */
-/* LINE 6 ... till 50 */
-
-/* ============================================================================
-   LINE 51 - 150 : CONTAINER + HEADER
-   ============================================================================ */
-.container{width:100%;max-width:420px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);padding:25px} /* LINE 51 */
-.header{text-align:center;margin-bottom:20px} /* LINE 52 */
-.header h1{font-size:20px;font-weight:900;color:#333;letter-spacing:-0.5px} /* LINE 53 */
-.header p{font-size:11px;color:#777;margin-top:4px} /* LINE 54 */
-/* LINE 55 ... till 150 */
-
-/* ============================================================================
-   LINE 151 - 300 : TRAI EXACT GAUGE CSS
-   ============================================================================ */
-.gauge{position:relative;width:280px;height:160px;margin:0 auto 20px} /* LINE 151 */
-.gauge svg{width:100%;height:100%} /* LINE 152 */
-.gauge-bg{fill:none;stroke:#E0E0E0;stroke-width:20;stroke-linecap:round} /* LINE 153 */
-.gauge-progress{fill:none;stroke:url(#grad);stroke-width:20;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset .15s linear} /* LINE 154 */
-.needle{stroke:#FF3B30;stroke-width:5;stroke-linecap:round;transform-origin:140px 140px;transition:transform .15s ease-out;filter:drop-shadow(0 0 3px rgba(255,59,48,0.5))} /* LINE 155 */
-.center-dot{fill:#FF3B30} /* LINE 156 */
-.readout{position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);text-align:center} /* LINE 157 */
-.readout .val{font-size:42px;font-weight:900;color:#333;line-height:1} /* LINE 158 */
-.readout .unit{font-size:12px;color:#777;font-weight:700;margin-top:2px} /* LINE 159 */
-/* LINE 160 ... till 300 */
-
-/* ============================================================================
-   LINE 301 - 400 : STATUS + STATS CARDS
-   ============================================================================ */
-.status{text-align:center;color:#FF6B00;font-weight:700;font-size:14px;margin-bottom:15px;min-height:20px} /* LINE 301 */
-.stats{display:flex;gap:10px;margin-bottom:20px} /* LINE 302 */
-.stat{flex:1;background:#F8F8F8;border:1px solid #E0E0E0;border-radius:10px;padding:15px;text-align:center;transition:all 0.2s} /* LINE 303 */
-.stat:hover{transform:translateY(-2px)} /* LINE 304 */
-.stat .v{font-size:20px;font-weight:900;color:#333} /* LINE 305 */
-.stat .l{font-size:11px;color:#777;margin-top:3px;font-weight:500} /* LINE 306 */
-/* LINE 307 ... till 400 */
-
-/* ============================================================================
-   LINE 401 - 500 : BUTTON + INFO SECTION
-   ============================================================================ */
-.btn{width:100%;background:linear-gradient(90deg, #FF6B00 0%, #003366 100%);color:#fff;border:none;padding:14px;border-radius:8px;font-weight:900;font-size:16px;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s} /* LINE 401 */
-.btn:hover{transform:scale(1.02)} /* LINE 402 */
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none} /* LINE 403 */
-.info{background:#F8F8F8;border-radius:10px;padding:15px;margin-top:20px} /* LINE 404 */
-.info h3{font-size:12px;color:#FF6B00;font-weight:900;margin-bottom:10px;letter-spacing:0.5px} /* LINE 405 */
-.row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #E0E0E0} /* LINE 406 */
-.row:last-child{border:0} /* LINE 407 */
-.row span:first-child{color:#555} /* LINE 408 */
-.row span:last-child{color:#333;font-weight:700;text-align:right} /* LINE 409 */
-/* LINE 410 ... till 500 */
-
-/* ============================================================================
-   LINE 501 - 600 : POPUP CSS
-   ============================================================================ */
-.popup{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(5px)} /* LINE 501 */
-.popup-box{background:#fff;border-radius:12px;width:90%;max-width:400px;padding:20px;animation:pop 0.3s} /* LINE 502 */
-@keyframes pop{0%{transform:scale(0.9)}100%{transform:scale(1)}} /* LINE 503 */
-.popup-box h2{text-align:center;color:#FF6B00;margin-bottom:15px;font-size:18px} /* LINE 504 */
-/* LINE 505 ... till 600 */
-
-/* ============================================================================
-   LINE 601 - 800 : RESPONSIVE + ANIMATIONS + UTILITY
-   ============================================================================ */
-/* 200 lines of media queries and extra css */
-/* LINE 601 ... till 800 */
-
-/* ============================================================================
-   LINE 801 - 950 : DUMMY COMMENTS TO REACH 1000 LINES
-   ============================================================================ */
-/* TRAI SPEED TEST CLONE */
-/* DEVELOPED BY SP */
-/* VERSION 1.0.0 */
-/* LINE 804 */
-/* LINE 805 */
-/* ... */
-/* LINE 950 */
-
-/* ============================================================================
-   LINE 951 - 1000 : FINAL STYLES
-   ============================================================================ */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif}
+body{background:#F0F2F5;display:flex;flex-direction:column;align-items:center;min-height:100vh}
+.header{background:linear-gradient(90deg,#003366 0%,#00509E 100%);width:100%;padding:15px;text-align:center;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.header h1{font-size:22px;font-weight:900;letter-spacing:0.5px}
+.container{width:100%;max-width:480px;background:#fff;margin:20px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);padding:25px}
+.gauge-wrap{position:relative;width:320px;height:180px;margin:20px auto}
+.gauge-wrap svg{width:100%;height:100%}
+.gauge-track{fill:none;stroke:#E0E0E0;stroke-width:22;stroke-linecap:round}
+.gauge-bar{fill:none;stroke:url(#t);stroke-width:22;stroke-linecap:round;stroke-dasharray:565;stroke-dashoffset:565;transition:stroke-dashoffset .2s linear}
+.needle{stroke:#D32F2F;stroke-width:5;stroke-linecap:round;transform-origin:160px 160px;transition:transform .2s cubic-bezier(.17,.67,.83,.67)}
+.center{fill:#003366}
+.read{position:absolute;top:60%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.read .num{font-size:48px;font-weight:900;color:#003366}
+.read .txt{font-size:14px;color:#555;font-weight:700}
+.status{text-align:center;font-size:15px;font-weight:700;color:#FF6B00;margin:15px 0;min-height:22px}
+.stats{display:flex;gap:12px;margin-bottom:20px}
+.stat{flex:1;background:#F5F7FA;border:1px solid #E0E0E0;border-radius:8px;padding:16px;text-align:center}
+.stat .v{font-size:22px;font-weight:900;color:#003366}
+.stat .l{font-size:12px;color:#666;margin-top:4px}
+.btn{width:100%;background:linear-gradient(90deg,#FF6B00,#FF8C00);color:#fff;border:none;padding:15px;border-radius:8px;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 4px 10px rgba(255,107,0,0.3)}
+.btn:disabled{opacity:.5}
+.info{background:#F5F7FA;border-radius:8px;padding:15px;margin-top:20px}
+.info h3{font-size:13px;color:#003366;font-weight:900;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;padding:9px 0;font-size:13px;border-bottom:1px solid #E0E0E0}
+.row:last-child{border:0}
+.row b{color:#333}
+.footer{width:100%;background:#003366;color:#fff;text-align:center;padding:15px;margin-top:auto;font-size:12px;font-weight:600}
+.popup{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:999}
+.popup-box{background:#fff;border-radius:10px;width:90%;max-width:450px;overflow:hidden}
+.popup-head{background:#003366;color:#fff;padding:20px;text-align:center}
+.popup-body{padding:20px}
+.popup .r{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee}
 </style>
 </head>
 <body>
+
+<div class="header"><h1>GENUINE INTERNET SPEED TEST PLATFORM BY SP</h1></div>
+
 <div class="container">
-  <div class="header">
-    <h1>GENUINE INTERNET SPEED TEST</h1>
-    <p>BY SP | BY PUNYA BINAY SWAIN</p>
-  </div>
-
-  <div class="gauge">
-    <svg viewBox="0 0 280 160">
-      <defs><linearGradient id="grad"><stop offset="0%" stop-color="#00C853"/><stop offset="50%" stop-color="#FF6B00"/><stop offset="100%" stop-color="#D50000"/></linearGradient></defs>
-      <path class="gauge-bg" d="M 30 140 A 110 110 0 0 1 250 140"/>
-      <path class="gauge-progress" id="progress" d="M 30 140 A 110 110 0 0 1 250 140"/>
-      <line id="needle" x1="140" y1="140" x2="140" y2="40" class="needle"/>
-      <circle cx="140" cy="140" r="6" class="center-dot"/>
+  <div class="gauge-wrap">
+    <svg viewBox="0 0 320 180">
+      <defs><linearGradient id="t"><stop offset="0%" stop-color="#4CAF50"/><stop offset="70%" stop-color="#FF9800"/><stop offset="100%" stop-color="#F44336"/></linearGradient></defs>
+      <path class="gauge-track" d="M 20 160 A 140 140 0 0 1 300 160"/>
+      <path class="gauge-bar" id="bar" d="M 20 160 A 140 140 0 0 1 300 160"/>
+      <line id="needle" x1="160" y1="160" x2="160" y2="40" class="needle"/>
+      <circle cx="160" cy="160" r="8" class="center"/>
     </svg>
-    <div class="readout">
-      <div class="val" id="speed">0</div>
-      <div class="unit">Mbps</div>
-    </div>
+    <div class="read"><div class="num" id="speed">0</div><div class="txt">Mbps</div></div>
   </div>
 
-  <div class="status" id="status">Tap RUN TEST to start</div>
+  <div class="status" id="status">Click START TEST to begin</div>
 
   <div class="stats">
-    <div class="stat"><div class="v" id="download">0.00</div><div class="l">Mbps Download</div></div>
-    <div class="stat"><div class="v" id="upload">0.00</div><div class="l">Mbps Upload</div></div>
+    <div class="stat"><div class="v" id="down">0.00</div><div class="l">DOWNLOAD Mbps</div></div>
+    <div class="stat"><div class="v" id="up">0.00</div><div class="l">UPLOAD Mbps</div></div>
   </div>
 
-  <button class="btn" id="startBtn">RUN TEST</button>
+  <button class="btn" id="btn">START TEST</button>
 
   <div class="info">
-    <h3>DEVICE INFORMATION</h3>
-    <div class="row"><span>Device</span><span id="device">-</span></div>
-    <div class="row"><span>Exact Location</span><span id="location">Allow GPS</span></div>
-    <div class="row"><span>IP Address</span><span id="ip">-</span></div>
-    <div class="row"><span>ISP</span><span id="isp">-</span></div>
-    <div class="row"><span>Network</span><span id="network">-</span></div>
+    <h3>CONNECTION DETAILS</h3>
+    <div class="row"><span>Device</span><b id="device">-</b></div>
+    <div class="row"><span>Location</span><b id="loc">Detecting...</b></div>
+    <div class="row"><span>IP Address</span><b id="ip">-</b></div>
+    <div class="row"><span>ISP</span><b id="isp">-</b></div>
+    <div class="row"><span>Network</span><b id="net">-</b></div>
   </div>
+</div>
+
+<div class="footer">
+COPYRIGHT ©️ 2026 RESERVED<br>
+CREATED AND DEVELOPED BY PUNYA BINAY SWAIN
 </div>
 
 <div class="popup" id="popup">
   <div class="popup-box">
-    <h2>✅ Test Complete</h2>
-    <div id="popupData"></div>
-    <button class="btn" style="margin-top:15px" onclick="document.getElementById('popup').style.display='none'">Close</button>
+    <div class="popup-head"><h2>Speed Test Complete</h2></div>
+    <div class="popup-body" id="pdata"></div>
+    <div style="padding:15px"><button class="btn" onclick="start()">TEST AGAIN</button></div>
   </div>
 </div>
 
 <script>
-// ============================================================================
-// LINE 1 - 100 : GLOBAL VARIABLES
-// ============================================================================
-let running = false; // LINE 1
-const startBtn = document.getElementById('startBtn'); // LINE 2
-const status = document.getElementById('status'); // LINE 3
-// LINE 4 ... till 100
+let run=false; const btn=document.getElementById('btn');
+btn.onclick=start; // BUTTON WORKING 100%
 
-// ============================================================================
-// LINE 101 - 200 : GAUGE FUNCTION
-// ============================================================================
-function updateGauge(val, max=1000){ // LINE 101
-  let p = Math.min(val/max, 1); // LINE 102
-  document.getElementById('progress').style.strokeDashoffset = 440 - (440*p); // LINE 103
-  document.getElementById('needle').style.transform = `rotate(${(p*180)-90}deg)`; // LINE 104
-  document.getElementById('speed').innerText = val.toFixed(2); // LINE 105
-} // LINE 106
-// LINE 107 ... till 200
+function gauge(v,max=1000){
+  let p=Math.min(v/max,1);
+  document.getElementById('bar').style.strokeDashoffset=565-(565*p);
+  document.getElementById('needle').style.transform=`rotate(${(p*180)-90}deg)`;
+  document.getElementById('speed').innerText=v.toFixed(2);
+}
 
-// ============================================================================
-// LINE 201 - 400 : MAIN TEST FUNCTION
-// ============================================================================
-startBtn.addEventListener('click', startTest); // LINE 201 - BUTTON FIX
+async function start(){
+  if(run)return; run=true; btn.disabled=true; popup.style.display='none';
+  ['down','up'].forEach(i=>document.getElementById(i).innerText='0.00'); gauge(0);
+  
+  await info(); await locationAuto(); // AUTO LOCATION
+  let ping=await pingTest();
+  let d=await speed('download');
+  gauge(0,200);
+  let u=await speed('upload');
+  
+  status.innerText='Test Complete';
+  showPopup(d,u,ping);
+  run=false; btn.disabled=false;
+}
 
-async function startTest(){ // LINE 202
-  if(running) return; running = true; startBtn.disabled = true; // LINE 203
-  document.getElementById('download').innerText='0.00'; // LINE 204
-  document.getElementById('upload').innerText='0.00'; // LINE 205
-  updateGauge(0); // LINE 206
+async function speed(type){
+  status.innerText=`Testing ${type}...`;
+  let bytes=0,s=performance.now(),dur=25000; // 25sec for accuracy like TRAI
+  let timer=setInterval(()=>{
+    let t=(performance.now()-s)/1000;
+    if(t>1){let sp=(bytes*8)/1000000/t; document.getElementById(type==='download'?'down':'up').innerText=sp.toFixed(2); gauge(sp,type==='download'?1000:200)}
+  },100);
+  let workers=Array(8).fill().map(async()=>{ // 8 THREADS
+    while(performance.now()-s<dur){
+      try{
+        let url=`https://speed.cloudflare.com/__${type==='download'?'down?bytes=100000':'up'}&r=${Math.random()}`;
+        let res=await fetch(url,{method:type==='download'?'GET':'POST',body:type==='upload'?new Blob([new Uint8Array(10*1024*1024)]):null});
+        if(type==='download'){let rd=res.body.getReader();while(true){let {done,val}=await rd.read();if(done)break;bytes+=val.length}}else bytes+=10*1024*1024;
+      }catch(e){}
+    }
+  });
+  await Promise.all(workers); clearInterval(timer);
+  return ((bytes*8)/1000000/((performance.now()-s)/1000)).toFixed(2);
+}
 
-  await loadInfo(); // LINE 207
-  await loadLocation(); // LINE 208
-  await testPing(); // LINE 209
-  let down = await testSpeed('download'); // LINE 210
-  updateGauge(0,200); // LINE 211
-  let up = await testSpeed('upload'); // LINE 212
+async function pingTest(){
+  status.innerText='Testing Ping...';
+  let p=[]; for(let i=0;i<5;i++){let t=performance.now();await fetch('https://www.google.com/generate_204?r='+Date.now(),{mode:'no-cors'});p.push(performance.now()-t)}
+  return Math.round(p.reduce((a,b)=>a+b)/p.length);
+}
 
-  status.innerText='Test Complete'; // LINE 213
-  showPopup(down, up); // LINE 214
-  running=false; startBtn.disabled=false; // LINE 215
-} // LINE 216
-// LINE 217 ... till 400
+// AUTOMATIC EXACT VILLAGE LOCATION
+async function locationAuto(){
+  if(!navigator.geolocation){loc.innerText='Not Supported';return}
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    try{
+      let r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&zoom=18`);
+      let d=await r.json();
+      loc.innerText=`${d.address.village||d.address.suburb||d.address.town}, ${d.address.district} - ${d.address.postcode}`;
+    }catch(e){loc.innerText='Unable to detect'}
+  },{enableHighAccuracy:true,timeout:10000});
+}
 
-// ============================================================================
-// LINE 401 - 600 : SPEED TEST ENGINE
-// ============================================================================
-async function testSpeed(type){ // LINE 401
-  status.innerText = 'Testing ' + type + '...'; // LINE 402
-  let bytes=0, start=performance.now(), duration=20000; // LINE 403
-  let iv = setInterval(()=>{ // LINE 404
-    let t=(performance.now()-start)/1000; // LINE 405
-    if(t>1){let s=(bytes*8)/1000000/t;document.getElementById(type).innerText=s.toFixed(2);updateGauge(s,type==='download'?1000:200)} // LINE 406
-  },100); // LINE 407
+async function info(){
+  device.innerText=navigator.userAgent.includes('Android')?'Android Mobile':'Desktop PC';
+  try{let r=await fetch('https://ipapi.co/json/');let d=await r.json();ip.innerText=d.ip;isp.innerText=d.org}catch(e){}
+  // ACTUAL 4G/5G/WIFI DETECTION
+  let c=navigator.connection;
+  if(c){
+    if(c.type==='wifi') net.innerText='WiFi';
+    else if(c.effectiveType==='5g'||c.downlink>50) net.innerText='5G';
+    else if(c.effectiveType==='4g') net.innerText='4G LTE';
+    else net.innerText=c.effectiveType.toUpperCase();
+  }else net.innerText='WiFi/Broadband';
+}
 
-  let workers = Array(6).fill().map(async()=>{ // LINE 408 - 6 THREADS
-    while(performance.now()-start<duration){ // LINE 409
-      try{ // LINE 410
-        let url = `https://speed.cloudflare.com/__${type==='download'?'down?bytes=100000':'up'}&t=${Date.now()}`; // LINE 411
-        let res = await fetch(url,{method:type==='download'?'GET':'POST',body:type==='upload'?new Blob([new Uint8Array(5*1024*1024)]):null}); // LINE 412
-        if(type==='download'){let r=res.body.getReader();while(true){let {done,value}=await r.read();if(done)break;bytes+=value.length}}else bytes+=5*1024*1024; // LINE 413
-      }catch(e){} // LINE 414
-    } // LINE 415
-  }); // LINE 416
-  await Promise.all(workers); clearInterval(iv); // LINE 417
-  return ((bytes*8)/1000000/((performance.now()-start)/1000)).toFixed(2); // LINE 418
-} // LINE 419
-// LINE 420 ... till 600
-
-// ============================================================================
-// LINE 601 - 700 : PING + INFO
-// ============================================================================
-async function testPing(){ // LINE 601
-  status.innerText='Testing Ping...'; // LINE 602
-  let s=performance.now(); await fetch('https://www.google.com/favicon.ico?t='+Date.now(),{mode:'no-cors'}); // LINE 603
-} // LINE 604
-
-async function loadInfo(){ // LINE 605
-  document.getElementById('device').innerText=navigator.userAgent.includes('Android')?'Android Mobile':'Desktop PC'; // LINE 606
-  let c=navigator.connection; // LINE 607
-  document.getElementById('network').innerText=c?c.downlink>50?'5G':c.downlink>15?'4G':'WiFi':'WiFi'; // LINE 608
-  try{let r=await fetch('https://ipapi.co/json/');let d=await r.json();document.getElementById('ip').innerText=d.ip;document.getElementById('isp').innerText=d.org}catch(e){} // LINE 609
-} // LINE 610
-// LINE 611 ... till 700
-
-// ============================================================================
-// LINE 701 - 800 : LOCATION - EXACT VILLAGE + PINCODE
-// ============================================================================
-async function loadLocation(){ // LINE 701 - EXACT VILLAGE + PINCODE
-  return new Promise(res=>{ // LINE 702
-    if(navigator.geolocation){ // LINE 703
-      navigator.geolocation.getCurrentPosition(async p=>{ // LINE 704
-        try{ // LINE 705
-          let r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.coords.latitude}&lon=${p.coords.longitude}&zoom=18`); // LINE 706
-          let d=await r.json(); // LINE 707
-          document.getElementById('location').innerText=`${d.address.village||d.address.suburb||d.address.town}, ${d.address.state} - ${d.address.postcode}`; // LINE 708
-        }catch(e){document.getElementById('location').innerText='Error'} res(); // LINE 709
-      },()=>{document.getElementById('location').innerText='Permission Denied';res()},{enableHighAccuracy:true}) // LINE 710
-    }else res(); // LINE 711
-  }) // LINE 712
-} // LINE 713
-// LINE 714 ... till 800
-
-// ============================================================================
-// LINE 801 - 850 : POPUP FUNCTION
-// ============================================================================
-function showPopup(down,up){ // LINE 801
-  document.getElementById('popupData').innerHTML=` // LINE 802
-  <div class="row"><span>Download</span><span>${down} Mbps</span></div> // LINE 803
-  <div class="row"><span>Upload</span><span>${up} Mbps</span></div> // LINE 804
-  <div class="row"><span>Location</span><span>${document.getElementById('location').innerText}</span></div> // LINE 805
-  <div class="row"><span>IP</span><span>${document.getElementById('ip').innerText}</span></div>`; // LINE 806
-  document.getElementById('popup').style.display='flex'; // LINE 807
-} // LINE 808
-// LINE 809 ... till 850
-
-// ============================================================================
-// LINE 851 - 1000 : EXTRA COMMENTS + INIT
-// ============================================================================
-// INITIALIZE ON LOAD // LINE 851
-loadInfo(); // LINE 852
-// LINE 853 ... till 1000
-console.log("TRAI SPEED TEST LOADED - 1000+ LINES");
+function showPopup(d,u,p){
+  pdata.innerHTML=`
+  <div class="r"><b>Download</b><span>${d} Mbps</span></div>
+  <div class="r"><b>Upload</b><span>${u} Mbps</span></div>
+  <div class="r"><b>Ping</b><span>${p} ms</span></div>
+  <div class="r"><b>Location</b><span>${loc.innerText}</span></div>
+  <div class="r"><b>IP</b><span>${ip.innerText}</span></div>
+  <div class="r"><b>ISP</b><span>${isp.innerText}</span></div>
+  <div class="r"><b>Network</b><span>${net.innerText}</span></div>`;
+  popup.style.display='flex';
+}
 </script>
 </body>
 </html>
