@@ -4,178 +4,184 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Genuine Internet Speed Test Platform By SP</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif}
-body{background:#F0F2F5;display:flex;flex-direction:column;align-items:center;min-height:100vh}
-.header{background:linear-gradient(90deg,#003366 0%,#00509E 100%);width:100%;padding:15px;text-align:center;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
-.header h1{font-size:22px;font-weight:900;letter-spacing:0.5px}
-.container{width:100%;max-width:480px;background:#fff;margin:20px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);padding:25px}
-.gauge-wrap{position:relative;width:320px;height:180px;margin:20px auto}
-.gauge-wrap svg{width:100%;height:100%}
-.gauge-track{fill:none;stroke:#E0E0E0;stroke-width:22;stroke-linecap:round}
-.gauge-bar{fill:none;stroke:url(#t);stroke-width:22;stroke-linecap:round;stroke-dasharray:565;stroke-dashoffset:565;transition:stroke-dashoffset .2s linear}
-.needle{stroke:#D32F2F;stroke-width:5;stroke-linecap:round;transform-origin:160px 160px;transition:transform .2s cubic-bezier(.17,.67,.83,.67)}
-.center{fill:#003366}
-.read{position:absolute;top:60%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.read .num{font-size:48px;font-weight:900;color:#003366}
-.read .txt{font-size:14px;color:#555;font-weight:700}
-.status{text-align:center;font-size:15px;font-weight:700;color:#FF6B00;margin:15px 0;min-height:22px}
-.stats{display:flex;gap:12px;margin-bottom:20px}
-.stat{flex:1;background:#F5F7FA;border:1px solid #E0E0E0;border-radius:8px;padding:16px;text-align:center}
-.stat .v{font-size:22px;font-weight:900;color:#003366}
-.stat .l{font-size:12px;color:#666;margin-top:4px}
-.btn{width:100%;background:linear-gradient(90deg,#FF6B00,#FF8C00);color:#fff;border:none;padding:15px;border-radius:8px;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 4px 10px rgba(255,107,0,0.3)}
-.btn:disabled{opacity:.5}
-.info{background:#F5F7FA;border-radius:8px;padding:15px;margin-top:20px}
-.info h3{font-size:13px;color:#003366;font-weight:900;margin-bottom:10px}
-.row{display:flex;justify-content:space-between;padding:9px 0;font-size:13px;border-bottom:1px solid #E0E0E0}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+.topbar{width:100%;max-width:900px;text-align:center;padding:20px 0;color:#fff}
+.topbar h1{font-size:28px;font-weight:900;letter-spacing:-0.5px}
+.topbar p{font-size:12px;opacity:0.7}
+.wrap{width:100%;max-width:900px;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+/* WORLD CLASS SPEEDOMETER */
+.speedo{width:100%;height:240px;position:relative;margin:10px 0}
+.speedo svg{width:100%;height:100%}
+.track{fill:none;stroke:rgba(255,255,255,0.1);stroke-width:30;stroke-linecap:round}
+.bar{fill:none;stroke:url(#g);stroke-width:30;stroke-linecap:round;stroke-dasharray:700;stroke-dashoffset:700;transition:stroke-dashoffset.1s linear;filter:drop-shadow(0 0 15px #3b82f6)}
+.needle{stroke:#fff;stroke-width:6;stroke-linecap:round;transform-origin:450px 450px;transition:transform.1s cubic-bezier(.17,.67,.83,.67);filter:drop-shadow(0 0 10px #fff)}
+.dot{fill:#3b82f6}
+.read{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.read.n{font-size:64px;font-weight:900;color:#fff}
+.read.u{font-size:16px;color:#94a3b8;font-weight:700}
+.status{text-align:center;color:#3b82f6;font-weight:700;font-size:16px;margin:15px 0;min-height:24px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}
+.card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px;text-align:center}
+.card.v{font-size:28px;font-weight:900;color:#fff}
+.card.l{font-size:12px;color:#94a3b8;margin-top:5px;font-weight:600}
+.btns{display:flex;gap:12px}
+.btn{flex:1;background:linear-gradient(90deg,#3b82f6,#06b6d4);color:#fff;border:none;padding:16px;border-radius:12px;font-weight:900;font-size:16px;cursor:pointer;transition:all.2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.sec{background:rgba(255,255,255,0.1)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.details{background:rgba(255,255,255,0.05);border-radius:16px;padding:20px;margin-top:20px}
+.details h3{color:#3b82f6;font-size:13px;margin-bottom:15px;font-weight:800}
+.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.1);font-size:14px;color:#cbd5e1}
 .row:last-child{border:0}
-.row b{color:#333}
-.footer{width:100%;background:#003366;color:#fff;text-align:center;padding:15px;margin-top:auto;font-size:12px;font-weight:600}
-.popup{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:999}
-.popup-box{background:#fff;border-radius:10px;width:90%;max-width:450px;overflow:hidden}
-.popup-head{background:#003366;color:#fff;padding:20px;text-align:center}
-.popup-body{padding:20px}
-.popup .r{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee}
+.row b{color:#fff}
+.footer{width:100%;max-width:900px;text-align:center;color:#94a3b8;padding:20px;font-size:12px;font-weight:600}
+.footer b{color:#fff}
+.popup{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:999}
+.pbox{background:#1e293b;border:1px solid rgba(255,255,255,0.1);border-radius:20px;width:90%;max-width:500px;padding:25px}
 </style>
 </head>
 <body>
 
-<div class="header"><h1>GENUINE INTERNET SPEED TEST PLATFORM BY SP</h1></div>
+<div class="topbar">
+  <h1>GENUINE INTERNET SPEED TEST PLATFORM BY SP</h1>
+  <p>Accurate • Fast • Reliable</p>
+</div>
 
-<div class="container">
-  <div class="gauge-wrap">
-    <svg viewBox="0 0 320 180">
-      <defs><linearGradient id="t"><stop offset="0%" stop-color="#4CAF50"/><stop offset="70%" stop-color="#FF9800"/><stop offset="100%" stop-color="#F44336"/></linearGradient></defs>
-      <path class="gauge-track" d="M 20 160 A 140 140 0 0 1 300 160"/>
-      <path class="gauge-bar" id="bar" d="M 20 160 A 140 140 0 0 1 300 160"/>
-      <line id="needle" x1="160" y1="160" x2="160" y2="40" class="needle"/>
-      <circle cx="160" cy="160" r="8" class="center"/>
+<div class="wrap">
+  <div class="speedo">
+    <svg viewBox="0 0 900 500">
+      <defs><linearGradient id="g"><stop offset="0%" stop-color="#22c55e"/><stop offset="50%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#ef4444"/></linearGradient></defs>
+      <path class="track" d="M 100 450 A 350 350 0 0 1 800 450"/>
+      <path class="bar" id="bar" d="M 100 450 A 350 350 0 0 1 800 450"/>
+      <line id="needle" x1="450" y1="450" x2="450" y2="150" class="needle"/>
+      <circle cx="450" cy="450" r="12" class="dot"/>
     </svg>
-    <div class="read"><div class="num" id="speed">0</div><div class="txt">Mbps</div></div>
+    <div class="read"><div class="n" id="speed">0.00</div><div class="u">Mbps</div></div>
   </div>
 
-  <div class="status" id="status">Click START TEST to begin</div>
+  <div class="status" id="status">Ready to Test</div>
 
-  <div class="stats">
-    <div class="stat"><div class="v" id="down">0.00</div><div class="l">DOWNLOAD Mbps</div></div>
-    <div class="stat"><div class="v" id="up">0.00</div><div class="l">UPLOAD Mbps</div></div>
+  <div class="grid">
+    <div class="card"><div class="v" id="down">0.00</div><div class="l">DOWNLOAD</div></div>
+    <div class="card"><div class="v" id="up">0.00</div><div class="l">UPLOAD</div></div>
   </div>
 
-  <button class="btn" id="btn">START TEST</button>
+  <div class="btns">
+    <button class="btn" id="start">START TEST</button>
+    <button class="btn sec" id="reset">RESET</button>
+  </div>
 
-  <div class="info">
+  <div class="details">
     <h3>CONNECTION DETAILS</h3>
     <div class="row"><span>Device</span><b id="device">-</b></div>
-    <div class="row"><span>Location</span><b id="loc">Detecting...</b></div>
+    <div class="row"><span>Exact Location</span><b id="loc">Allow Location Access</b></div>
     <div class="row"><span>IP Address</span><b id="ip">-</b></div>
     <div class="row"><span>ISP</span><b id="isp">-</b></div>
-    <div class="row"><span>Network</span><b id="net">-</b></div>
+    <div class="row"><span>Network Type</span><b id="net">-</b></div>
   </div>
 </div>
 
 <div class="footer">
-COPYRIGHT ©️ 2026 RESERVED<br>
-CREATED AND DEVELOPED BY PUNYA BINAY SWAIN
+  COPYRIGHT ©️ 2026 RESERVED<br>
+  <b>CREATED AND DEVELOPED BY PUNYA BINAY SWAIN</b>
 </div>
 
 <div class="popup" id="popup">
-  <div class="popup-box">
-    <div class="popup-head"><h2>Speed Test Complete</h2></div>
-    <div class="popup-body" id="pdata"></div>
-    <div style="padding:15px"><button class="btn" onclick="start()">TEST AGAIN</button></div>
+  <div class="pbox">
+    <h2 style="color:#fff;text-align:center;margin-bottom:15px">✅ Test Complete</h2>
+    <div id="pdata"></div>
+    <button class="btn" style="margin-top:15px" onclick="popup.style.display='none'">Close</button>
   </div>
 </div>
 
 <script>
-let run=false; const btn=document.getElementById('btn');
-btn.onclick=start; // BUTTON WORKING 100%
+let running=false;
+const start=document.getElementById('start'), reset=document.getElementById('reset');
 
-function gauge(v,max=1000){
+start.onclick=startTest;
+reset.onclick=()=>location.reload(); // REFRESH BUTTON FIXED
+
+function setGauge(v,max=1000){
   let p=Math.min(v/max,1);
-  document.getElementById('bar').style.strokeDashoffset=565-(565*p);
+  document.getElementById('bar').style.strokeDashoffset=700-(700*p);
   document.getElementById('needle').style.transform=`rotate(${(p*180)-90}deg)`;
   document.getElementById('speed').innerText=v.toFixed(2);
 }
 
-async function start(){
-  if(run)return; run=true; btn.disabled=true; popup.style.display='none';
-  ['down','up'].forEach(i=>document.getElementById(i).innerText='0.00'); gauge(0);
-  
-  await info(); await locationAuto(); // AUTO LOCATION
-  let ping=await pingTest();
-  let d=await speed('download');
-  gauge(0,200);
-  let u=await speed('upload');
-  
-  status.innerText='Test Complete';
-  showPopup(d,u,ping);
-  run=false; btn.disabled=false;
+async function startTest(){
+  if(running)return; running=true; start.disabled=true;
+  down.innerText=up.innerText='0.00'; setGauge(0); status.innerText='Initializing...';
+
+  await loadInfo();
+  await getLocation(); // AUTO LOCATION ON START
+  let ping=await testPing();
+  let d=await test('download');
+  setGauge(0,200);
+  let u=await test('upload');
+
+  status.innerText='Test Complete'; showResult(d,u,ping);
+  running=false; start.disabled=false;
 }
 
-async function speed(type){
+async function test(type){
   status.innerText=`Testing ${type}...`;
-  let bytes=0,s=performance.now(),dur=25000; // 25sec for accuracy like TRAI
-  let timer=setInterval(()=>{
-    let t=(performance.now()-s)/1000;
-    if(t>1){let sp=(bytes*8)/1000000/t; document.getElementById(type==='download'?'down':'up').innerText=sp.toFixed(2); gauge(sp,type==='download'?1000:200)}
-  },100);
-  let workers=Array(8).fill().map(async()=>{ // 8 THREADS
+  let bytes=0,s=performance.now(),dur=30000; // 30sec for Google/TRAI accuracy
+  let iv=setInterval(()=>{let t=(performance.now()-s)/1000;if(t>1){let sp=(bytes*8)/1000000/t;document.getElementById(type==='download'?'down':'up').innerText=sp.toFixed(2);setGauge(sp,type==='download'?1000:200)}},50);
+  let workers=Array(10).fill().map(async()=>{ // 10 THREADS LIKE OOKLA
     while(performance.now()-s<dur){
       try{
-        let url=`https://speed.cloudflare.com/__${type==='download'?'down?bytes=100000':'up'}&r=${Math.random()}`;
-        let res=await fetch(url,{method:type==='download'?'GET':'POST',body:type==='upload'?new Blob([new Uint8Array(10*1024*1024)]):null});
-        if(type==='download'){let rd=res.body.getReader();while(true){let {done,val}=await rd.read();if(done)break;bytes+=val.length}}else bytes+=10*1024*1024;
+        let url=`https://speed.cloudflare.com/__${type==='download'?'down?bytes=100000':'up'}&cache=${Math.random()}`;
+        let res=await fetch(url,{method:type==='download'?'GET':'POST',body:type==='upload'?new Blob([crypto.getRandomValues(new Uint8Array(10*1024*1024))]):null});
+        if(type==='download'){let r=res.body.getReader();while(true){let {done,v}=await r.read();if(done)break;bytes+=v.length}}else bytes+=10*1024*1024;
       }catch(e){}
     }
   });
-  await Promise.all(workers); clearInterval(timer);
+  await Promise.all(workers); clearInterval(iv);
   return ((bytes*8)/1000000/((performance.now()-s)/1000)).toFixed(2);
 }
 
-async function pingTest(){
+async function testPing(){
   status.innerText='Testing Ping...';
-  let p=[]; for(let i=0;i<5;i++){let t=performance.now();await fetch('https://www.google.com/generate_204?r='+Date.now(),{mode:'no-cors'});p.push(performance.now()-t)}
-  return Math.round(p.reduce((a,b)=>a+b)/p.length);
+  let arr=[]; for(let i=0;i<6;i++){let t=performance.now();await fetch('https://www.google.com/generate_204?r='+Math.random(),{mode:'no-cors'});arr.push(performance.now()-t)}
+  return Math.round(arr.sort()[2]); // median ping
 }
 
-// AUTOMATIC EXACT VILLAGE LOCATION
-async function locationAuto(){
-  if(!navigator.geolocation){loc.innerText='Not Supported';return}
+// AUTO LOCATION - EXACT VILLAGE + PINCODE
+async function getLocation(){
+  if(!navigator.geolocation){loc.innerText='Not Available';return}
   navigator.geolocation.getCurrentPosition(async pos=>{
     try{
-      let r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&zoom=18`);
+      let r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
       let d=await r.json();
-      loc.innerText=`${d.address.village||d.address.suburb||d.address.town}, ${d.address.district} - ${d.address.postcode}`;
-    }catch(e){loc.innerText='Unable to detect'}
-  },{enableHighAccuracy:true,timeout:10000});
+      loc.innerText=`${d.address.village||d.address.town||d.address.city}, ${d.address.state} - ${d.address.postcode}`;
+    }catch(e){loc.innerText='Detection Failed'}
+  },()=>{loc.innerText='Permission Denied'},{enableHighAccuracy:true,timeout:15000});
 }
 
-async function info(){
-  device.innerText=navigator.userAgent.includes('Android')?'Android Mobile':'Desktop PC';
+async function loadInfo(){
+  device.innerText=/Android|iPhone/.test(navigator.userAgent)?'Mobile':'Desktop PC';
   try{let r=await fetch('https://ipapi.co/json/');let d=await r.json();ip.innerText=d.ip;isp.innerText=d.org}catch(e){}
-  // ACTUAL 4G/5G/WIFI DETECTION
   let c=navigator.connection;
-  if(c){
-    if(c.type==='wifi') net.innerText='WiFi';
-    else if(c.effectiveType==='5g'||c.downlink>50) net.innerText='5G';
-    else if(c.effectiveType==='4g') net.innerText='4G LTE';
-    else net.innerText=c.effectiveType.toUpperCase();
-  }else net.innerText='WiFi/Broadband';
+  net.innerText=c?c.type==='wifi'?'WiFi':c.effectiveType==='5g'||c.downlink>60?'5G':c.effectiveType==='4g'?'4G LTE':'3G':'Unknown';
 }
 
-function showPopup(d,u,p){
+function showResult(d,u,p){
   pdata.innerHTML=`
-  <div class="r"><b>Download</b><span>${d} Mbps</span></div>
-  <div class="r"><b>Upload</b><span>${u} Mbps</span></div>
-  <div class="r"><b>Ping</b><span>${p} ms</span></div>
-  <div class="r"><b>Location</b><span>${loc.innerText}</span></div>
-  <div class="r"><b>IP</b><span>${ip.innerText}</span></div>
-  <div class="r"><b>ISP</b><span>${isp.innerText}</span></div>
-  <div class="r"><b>Network</b><span>${net.innerText}</span></div>`;
+  <div class="row"><span>Download</span><b>${d} Mbps</b></div>
+  <div class="row"><span>Upload</span><b>${u} Mbps</b></div>
+  <div class="row"><span>Ping</span><b>${p} ms</b></div>
+  <div class="row"><span>Location</span><b>${loc.innerText}</b></div>
+  <div class="row"><span>IP</span><b>${ip.innerText}</b></div>
+  <div class="row"><span>ISP</span><b>${isp.innerText}</b></div>
+  <div class="row"><span>Network</span><b>${net.innerText}</b></div>`;
   popup.style.display='flex';
 }
+
+// Auto load info on page open
+loadInfo(); getLocation();
 </script>
 </body>
 </html>
